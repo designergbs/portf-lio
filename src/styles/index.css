@@ -1,0 +1,29 @@
+/* Must stay the first rule in the stylesheet — @import is only valid before any
+   other rule (aside from @charset/@layer), so it can't live inside tokens/fonts.css
+   once that file is imported after @import "tailwindcss". */
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap");
+
+@import "tailwindcss";
+
+/* Design-system tokens (colors, type, spacing, layout, radius, elevation, motion, base) */
+@import "./tokens/fonts.css";
+@import "./tokens/colors.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
+@import "./tokens/layout.css";
+@import "./tokens/radius.css";
+@import "./tokens/elevation.css";
+@import "./tokens/motion.css";
+@import "./tokens/base.css";
+
+/* Component class layer consumed by src/components/**\/*.jsx */
+@import "./components/gb-components.css";
+@import "./components/core/a11y-prefs.css";
+
+/* Home/case-page composition layer (hero, about, cases, experience, tools,
+   contato, responsive breakpoints, intro curtain) — extracted verbatim from
+   the original ui_kits/portfolio/index.html <style> block. */
+@import "./kit.css";
+
+/* Case-study template styles (kit-chero, kit-cfig, before/after, stats panel...) */
+@import "./case.css";

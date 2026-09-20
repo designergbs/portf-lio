@@ -1,0 +1,57 @@
+:root{
+  --container-max:1320px;
+  --container-narrow:880px;
+  --grid-columns:12; /* @kind other */
+  --grid-gap:clamp(16px,2vw,24px);
+
+  /* breakpoints (documentation values; use in media queries) */
+  --bp-sm:640px; --bp-md:768px; --bp-lg:1024px; --bp-xl:1280px; --bp-2xl:1536px; /* @kind spacing */
+
+  --nav-height:96px;
+  --touch-min:44px;
+
+  /* ---- menu lateral flutuante ---- */
+  --rail-width:60px;                  /* 44px do botão + 2x8px de padding do trilho */
+  --rail-offset:clamp(8px,0.8vw,14px); /* @kind spacing */ /* distância do trilho até a borda da viewport */
+  --rail-clearance:24px;               /* respiro mínimo entre trilho e conteúdo */
+  --rail-safe:calc(var(--rail-offset) + var(--rail-width) + var(--rail-clearance));
+  --rail-dock-height:60px;             /* altura do dock inferior (<=1024px) */
+
+  /* ---- margens de página e zona segura ---- */
+  --page-gutter:clamp(16px,2.6vw,40px); /* @kind spacing */
+  /* folga que a viewport já oferece fora do container centralizado */
+  --page-slack:max(0px,calc((100vw - var(--container-max) - 2 * var(--page-gutter)) / 2));
+  /* quanto a página precisa reservar à esquerda para o trilho não cobrir conteúdo */
+  --rail-reserve:max(0px,calc(var(--rail-safe) - var(--page-slack)));
+  --dock-reserve:0px;
+  /* largura útil e margem efetiva — base para elementos fixos e full-bleed */
+  --page-avail:calc(100vw - var(--rail-reserve));
+  --page-margin:max(0px,calc((var(--page-avail) - var(--container-max)) / 2));
+  /* limite esquerdo real do conteúdo (mesma matemática do .gb-container) */
+  --content-left:calc(var(--rail-reserve) + var(--page-margin) + var(--page-gutter));
+  /* centro da calha lateral = metade do limite esquerdo do conteúdo */
+  --rail-center:calc(var(--content-left) / 2);
+  /* calha mínima para hospedar o trilho com folga dos dois lados */
+  --rail-min-gutter:calc(var(--rail-width) + 2 * var(--rail-clearance));
+  --bleed-safety:16px; /* folga p/ barra de rolagem em cálculos com 100vw */
+  --bleed-width:calc(var(--page-avail) - var(--bleed-safety));
+
+  --section-gap:clamp(40px,4.4vw,72px);
+
+  /* ---- camadas (z-index) ---- */
+  --z-hero-fluid:1; /* @kind other */
+  --z-hero-grid:2; /* @kind other */
+  --z-hero-dots:3; /* @kind other */
+  --z-hero-media:4; /* @kind other */
+  --z-hero-content:5; /* @kind other */
+  --z-rail:40; /* @kind other */
+  --z-nav:50; /* @kind other */
+  --z-divider:60; /* @kind other */
+}
+/* trilho vira dock inferior: nenhuma reserva lateral, reserva vertical no lugar */
+@media (max-width:1024px){
+  :root{--rail-safe:0px;--dock-reserve:calc(var(--rail-dock-height) + var(--space-6))}
+}
+@media (max-width:768px){
+  :root{--nav-height:72px}
+}

@@ -1,0 +1,12 @@
+:root{
+  /* dark-mode elevation: soft, low-contrast, never glowing */
+  --shadow-none:none;
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.6);
+  --shadow-md:0 8px 24px rgba(0,0,0,0.55);
+  --shadow-lg:0 24px 64px rgba(0,0,0,0.6);
+  --shadow-glass:0 6px 24px rgba(0,0,0,0.35);
+  --inner-hairline:inset 0 1px 0 rgba(245,245,245,0.04); /* @kind shadow */
+
+  --blur-glass:6px; /* @kind other */
+  --blur-glass-hover:11px; /* @kind other */
+}

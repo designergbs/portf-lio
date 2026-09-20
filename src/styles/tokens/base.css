@@ -1,0 +1,33 @@
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg-page);color:var(--text-primary);font-family:var(--font-sans);font-size:var(--type-body-size);line-height:var(--type-body-lh);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p{margin:0;text-wrap:pretty}
+img,video{display:block;max-width:100%}
+::selection{background:var(--gray-8);color:var(--black-0)}
+a{color:var(--link);text-decoration:none;transition:color var(--dur-fast) var(--ease-standard),opacity var(--dur-fast) var(--ease-standard)}
+a:hover{color:var(--link-hover)}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px;border-radius:var(--radius-xs)}
+button{font:inherit;color:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:var(--black-1)}
+::-webkit-scrollbar-thumb{background:var(--gray-4);border-radius:var(--radius-xs)}
+::-webkit-scrollbar-thumb:hover{background:var(--gray-5)}
+
+/* mono utility for metadata */
+.gb-mono{font-family:var(--font-mono);font-size:var(--type-mono-size);line-height:var(--type-mono-lh);letter-spacing:var(--type-mono-tracking)}
+.gb-label{font-family:var(--font-mono);font-size:var(--type-label-size);line-height:var(--type-label-lh);letter-spacing:var(--type-label-tracking);text-transform:uppercase;color:var(--text-muted)}
+
+/* technical grid backdrop motif */
+.gb-grid-bg{background-image:linear-gradient(var(--line-grid) 1px,transparent 1px),linear-gradient(90deg,var(--line-grid) 1px,transparent 1px);background-size:64px 64px}
+
+/* section entrance */
+@keyframes gb-rise{from{opacity:0;transform:translate3d(0,var(--enter-offset),0)}to{opacity:1;transform:none}}
+@keyframes gb-marquee-left{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@keyframes gb-marquee-right{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+@keyframes gb-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.45;transform:scale(1.35)}}
+
+/* respeito automático ao sistema — o visitante pode optar por "Completo" no painel de acessibilidade */
+@media (prefers-reduced-motion:reduce){
+  html:not([data-a11y-motion="full"]){scroll-behavior:auto}
+  html:not([data-a11y-motion="full"]) *,html:not([data-a11y-motion="full"]) *::before,html:not([data-a11y-motion="full"]) *::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important}
+}

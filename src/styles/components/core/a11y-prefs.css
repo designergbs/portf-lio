@@ -1,0 +1,105 @@
+/* Preferências de acessibilidade — gatilho na navbar, painel e efeitos das preferências.
+   Nada aqui altera o estado padrão do site: os efeitos só valem quando o visitante
+   ativa uma preferência (atributos data-a11y-* no <html>). */
+
+/* ---------- gatilho ---------- */
+.gb-a11y{position:relative;display:inline-flex;flex:none}
+.gb-a11y__btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;box-sizing:border-box;padding:0;border:1px solid rgba(214,235,253,0.19);border-radius:var(--radius-pill);background:transparent;color:var(--text-primary);cursor:pointer;transition:background var(--dur-base) var(--ease-out-quart),border-color var(--dur-base) var(--ease-out-quart),color var(--dur-base) var(--ease-out-quart)}
+.gb-a11y__btn svg{width:16px;height:16px}
+.gb-a11y__btn:hover{background:rgba(255,255,255,0.04)}
+.gb-a11y__btn[aria-expanded="true"]{background:var(--surface-hover);border-color:var(--border-subtle)}
+.gb-a11y__btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+
+/* ---------- painel ---------- */
+/* uma única receita de vidro para o painel e suas tooltips: fundo e borda do trilho
+   lateral, com desfoque maior para dar leitura aos itens */
+:root{
+  --a11y-glass-bg:rgba(4,4,4,0.94); /* @kind color */
+  --a11y-glass-border:rgba(214,235,253,0.19); /* @kind color */
+  --a11y-glass-blur:blur(22px) saturate(1.1) brightness(1.15); /* @kind other */
+}
+
+.gb-a11y__panel{position:absolute;top:calc(100% + 12px);right:0;z-index:120;width:328px;max-width:calc(100vw - 32px);max-height:min(72vh,calc(100vh - var(--nav-height) - 32px));overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;box-sizing:border-box;display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-5);border:1px solid var(--a11y-glass-border);border-radius:var(--radius-lg);background:var(--a11y-glass-bg);backdrop-filter:var(--a11y-glass-blur);-webkit-backdrop-filter:var(--a11y-glass-blur);box-shadow:var(--shadow-lg);text-align:left}
+.gb-a11y__top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.gb-a11y__title{display:inline-flex;align-items:center;gap:var(--space-2);margin:0;font-family:var(--font-sans);font-size:var(--type-body-size);font-weight:var(--fw-medium);letter-spacing:-0.01em;color:var(--text-primary)}
+.gb-a11y__title svg{width:16px;height:16px;flex:none}
+.gb-a11y__close{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;padding:0;border:0;border-radius:var(--radius-pill);background:transparent;color:var(--text-muted);cursor:pointer;transition:background var(--dur-fast) var(--ease-standard),color var(--dur-fast) var(--ease-standard)}
+.gb-a11y__close:hover{background:var(--surface-hover);color:var(--text-primary)}
+.gb-a11y__close:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.gb-a11y__rule{height:1px;background:#2A2A2A;border:0;margin:0}
+
+/* ---------- linhas de preferência ---------- */
+.gb-a11y__row{display:flex;flex-direction:column;gap:var(--space-3)}
+.gb-a11y__head{display:flex;align-items:center;gap:0;min-height:32px}
+.gb-a11y__label{font-family:var(--font-sans);font-size:var(--type-body-sm-size);font-weight:var(--fw-regular);color:var(--text-primary)}
+.gb-a11y__val{margin-left:auto;font-family:var(--font-sans);font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);color:var(--text-muted)}
+
+/* segmentos (tamanho do texto e movimento) */
+.gb-a11y__seg{display:flex;align-items:center;flex-wrap:wrap;gap:4px;padding:4px;box-sizing:border-box;border:1px solid rgba(214,235,253,0.19);border-radius:var(--radius-pill)}
+.gb-a11y__opt{flex:1 1 auto;min-width:56px;display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:0 var(--space-2);border-radius:var(--radius-pill);font-family:var(--font-sans);font-size:var(--type-label-size);letter-spacing:0.04em;color:var(--text-muted);cursor:pointer;text-align:center;transition:background var(--dur-base) var(--ease-out-quart),color var(--dur-base) var(--ease-out-quart)}
+.gb-a11y__opt input{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.gb-a11y__opt:hover{color:var(--text-primary)}
+.gb-a11y__opt.is-active{background:var(--surface-hover);color:var(--text-primary);font-weight:var(--fw-medium)}
+.gb-a11y__opt:has(input:focus-visible){outline:2px solid var(--focus-ring);outline-offset:2px}
+
+/* switches */
+.gb-a11y__sw{margin-left:auto;display:inline-flex;align-items:center;flex:none;width:44px;height:26px;padding:3px;box-sizing:border-box;border:1px solid rgba(214,235,253,0.19);border-radius:var(--radius-pill);background:transparent;cursor:pointer;transition:background var(--dur-base) var(--ease-out-quart),border-color var(--dur-base) var(--ease-out-quart)}
+.gb-a11y__knob{width:18px;height:18px;border-radius:var(--radius-pill);background:var(--text-muted);transition:transform var(--dur-base) var(--ease-out-quart),background var(--dur-base) var(--ease-out-quart)}
+.gb-a11y__sw[aria-checked="true"]{background:var(--surface-hover);border-color:var(--border-subtle)}
+.gb-a11y__sw[aria-checked="true"] .gb-a11y__knob{transform:translateX(18px);background:var(--text-primary)}
+.gb-a11y__sw:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+
+/* ---------- tooltips ⓘ ---------- */
+.gb-a11y__info{position:relative;display:inline-flex;flex:none}
+.gb-a11y__infobtn{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;padding:0;border:0;border-radius:var(--radius-pill);background:transparent;color:var(--text-muted);cursor:help;transition:color var(--dur-fast) var(--ease-standard),background var(--dur-fast) var(--ease-standard)}
+.gb-a11y__infobtn svg{width:14px;height:14px}
+.gb-a11y__infobtn:hover{color:var(--text-primary);background:var(--surface-hover)}
+.gb-a11y__infobtn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.gb-a11y__tip{position:fixed;z-index:220;width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box;padding:var(--space-2) var(--space-3);border:1px solid var(--a11y-glass-border);border-radius:var(--radius-sm);background:var(--a11y-glass-bg);backdrop-filter:var(--a11y-glass-blur);-webkit-backdrop-filter:var(--a11y-glass-blur);box-shadow:var(--shadow-md);color:var(--text-secondary);font-family:var(--font-sans);font-size:0.75rem;line-height:1.5;white-space:nowrap;text-align:left}
+.gb-a11y__tip--right{left:auto;right:0;transform:none}
+/* ---------- rodapé do painel ---------- */
+.gb-a11y__foot{display:flex;flex-direction:column;gap:var(--space-3)}
+.gb-a11y__reset{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);width:100%;min-height:38px;padding:0 var(--space-4);box-sizing:border-box;border:1px solid transparent;border-radius:var(--radius-pill);background:transparent;color:var(--text-secondary);font-family:var(--font-sans);font-size:var(--type-body-sm-size);cursor:pointer;transition:background var(--dur-base) var(--ease-standard),border-color var(--dur-base) var(--ease-standard),color var(--dur-base) var(--ease-standard)}
+.gb-a11y__reset svg{width:14px;height:14px}
+.gb-a11y__reset:hover{background:var(--green-signal-tint);border-color:color-mix(in oklch,var(--green-signal-text) 45%,transparent);color:var(--green-signal-text)}
+.gb-a11y__reset:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+
+/* trava o scroll (e o scrollbar que rouba largura do overlay fixo) enquanto o diálogo mobile está aberto */
+.gb-a11y__scrim{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;background:transparent;pointer-events:none;padding:0}
+.gb-a11y__scrim > *{pointer-events:auto}
+.gb-a11y__panel--fixed{position:fixed;top:0;right:auto;left:0;max-height:min(72vh,calc(100vh - var(--nav-height) - 32px))}
+.gb-a11y__panel--modal{position:fixed !important;top:auto !important;left:0 !important;right:0 !important;bottom:0;width:auto !important;max-width:none !important;margin:0;max-height:86vh;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding-bottom:calc(var(--space-5) + env(safe-area-inset-bottom))}
+
+/* ---------- efeitos: tamanho do texto ---------- */
+html[data-a11y-text="125"]{font-size:125%}
+html[data-a11y-text="150"]{font-size:150%}
+html:not([data-a11y-text="100"]) .gb-nav{height:auto;min-height:var(--nav-height)}
+html:not([data-a11y-text="100"]) :is(.kit-proc,.plab-card,.gb-tool,.gb-caserow__link,.gb-exp,.kit-cbody){height:auto}
+
+/* ---------- efeitos: movimento reduzido por escolha ---------- */
+html[data-a11y-motion="reduce"]{scroll-behavior:auto}
+html[data-a11y-motion="reduce"] *,html[data-a11y-motion="reduce"] *::before,html[data-a11y-motion="reduce"] *::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important}
+html[data-a11y-motion="reduce"] :is(.kit-enter,.kit-in,.gb-reveal,[data-reveal-card],.kit-hstat__part,.gb-footer__name-word){opacity:1 !important;transform:none !important}
+html[data-a11y-motion="reduce"] .kit-charreveal .rc{color:var(--text-primary) !important}
+html[data-a11y-motion="reduce"] :is(.kit-lead-beam,.kit-reveal__caret,.gb-circlabel__wave){display:none !important}
+/* letras do H1 e o "UX/UI" ciclam por keyframes que terminam em opacity:0 — sem animação precisam do estado final visível */
+html[data-a11y-motion="reduce"] .kit-hero__ux .kit-h1ux,html[data-a11y-motion="reduce"] .kit-h1ux,html[data-a11y-motion="reduce"] .kit-hero__ux.is-wait .kit-h1ux{animation:none !important;opacity:1 !important;transform:none !important;filter:none !important}
+html[data-a11y-motion="reduce"] .kit-lead-group::after{transform:scaleY(1) !important}
+html[data-a11y-motion="reduce"] :is(.kit-cbax__viewport,.kit-imp__scroller){scroll-behavior:auto}
+html[data-a11y-motion="reduce"] :is(.plab-card,.gb-tool,.gb-tag--interactive,.gb-btn--primary):hover{transform:none !important}
+
+/* ---------- efeitos: melhorar legibilidade ---------- */
+html[data-a11y-contrast="on"]{--text-lead:#EDEDED;--text-secondary:#E4E4E4;--text-muted:#C8C8C8;--border-subtle:#6A6A6A;--border-card:rgba(214,235,253,0.46);--divider-line:rgba(245,245,245,0.14);--line-grid:rgba(245,245,245,0.12)}
+html[data-a11y-contrast="on"] .gb-nav{background:rgba(8,8,8,0.94);backdrop-filter:none;-webkit-backdrop-filter:none}
+html[data-a11y-contrast="on"] :is(p,li,dd,figcaption,.kit-lead,.kit-cbody__p,.gb-caserow__summary,.gb-footer__desc,.plab-b,.kit-proc__b) a:not(.gb-btn):not(.gb-nav__link):not(.gb-a11y__wcag){text-decoration:underline;text-underline-offset:0.18em}
+html[data-a11y-contrast="on"] .gb-footer__links a:not(.gb-btn){text-decoration:underline;text-underline-offset:0.18em}
+html[data-a11y-contrast="on"] :is(.gb-tag,.gb-langswitch,.gb-a11y__btn,.gb-nav__right .gb-btn,.gb-iconbtn--outline){border-color:var(--border-subtle)}
+
+/* alvo de toque mobile: o botão de acessibilidade sobe para 44px sem alterar o desktop */
+@media (max-width:640px){.gb-a11y__btn{width:var(--touch-min);height:var(--touch-min)}}
+
+/* ---------- efeitos: espaçamento de leitura ---------- */
+html[data-a11y-reading="on"] :is(p,li,dd,.kit-lead,.kit-cbody__p,.gb-caserow__summary,.gb-footer__desc,.plab-b,.kit-proc__b,.gb-exp__disc-sum):not(.gb-mono):not(.gb-label){line-height:1.8;letter-spacing:0.12em;word-spacing:0.16em}
+html[data-a11y-reading="on"] :is(p,.kit-lead,.kit-cbody__p):not(.gb-mono):not(.gb-label):not(:last-child){margin-bottom:2em}
+html[data-a11y-reading="on"] :is(li,dd):not(.gb-mono):not(.gb-label){margin-bottom:0.8em}
+html[data-a11y-reading="on"] :is(.kit-lead,.kit-cbody__p){text-align:left;text-wrap:pretty}

@@ -1,0 +1,35 @@
+:root{
+  --dur-instant:120ms; /* @kind other */
+  --dur-fast:200ms; /* @kind other */
+  --dur-base:300ms; /* @kind other */
+  --dur-slow:400ms; /* @kind other */
+  --dur-arrow:420ms; /* @kind other */
+  --dur-image:600ms; /* @kind other */
+  --dur-reveal:700ms; /* @kind other */
+
+  --ease-out-quart:cubic-bezier(0.22,1,0.36,1); /* @kind other */
+  --ease-standard:cubic-bezier(0.4,0,0.2,1); /* @kind other */
+  --ease-out:cubic-bezier(0,0,0.2,1); /* @kind other */
+
+  --marquee-dur-a:52s; /* @kind other */
+  --marquee-dur-b:64s; /* @kind other */
+  --marquee-dur-skills-a:64s; /* @kind other */
+  --marquee-dur-skills-b:78s; /* @kind other */
+  --marquee-dur-tools:58s; /* @kind other */
+
+  /* loops ambientes (feixes, respiro do retrato, fluidos do hero, spin do CTA) */
+  --dur-beam-loop:5s; /* @kind other */
+  --dur-beam-slide:7s; /* @kind other */
+  --dur-spin:6s; /* @kind other */
+  --dur-breathe:10s; /* @kind other */
+  --dur-flow-a:16s; /* @kind other */
+  --dur-flow-b:13s; /* @kind other */
+  --dur-flow-c:18s; /* @kind other */
+  --dur-signal:2.2s; /* @kind other */
+
+  --enter-offset:28px; /* @kind other */
+  --stagger:100ms; /* @kind other */
+  --hover-lift:-2px; /* @kind other */
+  --image-zoom:1.06; /* @kind other */
+  --image-zoom-mobile:1.04; /* @kind other */
+}
