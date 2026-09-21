@@ -11,7 +11,7 @@ function CaseStudy({ slug, onBack, onOpenCase }) {
       <TopNav
         links={window.GB.nav}
         cta={{ label: window.gbT("buttons.resume"), href: "https://drive.google.com/file/d/1IzrBnS0q0bESHPTdb8lNg8nky23XTvE1/view" }}
-        ctaPrimary={{ label: window.gbT("buttons.talk"), href: "https://calendly.com/designergbs/30min" }}
+        ctaPrimary={{ label: window.gbT("buttons.talk"), href: "https://calendly.com/designergbs/30min", icon: "message-circle" }}
         brand={window.GB.brand}
         onBrandClick={(e) => { e.preventDefault(); onBack(); }}
         onLinkClick={(e, href) => { e.preventDefault(); onBack(href.replace("#", "")); }}

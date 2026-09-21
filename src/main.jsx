@@ -1,5 +1,4 @@
 import "./react-globals.js";
-import "./lucide-globals.js";
 import "./styles/index.css";
 
 import "./ds-bootstrap.js";

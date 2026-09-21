@@ -97,7 +97,7 @@ function About() {
       <Reveal delay={100} className="kit-about">
         <div className="kit-about__portrait">
           <div className="kit-about__frame">
-            <img src="/assets/portrait-cyber-wireframe.jpg" alt="Retrato de Guilherme Bernardo em linhas de wireframe monocromáticas" />
+            <img src="/assets/portrait-cyber-wireframe.jpg" alt={window.gbT("sections.aboutPortraitAlt")} />
           </div>
         </div>
         <div className="kit-about__body">

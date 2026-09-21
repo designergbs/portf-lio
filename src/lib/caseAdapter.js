@@ -27,9 +27,17 @@ function stripImgBaseDeep(node, prefix) {
 export function adaptCaseStudy(caseData) {
   if (!caseData) return null;
   const prefix = caseData.imgBase || "";
-  return {
+  const adapted = {
     ...stripImgBaseDeep(caseData, prefix),
     heroImage: stripPrefix(caseData.heroImage, prefix),
     heroImage2: stripPrefix(caseData.heroImage2, prefix),
   };
+
+  /* O seed gravou a ratio da capa (2048×456) em heroRatio. A abertura
+     hero-screens.png é 3098×1750; sem este ajuste o CSS achata as telas. */
+  if (adapted.heroImage === "hero-screens.png") {
+    adapted.heroRatio = "3098 / 1750";
+  }
+
+  return adapted;
 }

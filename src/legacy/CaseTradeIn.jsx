@@ -841,7 +841,7 @@ function CaseTradeIn({ onBack, onOpenCase, nextCase, data }) {
       <TopNav
         links={[]}
         cta={{ label: window.gbT("buttons.resume"), href: "https://drive.google.com/file/d/1IzrBnS0q0bESHPTdb8lNg8nky23XTvE1/view" }}
-        ctaPrimary={{ label: window.gbT("buttons.talk"), href: "#contato-secao" }}
+        ctaPrimary={{ label: window.gbT("buttons.talk"), href: "#contato-secao", icon: "message-circle" }}
         brand={<React.Fragment><Icon name="arrow-left" /><span className="kit-case-backlabel">{window.gbT("caseCommon.backLabel")}</span></React.Fragment>}
         onBrandClick={(e) => { e.preventDefault(); onBack("cases"); }}
       />

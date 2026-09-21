@@ -28,7 +28,7 @@ function Home({ onOpenCase, activeId }) {
   }, []);
   return (
     <div>
-      <TopNav links={window.GB.nav} ctaPrimary={{ label: window.gbT("buttons.talk"), href: "#contato", icon: null }} brand={window.GB.brand} brandMorph heroSelector=".kit-hero" />
+      <TopNav links={window.GB.nav} ctaPrimary={{ label: window.gbT("buttons.talk"), href: "#contato", icon: "message-circle" }} brand={window.GB.brand} brandMorph heroSelector=".kit-hero" />
       <SideRail items={window.GB.rail} activeId={activeId || current} onSelect={setCurrent} />
       <window.Hero />
       <main>

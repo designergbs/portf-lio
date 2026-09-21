@@ -35,7 +35,8 @@
         experienceEyebrow: "Experiência", experienceTitle: "Minha jornada até aqui",
         processEyebrow: "Processos", processTitle: "Como transformo problemas em soluções",
         toolsSubhead: "FERRAMENTAS", toolsAria: "Ferramentas do dia a dia",
-        aboutEyebrow: "Sobre", aboutTitle: "Guilherme aqui, mas pode chamar de Gui."
+        aboutEyebrow: "Sobre", aboutTitle: "Guilherme aqui, mas pode chamar de Gui.",
+        aboutPortraitAlt: "Retrato de Guilherme Bernardo em linhas de wireframe monocromáticas"
       },
       process: { steps: ["DESCOBRIR E DEFINIR", "DESENVOLVER E VALIDAR", "ENTREGAR E EVOLUIR"] },
       contact: {
@@ -98,7 +99,8 @@
         experienceEyebrow: "Experience", experienceTitle: "My journey so far",
         processEyebrow: "Process", processTitle: "How I turn problems into solutions",
         toolsSubhead: "TOOLS", toolsAria: "Everyday tools",
-        aboutEyebrow: "About", aboutTitle: "Guilherme here, but call me Gui."
+        aboutEyebrow: "About", aboutTitle: "Guilherme here, but call me Gui.",
+        aboutPortraitAlt: "Portrait of Guilherme Bernardo in monochrome wireframe lines"
       },
       process: { steps: ["DISCOVER & DEFINE", "DEVELOP & VALIDATE", "DELIVER & EVOLVE"] },
       contact: {

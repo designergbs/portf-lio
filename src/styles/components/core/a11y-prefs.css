@@ -19,7 +19,7 @@
   --a11y-glass-blur:blur(22px) saturate(1.1) brightness(1.15); /* @kind other */
 }
 
-.gb-a11y__panel{position:absolute;top:calc(100% + 12px);right:0;z-index:120;width:328px;max-width:calc(100vw - 32px);max-height:min(72vh,calc(100vh - var(--nav-height) - 32px));overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;box-sizing:border-box;display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-5);border:1px solid var(--a11y-glass-border);border-radius:var(--radius-lg);background:var(--a11y-glass-bg);backdrop-filter:var(--a11y-glass-blur);-webkit-backdrop-filter:var(--a11y-glass-blur);box-shadow:var(--shadow-lg);text-align:left}
+.gb-a11y__panel{position:absolute;top:calc(100% + 12px);right:0;z-index:120;width:328px;max-width:calc(100vw - 32px);max-height:min(72vh,calc(100vh - var(--nav-height) - 32px));overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;box-sizing:border-box;display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-5);border:1px solid var(--a11y-glass-border);border-radius:var(--radius-lg);background:var(--a11y-glass-bg);backdrop-filter:var(--a11y-glass-blur);box-shadow:var(--shadow-lg);text-align:left}
 .gb-a11y__top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3)}
 .gb-a11y__title{display:inline-flex;align-items:center;gap:var(--space-2);margin:0;font-family:var(--font-sans);font-size:var(--type-body-size);font-weight:var(--fw-medium);letter-spacing:-0.01em;color:var(--text-primary)}
 .gb-a11y__title svg{width:16px;height:16px;flex:none}
@@ -55,7 +55,7 @@
 .gb-a11y__infobtn svg{width:14px;height:14px}
 .gb-a11y__infobtn:hover{color:var(--text-primary);background:var(--surface-hover)}
 .gb-a11y__infobtn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
-.gb-a11y__tip{position:fixed;z-index:220;width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box;padding:var(--space-2) var(--space-3);border:1px solid var(--a11y-glass-border);border-radius:var(--radius-sm);background:var(--a11y-glass-bg);backdrop-filter:var(--a11y-glass-blur);-webkit-backdrop-filter:var(--a11y-glass-blur);box-shadow:var(--shadow-md);color:var(--text-secondary);font-family:var(--font-sans);font-size:0.75rem;line-height:1.5;white-space:nowrap;text-align:left}
+.gb-a11y__tip{position:fixed;z-index:220;width:max-content;max-width:calc(100vw - 32px);box-sizing:border-box;padding:var(--space-2) var(--space-3);border:1px solid var(--a11y-glass-border);border-radius:var(--radius-sm);background:var(--a11y-glass-bg);backdrop-filter:var(--a11y-glass-blur);box-shadow:var(--shadow-md);color:var(--text-secondary);font-family:var(--font-sans);font-size:0.75rem;line-height:1.5;white-space:nowrap;text-align:left}
 .gb-a11y__tip--right{left:auto;right:0;transform:none}
 /* ---------- rodapé do painel ---------- */
 .gb-a11y__foot{display:flex;flex-direction:column;gap:var(--space-3)}
@@ -90,8 +90,8 @@ html[data-a11y-motion="reduce"] :is(.plab-card,.gb-tool,.gb-tag--interactive,.gb
 
 /* ---------- efeitos: melhorar legibilidade ---------- */
 html[data-a11y-contrast="on"]{--text-lead:#EDEDED;--text-secondary:#E4E4E4;--text-muted:#C8C8C8;--border-subtle:#6A6A6A;--border-card:rgba(214,235,253,0.46);--divider-line:rgba(245,245,245,0.14);--line-grid:rgba(245,245,245,0.12)}
-html[data-a11y-contrast="on"] .gb-nav{background:rgba(8,8,8,0.94);backdrop-filter:none;-webkit-backdrop-filter:none}
-html[data-a11y-contrast="on"] :is(p,li,dd,figcaption,.kit-lead,.kit-cbody__p,.gb-caserow__summary,.gb-footer__desc,.plab-b,.kit-proc__b) a:not(.gb-btn):not(.gb-nav__link):not(.gb-a11y__wcag){text-decoration:underline;text-underline-offset:0.18em}
+html[data-a11y-contrast="on"] .gb-nav{background:rgba(8,8,8,0.94);backdrop-filter:none}
+html[data-a11y-contrast="on"] :is(p,li,dd,figcaption,.kit-lead,.kit-cbody__p,.gb-caserow__summary,.gb-footer__desc,.plab-b,.kit-proc__b) a:not(.gb-btn):not(.gb-nav__link):not(.gb-a11y__wcag):not(.gb-caserow__link){text-decoration:underline;text-underline-offset:0.18em}
 html[data-a11y-contrast="on"] .gb-footer__links a:not(.gb-btn){text-decoration:underline;text-underline-offset:0.18em}
 html[data-a11y-contrast="on"] :is(.gb-tag,.gb-langswitch,.gb-a11y__btn,.gb-nav__right .gb-btn,.gb-iconbtn--outline){border-color:var(--border-subtle)}
 

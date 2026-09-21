@@ -165,6 +165,13 @@
 /* ---------- layout: página, container e full-bleed ---------- */
 /* .gb-page vai no elemento de rolagem (body/root): reserva a zona do menu lateral */
 html{overflow-x:clip}
+/* Safari mobile ignora overflow:hidden dos blobs decorativos do hero (filter:blur +
+   transform da animação) para fins de largura rolável da página, mesmo com o clip do
+   <html> acima — o vazamento só é contido de fato aplicando overflow-x:clip também no
+   body. Sem isso a navbar e o rail fixos "escorregam" ao arrastar horizontalmente no
+   iOS Safari, porque o layout viewport deles passa a ser medido a partir dessa largura
+   fantasma. Ver .kit-blob em kit.css para a origem do vazamento. */
+body{overflow-x:clip}
 .gb-page{padding-left:var(--rail-reserve);padding-right:var(--rail-reserve);padding-bottom:var(--dock-reserve);box-sizing:border-box}
 /* telas menores: margens laterais mais enxutas */
 @media (max-width:1440px){:root{--rail-offset:8px;--rail-clearance:12px;--page-gutter:clamp(16px,1.6vw,24px) /* @kind spacing */}}
@@ -179,7 +186,7 @@ html{overflow-x:clip}
 .gb-container img,.gb-container svg,.gb-container video,.gb-container canvas{max-width:100%}
 
 /* ---------- top nav ---------- */
-.gb-nav{position:fixed;top:0;left:0;right:0;z-index:90;background:transparent;border-bottom:0;backdrop-filter:none;-webkit-backdrop-filter:none;display:flex;align-items:center;gap:var(--space-4);height:var(--nav-height);padding-left:var(--content-left);padding-right:var(--content-left);background:rgba(245,245,245,0.03);backdrop-filter:blur(3px) saturate(1.1) brightness(1.15);-webkit-backdrop-filter:blur(3px) saturate(1.1) brightness(1.15);border-bottom:1px solid rgba(214,235,253,0.19)}
+.gb-nav{position:fixed;top:0;left:0;right:0;z-index:90;background:transparent;border-bottom:0;backdrop-filter:none;display:flex;align-items:center;gap:var(--space-4);height:var(--nav-height);padding-left:var(--content-left);padding-right:var(--content-left);background:rgba(245,245,245,0.03);backdrop-filter:blur(3px) saturate(1.1) brightness(1.15);border-bottom:1px solid rgba(214,235,253,0.19)}
 /* fixo no hero; recolhe ao rolar para baixo e reaparece ao rolar para cima */
 .gb-nav{transition:transform 520ms var(--ease-out-quart),opacity 380ms var(--ease-standard),background 380ms var(--ease-standard);will-change:transform,opacity}
 .gb-nav--hidden{transform:translateY(-104%);opacity:0;pointer-events:none}
@@ -239,6 +246,9 @@ html{overflow-x:clip}
 .gb-nav__link:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 .gb-nav__link[aria-current="true"]{background:rgba(245,245,245,0.06);border-color:rgba(245,245,245,0.10)}
 .gb-nav__right{flex:none;min-width:0;display:flex;align-items:center;justify-content:flex-end;gap:var(--space-4)}
+/* ícone do CTA primário só aparece no fallback "circular" de telas muito estreitas
+   (ver @media max-width:400px abaixo) — no resto continua só texto, como hoje. */
+.gb-nav__right .gb-btn--primary .gb-btn__icon{display:none}
 @media (max-width:1100px){.gb-nav__brand > span:not(.gb-wm-mask):not(.gb-nav__brand-compact){display:none}.gb-nav__brand--morph > span:not(.gb-wm-mask):not(.gb-nav__brand-compact){display:inline-block}}
 @media (max-width:1024px){.gb-nav{gap:var(--space-3)}.gb-nav__links{display:none}.gb-nav__brand{flex:1 1 auto;min-width:0}.gb-nav__right{min-width:0;flex:none}}
 @media (max-width:520px){.gb-nav__brand{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:0.6875rem}.gb-nav__right .gb-btn--secondary{display:none}.gb-nav__right .gb-btn{padding:0 var(--space-3)}}
@@ -246,7 +256,7 @@ html{overflow-x:clip}
 /* ---------- side rail ---------- */
 /* horizontalmente centrado na calha entre a borda da viewport e o conteúdo:
    left = --content-left / 2, com translateX(-50%) e piso de segurança na borda */
-.gb-rail{position:fixed;left:max(calc(var(--rail-offset) + var(--rail-width) / 2),var(--rail-center));top:50%;transform:translate(-50%,-50%);z-index:80;display:flex;flex-direction:column;gap:var(--space-1);padding:var(--space-2);background:rgba(245,245,245,0.03);border:1px solid rgba(214,235,253,0.19);border-radius:var(--radius-pill);backdrop-filter:blur(3px) saturate(1.1) brightness(1.15);-webkit-backdrop-filter:blur(3px) saturate(1.1) brightness(1.15);box-shadow:none}
+.gb-rail{position:fixed;left:max(calc(var(--rail-offset) + var(--rail-width) / 2),var(--rail-center));top:50%;transform:translate(-50%,-50%);z-index:80;display:flex;flex-direction:column;gap:var(--space-1);padding:var(--space-2);background:rgba(245,245,245,0.03);border:1px solid rgba(214,235,253,0.19);border-radius:var(--radius-pill);backdrop-filter:blur(3px) saturate(1.1) brightness(1.15);box-shadow:none}
 /* <=1024px: o trilho deixa a lateral e vira dock inferior (mesmas funções, sem sobrepor conteúdo) */
 @media (max-width:1024px){
   .gb-rail{flex-direction:row;left:50%;right:auto;top:auto;bottom:max(var(--space-3),env(safe-area-inset-bottom));transform:translateX(-50%);max-width:calc(100vw - 2 * var(--page-gutter));overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
@@ -347,11 +357,11 @@ html{overflow-x:clip}
 .gb-grid-bg{mask-image:radial-gradient(ellipse at center,#000 40%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at center,#000 40%,transparent 70%)}
 
 /* ---------- camada glass compartilhada (mesma receita do CTA do case) ---------- */
-.gb-tooltip__bubble{background:rgba(23,23,23,0.55);border-color:rgba(245,245,245,0.10);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass))}
-.gb-tag{backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
-.gb-avail{backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass))}
+.gb-tooltip__bubble{background:rgba(23,23,23,0.55);border-color:rgba(245,245,245,0.10);backdrop-filter:blur(var(--blur-glass))}
+.gb-tag{backdrop-filter:blur(4px)}
+.gb-avail{backdrop-filter:blur(var(--blur-glass))}
 /* pílula/ícone flutuante sobre imagem — mesma linguagem do overlay de play */
-.gb-glass-round{display:grid;place-items:center;padding:var(--space-3);border-radius:var(--radius-pill);background:rgba(245,245,245,0.10);border:var(--border-width) solid rgba(245,245,245,0.10);color:var(--text-primary);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.gb-glass-round{display:grid;place-items:center;padding:var(--space-3);border-radius:var(--radius-pill);background:rgba(245,245,245,0.10);border:var(--border-width) solid rgba(245,245,245,0.10);color:var(--text-primary);backdrop-filter:blur(10px)}
 
 /* ---------- mesmas animações da referência aplicadas às camadas glass ---------- */
 .gb-tooltip__bubble,.gb-tag,.gb-avail,.gb-glass-round{transition:all var(--dur-base) ease}
@@ -459,6 +469,19 @@ a.gb-circlabel{cursor:pointer}
 /* reserva a largura do texto PT (mais longo) para o CTA não mudar de tamanho ao trocar para EN, o que deslocaria o centro dos links */
 .gb-nav__right .gb-btn--primary{min-width:16ch}
 .gb-nav__right .gb-btn--secondary{min-width:10ch}
+/* ícone do CTA primário só aparece no fallback "circular" de telas muito estreitas
+   (ver @media max-width:400px abaixo) — no resto continua só texto, como hoje. */
+.gb-nav__right .gb-btn--primary .gb-btn__icon{display:none}
+/* <=400px: "Vamos conversar?" + os dois botões circulares (idioma/acessibilidade) não
+   cabem ao lado da marca — o texto do CTA some (permanece lido por leitor de tela) e
+   vira um botão circular só com ícone, do mesmo tamanho dos outros, liberando espaço
+   pra marca não ser espremida a 0px. */
+@media (max-width:400px){
+  .gb-nav__right .gb-btn--primary{min-width:44px;width:44px;height:44px;min-height:44px;padding:0;justify-content:center;border-radius:var(--radius-pill)}
+  .gb-nav__right .gb-btn--primary .gb-btn__label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  .gb-nav__right .gb-btn--primary .gb-btn__icon{display:inline-flex}
+  .gb-nav__right .gb-btn--primary .gb-btn__icon,.gb-nav__right .gb-btn--primary .gb-btn__icon svg{width:16px;height:16px}
+}
 /* CTAs da navbar: mesma pílula de vidro, sem preenchimento */
 .gb-nav__right .gb-btn,.gb-nav__right .gb-btn--primary,.gb-nav__right .gb-btn--secondary{background:transparent;color:var(--text-primary);border:1px solid rgba(214,235,253,0.19)}
 .gb-nav__right .gb-btn:hover,.gb-nav__right .gb-btn--primary:hover,.gb-nav__right .gb-btn--secondary:hover{background:rgba(255,255,255,0.04);color:var(--text-primary);border-color:rgba(214,235,253,0.19);transform:none}
@@ -510,7 +533,7 @@ a.gb-circlabel{cursor:pointer}
 /* ---------- menu de idioma mobile (ícone + dropdown) ---------- */
 .gb-langmenu-wrap{display:inline-flex}
 .gb-langmenu__trigger{border-color:rgba(214,235,253,0.19) !important;color:var(--text-primary)}
-.gb-langmenu{position:fixed;z-index:95;display:flex;flex-direction:column;gap:2px;min-width:200px;padding:var(--space-2);background:var(--surface-2);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-md);backdrop-filter:blur(var(--blur-glass));-webkit-backdrop-filter:blur(var(--blur-glass))}
+.gb-langmenu{position:fixed;z-index:95;display:flex;flex-direction:column;gap:2px;min-width:200px;padding:var(--space-2);background:var(--surface-2);border:1px solid var(--border-subtle);border-radius:var(--radius-md);box-shadow:var(--shadow-md);backdrop-filter:blur(var(--blur-glass))}
 .gb-langmenu__opt{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);width:100%;min-height:var(--touch-min);padding:0 var(--space-3);border:0;border-radius:var(--radius-sm);background:transparent;color:var(--text-secondary);font-family:var(--font-sans);font-size:var(--type-body-sm-size);text-align:left;cursor:pointer;box-sizing:border-box;transition:background var(--dur-fast) var(--ease-standard),color var(--dur-fast) var(--ease-standard)}
 .gb-langmenu__opt:hover{background:var(--surface-hover);color:var(--text-primary)}
 .gb-langmenu__opt:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}

@@ -7,7 +7,7 @@
 
 /* ---------- lightbox: ampliar imagens do case ---------- */
 .kit-case article img{cursor:zoom-in}
-.kit-lightbox{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:32px;background:rgba(0,0,0,0.86);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:kit-lightbox-in 180ms var(--ease-out-quart)}
+.kit-lightbox{position:fixed;inset:0;z-index:300;display:flex;align-items:center;justify-content:center;padding:32px;background:rgba(0,0,0,0.86);backdrop-filter:blur(4px);animation:kit-lightbox-in 180ms var(--ease-out-quart)}
 .kit-lightbox img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;cursor:zoom-out;border-radius:var(--radius-md)}
 .kit-lightbox__close{position:fixed;top:20px;right:20px;width:44px;height:44px;display:grid;place-items:center;border-radius:var(--radius-pill);background:rgba(245,245,245,0.08);border:1px solid rgba(245,245,245,0.14);color:var(--text-primary);cursor:pointer}
 .kit-lightbox__close:hover{background:rgba(245,245,245,0.16)}
@@ -45,8 +45,24 @@
 .kit-chero--nostats .kit-chero__shot{margin-bottom:64px;box-sizing:border-box}
 @media (min-width:1200px){.kit-chero--nostats .kit-chero__shot{padding-left:96px}}
 .kit-chero__shot--second{margin-top:24px}
-/* trade-in: imagem de abertura desce; espaço abaixo reduzido */
-@media (min-width:1025px){.kit-case--trade-in .kit-chero__reveal{padding-top:80px;margin-bottom:-128px;translate:0 56px}}
+/* trade-in: imagem de abertura desce; espaço abaixo reduzido.
+   A imagem (paisagem, 3098x1750) renderiza a só ~720px de altura, contra
+   ~1135px da do app-agi (retrato) — sem compensar isso, .kit-chero__sticky
+   (o título fixo) tem só ~350px de scroll antes de "soltar", contra ~900px
+   no app-agi: a mesma seção parecia travar/soltar de repente em vez de
+   acompanhar o scroll com fluidez. ::after em .kit-chero__stage reserva esse
+   espaço extra para o cálculo do sticky. Precisa ser um spacer à parte (não
+   padding-bottom em .kit-chero__reveal): esse elemento tem z-index:2 e fundo
+   que resolve pra cor sólida da página, então qualquer altura extra nele
+   pinta por cima do que vier depois — já aconteceu (a ficha técnica ficava
+   coberta, embora presente no DOM). O spacer é transparente, então mesmo
+   entrando na mesma área que a ficha (puxada de volta por margin-top
+   negativo, sem alterar a altura do stage) não cobre nada. */
+@media (min-width:1025px){
+  .kit-case--trade-in .kit-chero__reveal{padding-top:80px;margin-bottom:-128px;translate:0 56px}
+  .kit-case--trade-in .kit-chero__stage::after{content:"";display:block;height:420px}
+  .kit-case--trade-in .kit-chero__stage + .kit-container{margin-top:-236px}
+}
 /* app-agi: mesmo offset da abertura */
 @media (min-width:1025px){.kit-case--app-agi .kit-chero__reveal{padding-top:100px;margin-bottom:-128px;translate:0 -80px}.kit-case--app-agi .kit-chero__shot{translate:-16px 0}}
 .kit-chero--nostats .kit-chero__sticky{align-content:center;padding-top:0;padding-bottom:clamp(152px,32svh,352px)}
@@ -638,13 +654,13 @@
 
 /* cards do case: sem o degradê de fade, fundo glass com blur */
 .kit-case .kit-proc::after{display:none}
-.kit-case .kit-proc{background:color-mix(in oklch,var(--bg-section) 72%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border-subtle)}
+.kit-case .kit-proc{background:color-mix(in oklch,var(--bg-section) 72%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-subtle)}
 
 .kit-case .kit-cproc{gap:var(--space-4);row-gap:var(--space-4)}
 
 
 /* bloco de melhorias com o mesmo glass/borda dos cards */
-.kit-case .kit-imp__media{background:color-mix(in oklch,var(--bg-section) 72%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--border-subtle);border-radius:var(--radius-lg)}
+.kit-case .kit-imp__media{background:color-mix(in oklch,var(--bg-section) 72%,transparent);backdrop-filter:blur(14px);border:1px solid var(--border-subtle);border-radius:var(--radius-lg)}
 
 .kit-case .kit-imp__media{position:relative}
 .kit-case .kit-imp__media::before{content:"";position:absolute;top:0;left:50%;right:auto;transform:translateX(-50%) translateY(-50%);width:110px;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(143,143,143,0.67) 50%,transparent 100%);pointer-events:none;z-index:2;transition:width var(--dur-base) var(--ease-out)}

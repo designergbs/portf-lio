@@ -24,7 +24,7 @@ export function Button({
   const content = (
     <>
       {loading ? <span className="gb-btn__spinner" /> : iconPosition === "left" ? glyph : null}
-      <span>{children}</span>
+      <span className="gb-btn__label">{children}</span>
       {!loading && iconPosition === "right" ? glyph : null}
     </>
   );
