@@ -840,7 +840,7 @@ function CaseTradeIn({ onBack, onOpenCase, nextCase, data }) {
     <div className={["kit-case", "kit-case--index", c.slug ? "kit-case--" + c.slug : ""].filter(Boolean).join(" ")}>
       <TopNav
         links={[]}
-        cta={{ label: window.gbT("buttons.resume"), href: "https://drive.google.com/file/d/1IzrBnS0q0bESHPTdb8lNg8nky23XTvE1/view" }}
+        cta={{ label: window.gbT("buttons.resume"), href: "https://drive.google.com/file/d/1KZAIMkrN0fugIKCg0N4O7XuoWm1s1ZDV/view?usp=sharing" }}
         ctaPrimary={{ label: window.gbT("buttons.talk"), href: "#contato-secao", icon: "message-circle" }}
         brand={<React.Fragment><Icon name="arrow-left" /><span className="kit-case-backlabel">{window.gbT("caseCommon.backLabel")}</span></React.Fragment>}
         onBrandClick={(e) => { e.preventDefault(); onBack("cases"); }}

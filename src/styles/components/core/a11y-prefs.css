@@ -64,9 +64,12 @@
 .gb-a11y__reset:hover{background:var(--green-signal-tint);border-color:color-mix(in oklch,var(--green-signal-text) 45%,transparent);color:var(--green-signal-text)}
 .gb-a11y__reset:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 
-/* trava o scroll (e o scrollbar que rouba largura do overlay fixo) enquanto o diálogo mobile está aberto */
-.gb-a11y__scrim{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;background:transparent;pointer-events:none;padding:0}
-.gb-a11y__scrim > *{pointer-events:auto}
+/* trava o scroll (e o scrollbar que rouba largura do overlay fixo) enquanto qualquer
+   painel (idioma ou acessibilidade) está aberto — sem isso, a barra de rolagem que
+   sobra reduz a largura útil da viewport e o painel com right:0 fica com uma margem
+   à direita, além do fundo continuar rolando atrás do modal. */
+body[data-menu-open]{overflow:hidden}
+.gb-a11y__scrim{position:fixed;inset:0;z-index:200;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.6);padding:0}
 .gb-a11y__panel--fixed{position:fixed;top:0;right:auto;left:0;max-height:min(72vh,calc(100vh - var(--nav-height) - 32px))}
 .gb-a11y__panel--modal{position:fixed !important;top:auto !important;left:0 !important;right:0 !important;bottom:0;width:auto !important;max-width:none !important;margin:0;max-height:86vh;border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding-bottom:calc(var(--space-5) + env(safe-area-inset-bottom))}
 
