@@ -91,16 +91,15 @@ export function TopNav({
         host.style.setProperty("--gb-wm-pb", pFade.toFixed(4));
         host.style.setProperty("--gb-wm-q", easeOut(qProg).toFixed(4));
       }
-      const nav = navRef.current;
       const hero = heroSelector ? document.querySelector(heroSelector) : null;
       const menuOpen = document.body.hasAttribute("data-menu-open");
-      const navH = nav ? nav.offsetHeight : 0;
       const delta = y - last;
       if (menuOpen) { setHidden(false); last = y; return; }
       if (hero) {
-        /* fim da hero pela posição real do elemento, descontando a navbar */
-        const heroEnd = hero.getBoundingClientRect().bottom + y - navH;
-        if (y < heroEnd) { setHidden(false); last = y; return; }
+        /* metade da altura real da hero, sem desconto da navbar — 50% é 50% */
+        const heroRect = hero.getBoundingClientRect();
+        const heroMid = heroRect.top + y + heroRect.height / 2;
+        if (y < heroMid) { setHidden(false); last = y; return; }
         if (delta > DIR_TOLERANCE) { setHidden(true); last = y; }
         else if (delta < -DIR_TOLERANCE) { setHidden(false); last = y; }
         return;
