@@ -475,19 +475,19 @@ a.gb-circlabel{cursor:pointer}
 /* reserva a largura do texto PT (mais longo) para o CTA não mudar de tamanho ao trocar para EN, o que deslocaria o centro dos links */
 .gb-nav__right .gb-btn--primary{min-width:16ch}
 .gb-nav__right .gb-btn--secondary{min-width:10ch}
-/* ícone do CTA primário só aparece no fallback "circular" de telas muito estreitas
-   (ver @media max-width:400px abaixo) — no resto continua só texto, como hoje. */
+/* ícone do CTA primário só aparece no fallback "circular" (ver .is-compact abaixo)
+   — no resto continua só texto, como hoje. */
 .gb-nav__right .gb-btn--primary .gb-btn__icon{display:none}
-/* <=400px: "Vamos conversar?" + os dois botões circulares (idioma/acessibilidade) não
-   cabem ao lado da marca — o texto do CTA some (permanece lido por leitor de tela) e
-   vira um botão circular só com ícone, do mesmo tamanho dos outros, liberando espaço
-   pra marca não ser espremida a 0px. */
-@media (max-width:400px){
-  .gb-nav__right .gb-btn--primary{min-width:44px;width:44px;height:44px;min-height:44px;padding:0;justify-content:center;border-radius:var(--radius-pill)}
-  .gb-nav__right .gb-btn--primary .gb-btn__label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-  .gb-nav__right .gb-btn--primary .gb-btn__icon{display:inline-flex}
-  .gb-nav__right .gb-btn--primary .gb-btn__icon,.gb-nav__right .gb-btn--primary .gb-btn__icon svg{width:16px;height:16px}
-}
+/* .is-compact: "Vamos conversar?" + os dois botões circulares (idioma/acessibilidade)
+   não cabem mais ao lado da marca — o texto do CTA some (permanece lido por leitor de
+   tela) e vira um botão circular só com ícone, do mesmo tamanho dos outros, liberando
+   espaço pra marca não ser espremida a 0px. TopNav.jsx mede o espaço real disponível
+   e aplica essa classe (em vez de um breakpoint fixo de viewport, que colapsava cedo
+   demais em páginas com marca mais estreita, como o botão "voltar" dos cases). */
+.gb-nav__right .gb-btn--primary.is-compact{min-width:44px;width:44px;height:44px;min-height:44px;padding:0;justify-content:center;border-radius:var(--radius-pill)}
+.gb-nav__right .gb-btn--primary.is-compact .gb-btn__label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.gb-nav__right .gb-btn--primary.is-compact .gb-btn__icon{display:inline-flex}
+.gb-nav__right .gb-btn--primary.is-compact .gb-btn__icon,.gb-nav__right .gb-btn--primary.is-compact .gb-btn__icon svg{width:16px;height:16px}
 /* CTAs da navbar: mesma pílula de vidro, sem preenchimento */
 .gb-nav__right .gb-btn,.gb-nav__right .gb-btn--primary,.gb-nav__right .gb-btn--secondary{background:transparent;color:var(--text-primary);border:1px solid rgba(214,235,253,0.19)}
 .gb-nav__right .gb-btn:hover,.gb-nav__right .gb-btn--primary:hover,.gb-nav__right .gb-btn--secondary:hover{background:rgba(255,255,255,0.04);color:var(--text-primary);border-color:rgba(214,235,253,0.19);transform:none}
@@ -534,7 +534,9 @@ a.gb-circlabel{cursor:pointer}
 /* ---------- marca compacta da navbar (mobile) ---------- */
 /* "GB" fixo desde o início no mobile — sem a animação de morph por scroll, sem reservar
    a largura do nome inteiro. Só existe dentro de @media(max-width:640px) no TopNav. */
-.gb-nav__brand-compact{display:inline-block;font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif !important;font-weight:800 !important;font-size:1.4em !important;letter-spacing:-0.04em !important;text-transform:uppercase;line-height:1;color:#FFFFFF !important;margin-left:0 !important}
+/* tamanho fixo (não em em) pra não encolher de novo com o font-size:0.6875rem que
+   .gb-nav__brand ganha em telas bem estreitas — só existe nesse modo compacto mobile. */
+.gb-nav__brand-compact{display:inline-block;font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif !important;font-weight:800 !important;font-size:1.375rem !important;letter-spacing:-0.04em !important;text-transform:uppercase;line-height:1;color:#FFFFFF !important;margin-left:0 !important}
 
 /* ---------- menu de idioma mobile (ícone + dropdown) ---------- */
 .gb-langmenu-wrap{display:inline-flex}
@@ -571,7 +573,10 @@ a.gb-circlabel{cursor:pointer}
   .gb-contact p{font-size:14px !important;max-width:100% !important;text-wrap:pretty;margin:-8px 0 0 !important}
   /* nome do footer: marquee horizontal contínuo em vez do nome estático reduzido */
   .gb-footer__name{display:none}
-  .gb-footer__marquee{display:block;width:100%;overflow:hidden}
+  /* line-height:0.95 no item deixa a caixa de linha mais baixa que a extensão real
+     das letras (maiúsculas em display bold) — sem essa folga, overflow:hidden corta
+     o topo do texto. */
+  .gb-footer__marquee{display:block;width:100%;overflow:hidden;padding-top:2vw}
   .gb-footer__marquee-track{display:flex;width:max-content;animation:gb-footer-marquee 16s linear infinite}
   .gb-footer__marquee-item{display:inline-block;flex:none;padding-right:32px;font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;line-height:0.95;font-size:15vw;color:#000000;-webkit-text-fill-color:#000000;-webkit-text-stroke:0.75px var(--gray-5);white-space:nowrap}
 }

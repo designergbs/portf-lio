@@ -270,13 +270,20 @@ html[data-lead-prog-done] .kit-about__metaitem > .gb-label{color:var(--green-dee
 #contato-secao .gb-contact .gb-btn--primary::before{content:"";position:absolute;left:50%;top:50%;width:400px;aspect-ratio:1;transform:translate(-50%,-50%);background:conic-gradient(from 0deg,rgba(10,207,131,0.85) 0%,transparent 50%,transparent 100%);filter:blur(4px);animation:gb-panel-spin 6s linear infinite;z-index:0;pointer-events:none}
 #contato-secao .gb-contact .gb-btn--primary::after{content:"";position:absolute;inset:1px;border-radius:inherit;background:#000;z-index:1;pointer-events:none}
 #contato-secao .gb-contact .gb-btn--primary > span{position:relative;z-index:2}
-#contato-secao .gb-contact .gb-btn--primary:hover,#contato-secao .gb-contact .gb-btn--primary:focus-visible{background:#000;transform:none;color:var(--green-signal-text)}
-#contato-secao .gb-contact .gb-btn--primary:hover::after,#contato-secao .gb-contact .gb-btn--primary:focus-visible::after{background:linear-gradient(0deg,var(--green-signal-tint),var(--green-signal-tint)),#000}
-#contato-secao .gb-contact .gb-btn--primary:hover .gb-btn__icon,#contato-secao .gb-contact .gb-btn--primary:hover .gb-btn__icon svg{color:var(--green-signal-text)}
+#contato-secao .gb-contact .gb-btn--primary:focus-visible{background:#000;transform:none;color:var(--green-signal-text)}
+#contato-secao .gb-contact .gb-btn--primary:focus-visible::after{background:linear-gradient(0deg,var(--green-signal-tint),var(--green-signal-tint)),#000}
 @media (prefers-reduced-motion:reduce){#contato-secao .gb-contact .gb-btn--primary::before{animation:none}}
-#contato-secao .gb-contact .gb-btn--secondary:hover{color:var(--green-signal-text);border-color:color-mix(in oklch,var(--green-signal-text) 45%,transparent);background:var(--green-signal-tint);transform:none}
-#contato-secao .gb-contact .gb-btn--secondary:hover .gb-btn__icon,#contato-secao .gb-contact .gb-btn--secondary:hover .gb-btn__icon svg{color:var(--green-signal-text)}
 #contato-secao .gb-contact .gb-btn--secondary:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+/* :hover só para ponteiro que sustenta hover de verdade — em touch, o toque no botão
+   de copiar (E-mail) deixava o hover "grudado" (verde) até o usuário tocar em outro
+   lugar, mascarando o retorno ao estado default depois do feedback de "Copiado!". */
+@media (hover:hover) and (pointer:fine){
+  #contato-secao .gb-contact .gb-btn--primary:hover{background:#000;transform:none;color:var(--green-signal-text)}
+  #contato-secao .gb-contact .gb-btn--primary:hover::after{background:linear-gradient(0deg,var(--green-signal-tint),var(--green-signal-tint)),#000}
+  #contato-secao .gb-contact .gb-btn--primary:hover .gb-btn__icon,#contato-secao .gb-contact .gb-btn--primary:hover .gb-btn__icon svg{color:var(--green-signal-text)}
+  #contato-secao .gb-contact .gb-btn--secondary:hover{color:var(--green-signal-text);border-color:color-mix(in oklch,var(--green-signal-text) 45%,transparent);background:var(--green-signal-tint);transform:none}
+  #contato-secao .gb-contact .gb-btn--secondary:hover .gb-btn__icon,#contato-secao .gb-contact .gb-btn--secondary:hover .gb-btn__icon svg{color:var(--green-signal-text)}
+}
 @media (max-width:1024px){#contato-secao .kit-container{grid-template-columns:1fr;gap:var(--space-8)}}
 .kit-cases,.kit-process{margin-top:0}
 #cases .kit-caseshead{margin-bottom:var(--space-16)}
@@ -523,7 +530,10 @@ html.gb-intro-rise .gb-intro__stage{opacity:0;transform:translate3d(0,-24px,0);t
 .gb-intro__mono{font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;font-size:44px;line-height:.88;letter-spacing:-.05em;text-transform:uppercase;background:linear-gradient(180deg,#FFFFFF 0%,#FFFFFF 46%,rgba(232,236,240,.9) 62%,rgba(196,202,209,.72) 82%,rgba(160,166,174,.6) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;opacity:0;clip-path:inset(0 0 100% 0);transform:translate3d(0,12px,0) scale(1.04)}
 .gb-intro-layer.is-lit .gb-intro__mono{opacity:1;clip-path:inset(0 0 -12% 0);transform:none;transition:clip-path 760ms cubic-bezier(.22,.61,.36,1),transform 760ms cubic-bezier(.22,.61,.36,1),opacity 480ms var(--ease-standard)}
 .gb-intro__monowrap{--gb-intro-circle:176px;position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:calc(var(--gb-intro-circle) + 16px)}
-.gb-intro__monowrap .gb-intro__mono{position:relative;z-index:3}
+/* "GB" maiúsculo sem descendentes, com line-height apertado (.88): o box de linha
+   fica centralizado pelo flex do wrap, mas a tinta do texto sobra pra cima dele —
+   empurra um pouco pra baixo pra centralizar opticamente dentro do anel/disco. */
+.gb-intro__monowrap .gb-intro__mono{position:relative;z-index:3;margin-top:0.1em}
 /* disco preto sólido atrás do monograma, com traço verde fino; o pulso aparece por trás dele */
 .gb-intro__disc{position:absolute;left:50%;top:50%;z-index:1;width:calc(var(--gb-intro-circle) * .62);aspect-ratio:1;border-radius:50%;background:#000;border:1px solid color-mix(in oklch,var(--green-signal-text) 55%,transparent);pointer-events:none;transform:translate(-50%,-50%);opacity:0;transition:opacity 500ms var(--ease-standard) 200ms}
 .gb-intro-layer.is-lit .gb-intro__disc{opacity:1}

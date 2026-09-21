@@ -7,6 +7,14 @@
    Must be imported before any other legacy module — see src/main.jsx. */
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { createPortal } from "react-dom";
 
+/* react-dom/client só exporta createRoot/hydrateRoot — createPortal vive no pacote
+   "react-dom" principal. Sem isso, window.ReactDOM.createPortal ficava undefined e
+   todo componente que faz `portal ? portal(...) : node` (menu de idioma mobile,
+   painel/modal de acessibilidade, tooltips ⓘ) caía silenciosamente no fallback sem
+   portal — o que quebra qualquer um deles se estiver aninhado num ancestral com
+   backdrop-filter (a navbar), já que isso cria um containing block novo pra
+   position:fixed e o painel passa a se posicionar relativo à navbar, não à viewport. */
 window.React = React;
-window.ReactDOM = ReactDOM;
+window.ReactDOM = { ...ReactDOM, createPortal };

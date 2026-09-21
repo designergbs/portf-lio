@@ -121,6 +121,40 @@ export function TopNav({
   /* navbar oculta não recebe foco de teclado */
   React.useEffect(() => { if (navRef.current) navRef.current.inert = hidden; }, [hidden]);
 
+  /* CTA primário ("Vamos conversar?"): mantém o texto sempre que houver espaço e só
+     vira ícone quando o cluster da direita estiver prestes a encostar na marca — em
+     vez de um breakpoint fixo de viewport, que colapsava cedo demais em páginas com
+     marca mais estreita (ex.: o botão "voltar" dos cases). */
+  const navRightRef = React.useRef(null);
+  const ctaFullWidthRef = React.useRef(null);
+  const [ctaCompact, setCtaCompact] = React.useState(false);
+  React.useLayoutEffect(() => {
+    if (!ctaPrimary) return undefined;
+    const COLLAPSED_W = 44;
+    const SAFE_GAP = 12;
+    const measure = () => {
+      const brandEl = brandRef.current;
+      const clusterEl = navRightRef.current;
+      const btn = clusterEl && clusterEl.querySelector(".gb-btn--primary");
+      if (!brandEl || !clusterEl || !btn) return;
+      setCtaCompact((compact) => {
+        if (!compact && ctaFullWidthRef.current == null) {
+          ctaFullWidthRef.current = btn.getBoundingClientRect().width;
+        }
+        const fullW = ctaFullWidthRef.current;
+        const brandRight = brandEl.getBoundingClientRect().right;
+        const clusterLeft = clusterEl.getBoundingClientRect().left;
+        const slack = clusterLeft - brandRight;
+        if (!compact && slack < SAFE_GAP) return true;
+        if (compact && fullW != null && slack - (fullW - COLLAPSED_W) >= SAFE_GAP) return false;
+        return compact;
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [ctaPrimary, lang]);
+
   const buildBrandContent = (withRefs) => {
     if (!morph) return brand;
     const tail = (s) => s.split("").map((ch, i) => (
@@ -176,10 +210,10 @@ export function TopNav({
           </a>
         ))}
       </div>
-      <div className="gb-nav__right">
+      <div className="gb-nav__right" ref={navRightRef}>
         {showAvailability ? <AvailabilityBadge label={lang === "en" ? "Available" : "Disponível"} /> : null}
         {cta ? <Button variant="secondary" size="sm" href={cta.href} icon={cta.icon} iconPosition="left">{cta.label}</Button> : null}
-        {ctaPrimary ? <Button variant="primary" size="sm" href={ctaPrimary.href} icon={ctaPrimary.icon}>{ctaPrimary.label}</Button> : null}
+        {ctaPrimary ? <Button variant="primary" size="sm" href={ctaPrimary.href} icon={ctaPrimary.icon} className={ctaCompact ? "is-compact" : ""}>{ctaPrimary.label}</Button> : null}
         <LanguageSwitch />
         <AccessibilityPrefs />
       </div>
