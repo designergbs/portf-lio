@@ -47,6 +47,9 @@ const PLAB_CSS = `
 @media (max-width:900px),(max-height:480px){
   .plab-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
 }
+@media (max-width:640px){
+  .plab-grid{gap:24px}
+}
 @media (prefers-reduced-motion:reduce){
   .plab-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
   .plab-card{transition:box-shadow .28s ease,border-color .28s ease}

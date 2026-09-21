@@ -454,6 +454,8 @@ html[data-lead-prog-done] .kit-about__metaitem > .gb-label{color:var(--green-dee
   #cases .kit-caseshead,#experiencia .kit-caseshead{margin-bottom:var(--space-10)}
 }
 @media (max-width:640px){
+  .kit-about__body .kit-lead{text-align:left}
+  .kit-toolsrail{margin-top:8px}
   .kit-about__meta{flex-wrap:wrap;gap:var(--space-5)}
   .kit-about__taggroups{flex-direction:column;gap:var(--space-5)}
   .kit-factrow{flex-direction:column;gap:var(--space-2)}
