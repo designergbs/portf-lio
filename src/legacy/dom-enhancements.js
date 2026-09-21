@@ -1,8 +1,10 @@
 
-/* linha do resumo: mesmo progresso por scroll da timeline de experiência */
+/* linha do resumo: mesmo progresso por scroll da timeline de experiência.
+   Bidirecional: sobe ao rolar pra baixo, desce ao rolar de volta pra cima
+   (sem "trava" no maior ponto já alcançado). */
 (function(){
-  var el=null,raf=0,beam=null,peak=0;
-  function upd(){raf=0;if(!el)return;var r=el.getBoundingClientRect(),span=Math.max(1,el.clientHeight),top=r.top+el.clientTop;var p=(window.innerHeight*0.55-top)/span;p=p<0?0:(p>1?1:p);if(p>peak)peak=p;p=peak;el.style.setProperty("--lead-prog",p.toFixed(4));el.style.setProperty("--lead-px",(p>=0.999?span+40:span*p).toFixed(1)+"px");if(p>=0.999)document.documentElement.setAttribute("data-lead-prog-done","");if(beam){beam.style.transform="none";beam.style.opacity=p<=0?0:(p>=1?0:(p>0.92?(1-p)/0.08:1));}}
+  var el=null,raf=0,beam=null;
+  function upd(){raf=0;if(!el)return;var r=el.getBoundingClientRect(),span=Math.max(1,el.clientHeight),top=r.top+el.clientTop;var p=(window.innerHeight*0.55-top)/span;p=p<0?0:(p>1?1:p);el.style.setProperty("--lead-prog",p.toFixed(4));el.style.setProperty("--lead-px",(p>=0.999?span+40:span*p).toFixed(1)+"px");if(p>=0.999){document.documentElement.setAttribute("data-lead-prog-done","");}else{document.documentElement.removeAttribute("data-lead-prog-done");}if(beam){beam.style.transform="none";beam.style.opacity=p<=0?0:(p>=1?0:(p>0.92?(1-p)/0.08:1));}}
   function tick(){if(!raf)raf=requestAnimationFrame(upd);}
   var bound=false;
   function attach(){var found=document.querySelector(".kit-about__body .kit-lead-group")||document.querySelector(".kit-lead-group");if(found!==el){el=found;beam=null;}    if(!el)return;
@@ -30,7 +32,7 @@ setInterval(boot2,400);boot2();})();
 
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var raf = 0, tl = null, fill = null, beam = null, rail = null, nodes = [], firstC = 0, lastC = 0, tlH = 0, prev = -1, peak = 0;
+  var raf = 0, tl = null, fill = null, beam = null, rail = null, nodes = [], firstC = 0, lastC = 0, tlH = 0, prev = -1;
   function build(el, listenersBound){
     tl = el;
     rail = document.createElement('span');
@@ -103,9 +105,7 @@ setInterval(boot2,400);boot2();})();
     var line = window.scrollY + window.innerHeight * 0.55;
     var p = (line - (top + firstC)) / Math.max(1, tlH - firstC);
     p = p < 0 ? 0 : (p > 1 ? 1 : p);
-    // Só avança: ao subir o scroll, mantém o maior preenchimento já alcançado.
-    if(p > peak) peak = p;
-    p = peak;
+    // Bidirecional: acompanha a posição real do scroll nos dois sentidos.
     if(Math.abs(p - prev) < 0.001) return;
     prev = p;
     write(p);
