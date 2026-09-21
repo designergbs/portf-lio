@@ -96,10 +96,10 @@ export function TopNav({
       const delta = y - last;
       if (menuOpen) { setHidden(false); last = y; return; }
       if (hero) {
-        /* metade da altura real da hero, sem desconto da navbar — 50% é 50% */
+        /* 40% da altura real da hero, sem desconto da navbar */
         const heroRect = hero.getBoundingClientRect();
-        const heroMid = heroRect.top + y + heroRect.height / 2;
-        if (y < heroMid) { setHidden(false); last = y; return; }
+        const heroThreshold = heroRect.top + y + heroRect.height * 0.4;
+        if (y < heroThreshold) { setHidden(false); last = y; return; }
         if (delta > DIR_TOLERANCE) { setHidden(true); last = y; }
         else if (delta < -DIR_TOLERANCE) { setHidden(false); last = y; }
         return;
