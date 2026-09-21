@@ -39,12 +39,37 @@ const PROCESS_STEPS_EN = [
   { title: "Implementation and optimization", icon: "line-chart", body: "I work in partnership with development, detailing behaviors and components. I follow implementation to ensure consistency in the experience. After launch, I analyze data and feedback to guide continuous improvements." }
 ];
 
-const [{ data: bootstrapPt, error: errorPt }, { data: bootstrapEn, error: errorEn }] = await Promise.all([
-  supabase.rpc("get_home_bootstrap", { p_locale: "PT" }),
-  supabase.rpc("get_home_bootstrap", { p_locale: "EN" }),
-]);
-if (errorPt) console.error("[data] get_home_bootstrap(PT) falhou:", errorPt);
-if (errorEn) console.error("[data] get_home_bootstrap(EN) falhou:", errorEn);
+/* Nunca deixa uma rejeição (rede fora do ar, CORS, etc.) propagar: isso pararia a
+   avaliação de main.jsx antes do React montar, travando a página na intro. */
+let bootstrapPt = null, bootstrapEn = null;
+try {
+  const [{ data: dataPt, error: errorPt }, { data: dataEn, error: errorEn }] = await Promise.all([
+    supabase.rpc("get_home_bootstrap", { p_locale: "PT" }),
+    supabase.rpc("get_home_bootstrap", { p_locale: "EN" }),
+  ]);
+  bootstrapPt = dataPt;
+  bootstrapEn = dataEn;
+  if (errorPt) console.error("[data] get_home_bootstrap(PT) falhou:", errorPt);
+  if (errorEn) console.error("[data] get_home_bootstrap(EN) falhou:", errorEn);
+} catch (err) {
+  console.error("[data] get_home_bootstrap rejeitou:", err);
+}
+
+/* about vem de uma única linha (about_info) — sem ela (bootstrap falhou), os
+   componentes que fazem .map() em facts/specialties/segments quebrariam com
+   "Cannot read properties of undefined". Preenche os arrays esperados. */
+function shapeAbout(a) {
+  a = a || {};
+  return {
+    summary: a.summary || "",
+    portraitUrl: a.portraitUrl || null,
+    specialties: a.specialties || [],
+    segments: a.segments || [],
+    tenure: a.tenure || null,
+    location: a.location || null,
+    facts: a.facts || [],
+  };
+}
 
 function shape(b, processSteps) {
   b = b || {};
@@ -52,7 +77,7 @@ function shape(b, processSteps) {
     brand: b.brand || "Guilherme Bernardo",
     nav: b.nav || [],
     rail: b.rail || [],
-    about: b.about || {},
+    about: shapeAbout(b.about),
     experience: b.experience || [],
     cases: b.cases || [],
     skillsRowOne: SKILLS_ROW_ONE,

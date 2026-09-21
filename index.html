@@ -10,5 +10,22 @@
   <body class="gb-page">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      /* Última rede de segurança: se o bundle React falhar ao montar por qualquer
+         motivo (ex.: erro de módulo antes da renderização), a intro ainda se
+         encerra sozinha (ver intro.js) e deixaria a página em preto sem isso.
+         Roda fora do módulo do app de propósito, então não é afetado por um erro
+         de import lá dentro. */
+      window.setTimeout(function () {
+        var root = document.getElementById("root");
+        if (root && root.childElementCount === 0) {
+          root.innerHTML =
+            '<div style="min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;text-align:center;font-family:system-ui,sans-serif;color:#f4f3ec;background:#000">' +
+            '<p style="margin:0;font-size:15px;opacity:0.8">Não foi possível carregar a página.</p>' +
+            '<button onclick="location.reload()" style="padding:10px 20px;border-radius:999px;border:1px solid rgba(245,245,245,0.3);background:transparent;color:inherit;font:inherit;cursor:pointer">Tentar novamente</button>' +
+            "</div>";
+        }
+      }, 8000);
+    </script>
   </body>
 </html>

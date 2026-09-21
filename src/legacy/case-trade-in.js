@@ -11,12 +11,19 @@ import { adaptCaseStudy } from "../lib/caseAdapter.js";
 
 const FALLBACK = { slug: "trade-in", title: "", lead: "", ficha: [], sections: [] };
 
-const [{ data: caseDataPt, error: errorPt }, { data: caseDataEn, error: errorEn }] = await Promise.all([
-  supabase.rpc("get_case_study", { p_slug: "trade-in", p_locale: "PT" }),
-  supabase.rpc("get_case_study", { p_slug: "trade-in", p_locale: "EN" }),
-]);
-if (errorPt) console.error("[case-trade-in] get_case_study(PT) falhou:", errorPt);
-if (errorEn) console.error("[case-trade-in] get_case_study(EN) falhou:", errorEn);
+let caseDataPt = null, caseDataEn = null;
+try {
+  const [{ data: dataPt, error: errorPt }, { data: dataEn, error: errorEn }] = await Promise.all([
+    supabase.rpc("get_case_study", { p_slug: "trade-in", p_locale: "PT" }),
+    supabase.rpc("get_case_study", { p_slug: "trade-in", p_locale: "EN" }),
+  ]);
+  caseDataPt = dataPt;
+  caseDataEn = dataEn;
+  if (errorPt) console.error("[case-trade-in] get_case_study(PT) falhou:", errorPt);
+  if (errorEn) console.error("[case-trade-in] get_case_study(EN) falhou:", errorEn);
+} catch (err) {
+  console.error("[case-trade-in] get_case_study rejeitou:", err);
+}
 
 const adaptedPt = adaptCaseStudy(caseDataPt) || FALLBACK;
 const adaptedEn = adaptCaseStudy(caseDataEn) || adaptedPt;
