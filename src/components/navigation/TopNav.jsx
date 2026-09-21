@@ -135,7 +135,7 @@ export function TopNav({
   React.useLayoutEffect(() => {
     if (!ctaPrimary) return undefined;
     const COLLAPSED_W = 44;
-    const SAFE_GAP = 12;
+    const SAFE_GAP = 16;
     const measure = () => {
       const brandEl = brandRef.current;
       const clusterEl = navRightRef.current;
@@ -144,7 +144,19 @@ export function TopNav({
       setCtaCompact((compact) => {
         if (!compact) ctaFullWidthRef.current = btn.getBoundingClientRect().width;
         const fullW = ctaFullWidthRef.current;
-        const brandRight = brandEl.getBoundingClientRect().right;
+        /* .gb-nav__brand é flex:1 1 auto (estica pra preencher o espaço disponível) —
+           sua própria getBoundingClientRect().right é a borda do container esticado,
+           não onde o texto/monograma realmente termina (e scrollWidth não ajuda aqui:
+           só excede clientWidth quando o conteúdo transborda uma caixa encolhida, não
+           quando a caixa é esticada além do conteúdo, que é exatamente o caso). Os
+           filhos, porém, se posicionam pelo próprio tamanho dentro do flex esticado
+           (justify-content padrão os empacota à esquerda) — medir o filho mais à
+           direita dá a borda visual verdadeira. */
+        let brandRight = brandEl.getBoundingClientRect().left;
+        for (const child of brandEl.children) {
+          const r = child.getBoundingClientRect();
+          if (r.right > brandRight) brandRight = r.right;
+        }
         const clusterLeft = clusterEl.getBoundingClientRect().left;
         const slack = clusterLeft - brandRight;
         if (!compact && slack < SAFE_GAP) return true;
@@ -152,17 +164,22 @@ export function TopNav({
         return compact;
       });
     };
+    /* rAF duplo: dá tempo do layout assentar de verdade (fonte/atributo já aplicados)
+       antes de medir — uma passagem só às vezes lê a caixa a meio caminho da mudança. */
+    const settle = () => window.requestAnimationFrame(() => window.requestAnimationFrame(measure));
     measure();
-    const raf = () => window.requestAnimationFrame(measure);
-    window.addEventListener("resize", raf);
+    settle();
+    window.addEventListener("resize", settle);
+    window.addEventListener("gb:a11y-change", settle);
     let ro = null;
     if (typeof ResizeObserver !== "undefined") {
-      ro = new ResizeObserver(raf);
+      ro = new ResizeObserver(settle);
       if (brandRef.current) ro.observe(brandRef.current);
       if (navRightRef.current) ro.observe(navRightRef.current);
     }
     return () => {
-      window.removeEventListener("resize", raf);
+      window.removeEventListener("resize", settle);
+      window.removeEventListener("gb:a11y-change", settle);
       if (ro) ro.disconnect();
     };
   }, [ctaPrimary, lang]);

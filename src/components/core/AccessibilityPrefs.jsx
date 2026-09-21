@@ -55,6 +55,11 @@ function applyDoc() {
   r.setAttribute("data-a11y-motion", effMotion());
   r.setAttribute("data-a11y-contrast", prefs.contrast ? "on" : "off");
   r.setAttribute("data-a11y-reading", prefs.reading ? "on" : "off");
+  /* aviso explícito pra quem precisa remedir layout quando o tamanho do texto muda
+     (ex.: TopNav recalculando se o CTA "Vamos conversar?" ainda cabe ao lado da marca) —
+     mudar data-a11y-text não redimensiona a viewport, então um listener de "resize"
+     sozinho não pega essa mudança. */
+  if (typeof window !== "undefined") window.dispatchEvent(new CustomEvent("gb:a11y-change"));
 }
 
 function notifyMotion() {
