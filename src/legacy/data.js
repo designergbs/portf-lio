@@ -59,7 +59,11 @@ function shape(b, processSteps) {
     skillsRowTwo: SKILLS_ROW_TWO,
     process: processSteps,
     tools: b.tools || [],
-    contact: { links: (b.contact && b.contact.links) || [] },
+    contact: { links: ((b.contact && b.contact.links) || []).map((l) => (
+      typeof l.href === "string" && l.href.startsWith("mailto:")
+        ? { label: l.label, icon: l.icon, copy: l.href.slice("mailto:".length).split("?")[0] }
+        : l
+    )) },
   };
 }
 

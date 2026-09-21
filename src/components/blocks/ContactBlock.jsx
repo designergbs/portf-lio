@@ -49,7 +49,17 @@ export function ContactBlock({
           <div className="gb-contact__links" style={{ display: "flex", gap: "var(--space-5)", flexWrap: "wrap", justifyContent: "center", marginTop: "var(--space-10)" }}>
             {links.map((l) => (
               l.copy ? (
-                <Button key={l.label} variant="secondary" icon={l.icon || "copy"} iconPosition="left" onClick={() => copy(l.copy, l.label)} aria-live="polite">{copied === l.label ? copiedLabel : l.label}</Button>
+                <Button
+                  key={l.label}
+                  variant="secondary"
+                  icon={copied === l.label ? "check" : (l.icon || "copy")}
+                  iconPosition="left"
+                  onClick={() => copy(l.copy, l.label)}
+                  aria-live="polite"
+                  className={copied === l.label ? "is-copied" : ""}
+                >
+                  {copied === l.label ? copiedLabel : l.label}
+                </Button>
               ) : (
                 <Button key={l.label + l.href} variant="secondary" href={l.href} icon={l.icon || "arrow-up-right"} iconPosition="left">{l.label}</Button>
               )

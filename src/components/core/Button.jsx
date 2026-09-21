@@ -29,8 +29,16 @@ export function Button({
     </>
   );
   if (href && !disabled) {
+    const external = /^https?:\/\//i.test(href);
     return (
-      <a href={href} className={cls} onClick={onClick} {...rest}>
+      <a
+        href={href}
+        className={cls}
+        onClick={onClick}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noreferrer noopener" : undefined}
+        {...rest}
+      >
         {content}
       </a>
     );

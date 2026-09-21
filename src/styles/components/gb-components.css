@@ -32,6 +32,8 @@
 .gb-btn--ghost:hover{background:var(--surface-1);color:var(--text-primary)}
 .gb-btn--ghost:active{background:var(--surface-2)}
 .gb-btn[aria-disabled="true"],.gb-btn:disabled{opacity:0.38;cursor:not-allowed;transform:none;pointer-events:none}
+.gb-btn.is-copied,.gb-btn.is-copied:hover{color:var(--green-signal-text)}
+.gb-btn.is-copied .gb-btn__icon,.gb-btn.is-copied .gb-btn__icon svg{color:var(--green-signal-text)}
 .gb-btn__spinner{width:14px;height:14px;border-radius:var(--radius-pill);border:1.5px solid currentColor;border-top-color:transparent;animation:gb-spin 700ms linear infinite}
 @keyframes gb-spin{to{transform:rotate(360deg)}}
 .gb-btn__icon{display:inline-flex;width:16px;height:16px}
@@ -347,6 +349,10 @@ body{overflow-x:clip}
 .gb-totop:hover svg{color:var(--green-signal)}
 .gb-totop:focus-visible{outline:2px solid var(--text-primary);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.gb-totop,.gb-totop__label,.gb-totop > span{transition:none}}
+/* <=1024px: o gb-rail vira dock inferior (ver ---------- side rail ----------); sobe o botão pra não sobrepor */
+@media (max-width:1024px){
+  .gb-totop{bottom:calc(max(var(--space-3),env(safe-area-inset-bottom)) + 60px + var(--space-3))}
+}
 
 /* ---------- floating card hover ---------- */
 .gb-tool,.gb-contact{transition:transform .5s cubic-bezier(0.25,0.46,0.45,0.94),border-color var(--dur-base) ease,box-shadow var(--dur-base) ease;will-change:transform}

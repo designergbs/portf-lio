@@ -25,8 +25,17 @@ export function IconButton({
     .join(" ");
   const inner = <Icon name={icon} size={size === "sm" ? 14 : 16} />;
   if (href && !disabled) {
+    const external = /^https?:\/\//i.test(href);
     return (
-      <a href={href} className={cls} aria-label={label} onClick={onClick} {...rest}>
+      <a
+        href={href}
+        className={cls}
+        aria-label={label}
+        onClick={onClick}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noreferrer noopener" : undefined}
+        {...rest}
+      >
         {inner}
       </a>
     );

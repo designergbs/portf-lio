@@ -64,7 +64,7 @@
   .kit-case--trade-in .kit-chero__stage + .kit-container{margin-top:-236px}
 }
 /* app-agi: mesmo offset da abertura */
-@media (min-width:1025px){.kit-case--app-agi .kit-chero__reveal{padding-top:100px;margin-bottom:-128px;translate:0 -80px}.kit-case--app-agi .kit-chero__shot{translate:-16px 0}}
+@media (min-width:1025px){.kit-case--app-agi .kit-chero__reveal{padding-top:100px;margin-bottom:-128px;translate:0 -80px}.kit-case--app-agi .kit-chero__shot{translate:40px 0}}
 .kit-chero--nostats .kit-chero__sticky{align-content:center;padding-top:0;padding-bottom:clamp(152px,32svh,352px)}
 /* a dobra sobe conforme a altura disponível: telas baixas não cobrem os big numbers */
 @media (min-height:760px){.kit-chero__reveal{margin-top:-24svh}}
@@ -310,6 +310,17 @@
   .kit-cfig--narrow{max-width:340px}
 }
 @media (max-width:640px){
+  /* trade-in: marcador de seção segue o mesmo estilo mono/verde do agibank em mobile */
+  .kit-case--trade-in .kit-csec__kicker{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.14em;font-weight:var(--fw-regular);color:oklch(from var(--green-signal) 0.62 c h)}
+  .kit-case--trade-in .kit-csec__kicker::before{content:none}
+  .kit-case--trade-in .kit-csec__grid:has(.kit-csec__kicker){row-gap:8px}
+  .kit-case--app-agi .kit-csec{padding-block:24px}
+  .kit-case--app-agi .kit-cbody > .gb-reveal:has(.kit-cbody__subwrap,.kit-cbody__sub){margin-top:16px}
+  /* marcador "CONTEXTO" acima de "Minha atuação", mesmo estilo mono/verde do restante */
+  #papel-agi .kit-csec__rail{display:flex}
+  #papel-agi .kit-csec__grid{row-gap:8px}
+  #papel-agi .kit-csec__kicker{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.14em;font-weight:var(--fw-regular);color:oklch(from var(--green-signal) 0.62 c h)}
+  #papel-agi .kit-csec__kicker::before{content:none}
   .kit-cficha{grid-template-columns:1fr}
   .kit-cficha__item{padding-right:0}
   .kit-cficha__item + .kit-cficha__item{padding-left:0;border-left:0;border-top:1px solid var(--border-subtle);margin-top:var(--space-5);padding-top:var(--space-5)}
@@ -331,6 +342,7 @@
 
 /* feixe de luz — divider animado no topo e base da seção Impacto */
 .kit-csec--highlight{position:relative;overflow:hidden;padding-block:clamp(44px,4.8vw,72px)}
+#impacto .kit-csec__kicker{display:none}
 .kit-csec--highlight .kit-csec__rail{position:static}
 .kit-csec--highlight::before,.kit-csec--highlight::after{content:"";position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,rgba(214,235,253,.14) 22%,rgba(214,235,253,.14) 78%,transparent 100%);pointer-events:none}
 .kit-csec--highlight::before{top:0}

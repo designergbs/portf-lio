@@ -71,7 +71,17 @@ export function SiteFooter({
             <div className="gb-footer__links" data-reveal-card>
               {links.map((l) => (
                 l.copy ? (
-                  <Button key={l.label} variant="secondary" icon={l.icon || "copy"} iconPosition="left" onClick={() => copy(l.copy, l.label)} aria-live="polite">{copied === l.label ? copiedLabel : l.label}</Button>
+                  <Button
+                    key={l.label}
+                    variant="secondary"
+                    icon={copied === l.label ? "check" : (l.icon || "copy")}
+                    iconPosition="left"
+                    onClick={() => copy(l.copy, l.label)}
+                    aria-live="polite"
+                    className={copied === l.label ? "is-copied" : ""}
+                  >
+                    {copied === l.label ? copiedLabel : l.label}
+                  </Button>
                 ) : (
                   <Button key={l.label + l.href} variant="secondary" href={l.href} icon={l.icon || "arrow-up-right"} iconPosition="left">{l.label}</Button>
                 )
