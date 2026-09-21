@@ -17,15 +17,39 @@ export function SiteFooter({
   const noteParts = String(finalNote).split(" • ");
   const copiedLabel = lang === "en" ? "Copied!" : "Copiado!";
   const nameRef = React.useRef(null);
+  /* depois que "GUILHERME BERNARDO" termina de revelar (palavra a palavra), passa a
+     rolar horizontalmente em loop — mesmo comportamento que já existia só no mobile,
+     agora também no desktop. O atraso cobre a transição de 900ms + o maior
+     transitionDelay entre as palavras (120ms por índice), com uma folga. */
+  const [marqueeOn, setMarqueeOn] = React.useState(false);
   React.useEffect(() => {
     const el = nameRef.current;
-    if (!el || !("IntersectionObserver" in window)) return;
+    if (!el || !("IntersectionObserver" in window)) { setMarqueeOn(true); return undefined; }
+    /* o rodapé fica bem na borda do fim da página — com o rootMargin negativo aqui
+       embaixo, isIntersecting oscila (sub-pixel/layout jitter de outros elementos)
+       mesmo parado, sem novo scroll. Por isso essa transição é só de ida: uma vez que
+       o timer completa uma janela contínua de "dentro da viewport", liga o marquee e
+       nunca desliga de novo (o pedido é "depois de aparecer, deixa rolando" — não um
+       alternador que volta ao nome estático a cada oscilação). */
+    let timer = 0;
+    let latched = false;
     const io = new IntersectionObserver(
-      (entries) => { entries.forEach((e) => { el.classList.toggle("is-in", e.isIntersecting); }); },
+      (entries) => {
+        entries.forEach((e) => {
+          el.classList.toggle("is-in", e.isIntersecting || latched);
+          if (latched) return;
+          if (e.isIntersecting) {
+            if (!timer) timer = window.setTimeout(() => { latched = true; setMarqueeOn(true); io.disconnect(); }, 1100);
+          } else {
+            window.clearTimeout(timer);
+            timer = 0;
+          }
+        });
+      },
       { threshold: 0, rootMargin: "0px 0px -10% 0px" }
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => { io.disconnect(); window.clearTimeout(timer); };
   }, []);
   const [copied, setCopied] = React.useState(null);
   const copy = (text, label) => {
@@ -49,7 +73,7 @@ export function SiteFooter({
   };
   const words = typeof brand === "string" ? brand.trim().split(/\s+/) : [brand];
   return (
-    <footer className={["gb-footer", className].filter(Boolean).join(" ")} style={{ position: "relative", overflow: "hidden" }}>
+    <footer className={["gb-footer", marqueeOn ? "gb-footer--marquee" : "", className].filter(Boolean).join(" ")} style={{ position: "relative", overflow: "hidden" }}>
       <p className="gb-footer__name" ref={nameRef} aria-label={brand}>
         {words.map((w, i) => (
           <span className="gb-footer__name-mask" key={w + i}>

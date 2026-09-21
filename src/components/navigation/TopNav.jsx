@@ -120,6 +120,14 @@ export function TopNav({
   /* navbar oculta não recebe foco de teclado */
   React.useEffect(() => { if (navRef.current) navRef.current.inert = hidden; }, [hidden]);
 
+  /* esconde a navbar ao tocar/clicar no parágrafo da hero (desktop e mobile — "click"
+     cobre os dois, já que touch dispara click também) */
+  React.useEffect(() => {
+    const onNavHide = () => setHidden(true);
+    window.addEventListener("gb:nav-hide", onNavHide);
+    return () => window.removeEventListener("gb:nav-hide", onNavHide);
+  }, []);
+
   /* CTA primário ("Vamos conversar?"): mantém o texto sempre que houver espaço e só
      vira ícone quando o cluster da direita estiver prestes a encostar na marca — em
      vez de um breakpoint fixo de viewport, que colapsava cedo demais em páginas com

@@ -508,6 +508,15 @@ a.gb-circlabel{cursor:pointer}
 .has-reveal-js [data-reveal-group].is-visible [data-reveal-card]:nth-child(3){transition-delay:120ms}
 .has-reveal-js [data-reveal-card].reveal-done{will-change:auto}
 @media (max-width:1024px){.has-reveal-js [data-reveal-card]{transform:translate3d(0,4rem,0)}}
+/* nome do footer: depois de revelar (SiteFooter.jsx troca pra .gb-footer--marquee),
+   passa a rolar horizontalmente em loop — igual ao que já existia só no mobile, agora
+   também no desktop. line-height:0.95 no item deixa a caixa de linha mais baixa que a
+   extensão real das letras (maiúsculas em display bold) — sem essa folga, overflow:hidden
+   corta o topo do texto. */
+.gb-footer--marquee .gb-footer__name{display:none}
+.gb-footer--marquee .gb-footer__marquee{display:block;width:100%;overflow:hidden;padding-top:2vw}
+.gb-footer__marquee-track{display:flex;width:max-content;animation:gb-footer-marquee 16s linear infinite}
+.gb-footer__marquee-item{display:inline-block;flex:none;padding-right:32px;font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;line-height:0.95;font-size:clamp(1.4rem,calc(var(--page-avail) * 0.068),9rem);color:#000000;-webkit-text-fill-color:#000000;-webkit-text-stroke:0.75px var(--gray-5);white-space:nowrap}
 @media (max-width:640px){
   .has-reveal-js [data-reveal-card]{transform:translate3d(0,2.5rem,0)}
   .has-reveal-js [data-reveal-group].is-visible [data-reveal-card]:nth-child(2){transition-delay:40ms}
@@ -571,14 +580,9 @@ a.gb-circlabel{cursor:pointer}
   /* card de contato: padding e parágrafo compactos no mobile */
   .gb-contact{padding:16px !important;gap:16px !important}
   .gb-contact p{font-size:14px !important;max-width:100% !important;text-wrap:pretty;margin:-8px 0 0 !important}
-  /* nome do footer: marquee horizontal contínuo em vez do nome estático reduzido */
-  .gb-footer__name{display:none}
-  /* line-height:0.95 no item deixa a caixa de linha mais baixa que a extensão real
-     das letras (maiúsculas em display bold) — sem essa folga, overflow:hidden corta
-     o topo do texto. */
-  .gb-footer__marquee{display:block;width:100%;overflow:hidden;padding-top:2vw}
-  .gb-footer__marquee-track{display:flex;width:max-content;animation:gb-footer-marquee 16s linear infinite}
-  .gb-footer__marquee-item{display:inline-block;flex:none;padding-right:32px;font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;line-height:0.95;font-size:15vw;color:#000000;-webkit-text-fill-color:#000000;-webkit-text-stroke:0.75px var(--gray-5);white-space:nowrap}
+  /* nome do rodapé em telas estreitas rola numa escala própria (vw), maior que a
+     fórmula do estado revelado — sobrepõe a regra base abaixo só nesse recorte */
+  .gb-footer__marquee-item{font-size:15vw}
 }
 @keyframes gb-footer-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (max-width:640px) and (prefers-reduced-motion:reduce){.gb-footer__marquee-track{animation:none}}
+@media (prefers-reduced-motion:reduce){.gb-footer__marquee-track{animation:none}}

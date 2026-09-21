@@ -49,7 +49,7 @@ const UX_PARTS = ["U", "X", "/", "U", "I"];
 
 /* Revelação progressiva: camada de reserva invisível segura o espaço; a camada animada
    recebe os caracteres. O texto completo fica sempre disponível para leitores de tela. */
-function TextReveal({ lines, className = "", onDone, start = true }) {
+function TextReveal({ lines, className = "", onDone, start = true, onClick }) {
   const full = lines.join(" ");
   const glyphs = React.useMemo(() => lines.map((l) => Array.from(l)), [lines]);
   const total = glyphs.reduce((n, l) => n + l.length, 0);
@@ -95,7 +95,7 @@ function TextReveal({ lines, className = "", onDone, start = true }) {
   React.useEffect(() => { if (onDone && shown >= total) { onDone(); doneOnceRef.current = true; } }, [shown, total, onDone]);
   let left = shown;
   return (
-    <p className={["kit-reveal", className].filter(Boolean).join(" ")} ref={ref}>
+    <p className={["kit-reveal", className].filter(Boolean).join(" ")} ref={ref} onClick={onClick}>
       <span className="kit-reveal__hold" aria-hidden="true">{lines.map((l, i) => (
         <React.Fragment key={i}>{i ? <br /> : null}{l}</React.Fragment>
       ))}</span>
@@ -164,7 +164,13 @@ function Hero() {
               <span className="kit-hero__line" aria-hidden="true"><span className="kit-hero__word">{chars("Product", 0, typed)}{typed < 7 ? <i className="kit-reveal__caret kit-h1caret" /> : null}</span></span>
               <span className="kit-hero__line" aria-hidden="true"><em className={["kit-hero__dim", "kit-hero__ux", uxLoop ? "" : (h1Done ? "is-hold" : "is-wait")].filter(Boolean).join(" ")}>{uxChars}</em><span className="kit-hero__gap" aria-hidden="true"> </span><span className="kit-hero__word">{chars("Designer", 7, typed)}{typed >= 7 && typed < H1_TOTAL ? <i className="kit-reveal__caret kit-h1caret" /> : null}</span></span>
             </h1>
-            <TextReveal className="kit-hero__prop kit-enter kit-enter--4" lines={window.gbT("hero.propLines")} onDone={onPropDone} start={propStart} />
+            <TextReveal
+              className="kit-hero__prop kit-enter kit-enter--4"
+              lines={window.gbT("hero.propLines")}
+              onDone={onPropDone}
+              start={propStart}
+              onClick={() => window.dispatchEvent(new CustomEvent("gb:nav-hide"))}
+            />
             <div className="kit-hero__ctas" style={{ clipPath: propDone ? "inset(0 0% 0 0)" : "inset(0 100% 0 0)", opacity: propDone ? 1 : 0, transition: "clip-path 900ms cubic-bezier(.22,.61,.36,1), opacity 420ms ease", pointerEvents: propDone ? "auto" : "none" }}>
               <Button variant="secondary" size="lg" href="#cases" icon="eye">{window.gbT("buttons.viewProjects")}</Button>
             </div>
