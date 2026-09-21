@@ -124,7 +124,12 @@ export function TopNav({
   /* CTA primário ("Vamos conversar?"): mantém o texto sempre que houver espaço e só
      vira ícone quando o cluster da direita estiver prestes a encostar na marca — em
      vez de um breakpoint fixo de viewport, que colapsava cedo demais em páginas com
-     marca mais estreita (ex.: o botão "voltar" dos cases). */
+     marca mais estreita (ex.: o botão "voltar" dos cases). Usa ResizeObserver (não só
+     "resize" da window) porque o tamanho de fonte das preferências de acessibilidade
+     (data-a11y-text, ver a11y-prefs.css) muda o layout sem redimensionar a viewport —
+     um listener de "resize" sozinho não pegaria isso. Por isso também remedimos a
+     largura "cheia" do botão a cada passagem não-compacta, em vez de cachear uma vez
+     só: com o texto maior, essa largura cresce e o valor antigo ficaria errado. */
   const navRightRef = React.useRef(null);
   const ctaFullWidthRef = React.useRef(null);
   const [ctaCompact, setCtaCompact] = React.useState(false);
@@ -138,9 +143,7 @@ export function TopNav({
       const btn = clusterEl && clusterEl.querySelector(".gb-btn--primary");
       if (!brandEl || !clusterEl || !btn) return;
       setCtaCompact((compact) => {
-        if (!compact && ctaFullWidthRef.current == null) {
-          ctaFullWidthRef.current = btn.getBoundingClientRect().width;
-        }
+        if (!compact) ctaFullWidthRef.current = btn.getBoundingClientRect().width;
         const fullW = ctaFullWidthRef.current;
         const brandRight = brandEl.getBoundingClientRect().right;
         const clusterLeft = clusterEl.getBoundingClientRect().left;
@@ -151,8 +154,18 @@ export function TopNav({
       });
     };
     measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    const raf = () => window.requestAnimationFrame(measure);
+    window.addEventListener("resize", raf);
+    let ro = null;
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(raf);
+      if (brandRef.current) ro.observe(brandRef.current);
+      if (navRightRef.current) ro.observe(navRightRef.current);
+    }
+    return () => {
+      window.removeEventListener("resize", raf);
+      if (ro) ro.disconnect();
+    };
   }, [ctaPrimary, lang]);
 
   const buildBrandContent = (withRefs) => {
