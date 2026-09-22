@@ -86,52 +86,65 @@ function ScrollCharReveal({ text, className = "", stickyTailChars = 0, stickyHea
   );
 }
 
+/* Retrato "Sobre": varredura foto natural -> versão com halo verde, vinculada ao
+   scroll (mesmo padrão do trilho de progresso do card de texto: JS vanilla fora
+   do React, em dom-enhancements.js, escreve --portrait-prog a cada scroll/resize;
+   clip-path e a linha lêem essa variável via calc()). Estrutura só monta o
+   markup — sem estado, sem clique/teclado. */
+function PortraitReveal({ naturalSrc, haloSrc, naturalAlt }) {
+  return (
+    <div className="kit-about__portrait kit-portrait-reveal">
+      <div className="kit-about__frame">
+        <img className="kit-portrait-reveal__img kit-portrait-reveal__img--natural" src={naturalSrc} alt={naturalAlt} />
+        <img className="kit-portrait-reveal__img kit-portrait-reveal__img--halo" src={haloSrc} alt="" aria-hidden="true" />
+        <div className="kit-portrait-reveal__scanline" aria-hidden="true" />
+      </div>
+    </div>
+  );
+}
+
 function About() {
   const a = window.GB.about;
   const paras = Array.isArray(a.summary) ? a.summary : [a.summary];
   return (
     <Section id="sobre">
-      <Reveal className="kit-caseshead">
-        <CircularSectionLabel label={window.gbT("sections.aboutEyebrow")} repeat={5} href="#sobre" />
-      </Reveal>
       <Reveal delay={100} className="kit-about">
-        <div className="kit-about__portrait">
-          <div className="kit-about__frame">
-            <img src="/assets/portrait-cyber-wireframe.jpg" alt={window.gbT("sections.aboutPortraitAlt")} />
-          </div>
-        </div>
-        <div className="kit-about__body">
-          <div className="kit-about__titlewrap"><h2 className="gb-sechead__title kit-about__title"><ScrollCharReveal text={window.gbT("sections.aboutTitle")} stickyTailChars={4} gateFlag /></h2></div>
-          <Reveal delay={200} className="kit-lead-group">{paras.map((p, i) => <p className="kit-lead" key={i}>{String(p).split("\n").map((l, k) => <React.Fragment key={k}>{k ? <br /> : null}{l}</React.Fragment>)}</p>)}</Reveal>
-        </div>
-        <div className="kit-about__meta">
-          {a.facts.map((fact) => (
-            <div className="kit-about__metaitem" key={fact.label}>
-              <span className="gb-label">{fact.label}</span>
-              <span className="gb-mono kit-about__metaval">{fact.value}</span>
-            </div>
-          ))}
-          <div className="kit-about__metaitem">
-            <span className="gb-label">{window.gbT("about.specialties")}</span>
-            <div className="kit-factrow"><span className="gb-mono">{a.specialties.map((s,i)=><React.Fragment key={i}>{i?" | ":null}{s}</React.Fragment>)}</span></div>
-          </div>
-          <div className="kit-about__metaitem">
-            <span className="gb-label">{window.gbT("about.industries")}</span>
-            <div className="kit-factrow"><span className="gb-mono">{a.segments.map((s,i)=><React.Fragment key={i}>{i?<span className="gb-bullet" aria-hidden="true">•</span>:null}{s}</React.Fragment>)}</span></div>
-          </div>
-          {a.tenure ? (
+        <Reveal className="kit-caseshead">
+          <CircularSectionLabel label={window.gbT("sections.aboutEyebrow")} repeat={5} href="#sobre" />
+        </Reveal>
+        <div className="kit-about__titlewrap"><h2 className="gb-sechead__title kit-about__title"><ScrollCharReveal text={window.gbT("sections.aboutTitle")} stickyTailChars={4} gateFlag /></h2></div>
+        <PortraitReveal
+          naturalSrc="/sobre1.png"
+          haloSrc="/sobre2.png"
+          naturalAlt={window.gbT("sections.aboutPortraitAlt")}
+        />
+        <Reveal delay={200} className="kit-lead-group">
+          {paras.map((p, i) => <p className="kit-lead" key={i}>{String(p).split("\n").map((l, k) => <React.Fragment key={k}>{k ? <br /> : null}{l}</React.Fragment>)}</p>)}
+          <div className="kit-about__meta">
+            {a.facts.map((fact) => (
+              <div className="kit-about__metaitem" key={fact.label}>
+                <span className="gb-label">{fact.label}</span>
+                <span className="gb-mono kit-about__metaval">{fact.value}</span>
+              </div>
+            ))}
             <div className="kit-about__metaitem">
-              <span className="gb-label">{a.tenure.label}</span>
-              <span className="gb-mono kit-about__metaval">{a.tenure.value}</span>
+              <span className="gb-label">{window.gbT("about.specialties")}</span>
+              <div className="kit-factrow"><span className="gb-mono">{a.specialties.map((s,i)=><React.Fragment key={i}>{i?" | ":null}{s}</React.Fragment>)}</span></div>
             </div>
-          ) : null}
-          {a.location ? (
-            <div className="kit-about__metaitem">
-              <span className="gb-label">{a.location.label}</span>
-              <span className="gb-mono kit-about__metaval">{a.location.value}</span>
-            </div>
-          ) : null}
-        </div>
+            {a.tenure ? (
+              <div className="kit-about__metaitem">
+                <span className="gb-label">{a.tenure.label}</span>
+                <span className="gb-mono kit-about__metaval">{a.tenure.value}</span>
+              </div>
+            ) : null}
+            {a.location ? (
+              <div className="kit-about__metaitem">
+                <span className="gb-label">{a.location.label}</span>
+                <span className="gb-mono kit-about__metaval">{a.location.value}</span>
+              </div>
+            ) : null}
+          </div>
+        </Reveal>
       </Reveal>
     </Section>
   );

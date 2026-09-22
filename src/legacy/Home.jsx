@@ -49,7 +49,7 @@ function Home({ onOpenCase, activeId }) {
         </section>
       </main>
       <SiteFooter brand={window.GB.brand} description="" />
-      <BackToTop />
+      <BackToTop className="gb-totop--home" />
     </div>
   );
 }

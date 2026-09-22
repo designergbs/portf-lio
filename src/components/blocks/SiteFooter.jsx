@@ -1,9 +1,9 @@
 import React from "react";
 import { Button } from "../core/Button.jsx";
 
-/* Footer: nome gigante com revelação por máscara (palavra a palavra) — repete a cada entrada
-   na viewport via IntersectionObserver dedicado (gated por html.has-reveal-js: se o JS não
-   rodar, o nome fica visível por padrão). Descrição/contatos opcionais, nota de rodapé. */
+/* Footer: nome gigante em rolagem horizontal contínua (marquee), sem animação de
+   entrada — mesmo comportamento em mobile e desktop, sem depender de scroll/observer.
+   Descrição/contatos opcionais, nota de rodapé. */
 export function SiteFooter({
   brand = "Guilherme Bernardo",
   description = "",
@@ -16,41 +16,6 @@ export function SiteFooter({
   const finalNote = note || (lang === "en" ? "@2026 ALL RIGHTS RESERVED • THIS SITE IS A STUDY EXPERIMENT" : "@2026 TODOS DIREITOS RESERVADOS • ESSE SITE É UM EXPERIMENTO DE ESTUDO");
   const noteParts = String(finalNote).split(" • ");
   const copiedLabel = lang === "en" ? "Copied!" : "Copiado!";
-  const nameRef = React.useRef(null);
-  /* depois que "GUILHERME BERNARDO" termina de revelar (palavra a palavra), passa a
-     rolar horizontalmente em loop — mesmo comportamento que já existia só no mobile,
-     agora também no desktop. O atraso cobre a transição de 900ms + o maior
-     transitionDelay entre as palavras (120ms por índice), com uma folga. */
-  const [marqueeOn, setMarqueeOn] = React.useState(false);
-  React.useEffect(() => {
-    const el = nameRef.current;
-    if (!el || !("IntersectionObserver" in window)) { setMarqueeOn(true); return undefined; }
-    /* o rodapé fica bem na borda do fim da página — com o rootMargin negativo aqui
-       embaixo, isIntersecting oscila (sub-pixel/layout jitter de outros elementos)
-       mesmo parado, sem novo scroll. Por isso essa transição é só de ida: uma vez que
-       o timer completa uma janela contínua de "dentro da viewport", liga o marquee e
-       nunca desliga de novo (o pedido é "depois de aparecer, deixa rolando" — não um
-       alternador que volta ao nome estático a cada oscilação). */
-    let timer = 0;
-    let latched = false;
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          el.classList.toggle("is-in", e.isIntersecting || latched);
-          if (latched) return;
-          if (e.isIntersecting) {
-            if (!timer) timer = window.setTimeout(() => { latched = true; setMarqueeOn(true); io.disconnect(); }, 1100);
-          } else {
-            window.clearTimeout(timer);
-            timer = 0;
-          }
-        });
-      },
-      { threshold: 0, rootMargin: "0px 0px -10% 0px" }
-    );
-    io.observe(el);
-    return () => { io.disconnect(); window.clearTimeout(timer); };
-  }, []);
   const [copied, setCopied] = React.useState(null);
   const copy = (text, label) => {
     const done = () => { setCopied(label); window.setTimeout(() => setCopied(null), 1200); };
@@ -71,16 +36,9 @@ export function SiteFooter({
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback);
     else fallback();
   };
-  const words = typeof brand === "string" ? brand.trim().split(/\s+/) : [brand];
   return (
-    <footer className={["gb-footer", marqueeOn ? "gb-footer--marquee" : "", className].filter(Boolean).join(" ")} style={{ position: "relative", overflow: "hidden" }}>
-      <p className="gb-footer__name" ref={nameRef} aria-label={brand}>
-        {words.map((w, i) => (
-          <span className="gb-footer__name-mask" key={w + i}>
-            <span className="gb-footer__name-word" aria-hidden="true" style={{ transitionDelay: i * 120 + "ms" }}>{w}</span>
-          </span>
-        ))}
-      </p>
+    <footer className={["gb-footer", "gb-footer--marquee", className].filter(Boolean).join(" ")} style={{ position: "relative", overflow: "hidden" }}>
+      <span className="gb-sr-only">{brand}</span>
       <div className="gb-footer__marquee" aria-hidden="true">
         <div className="gb-footer__marquee-track">
           <span className="gb-footer__marquee-item">{brand}</span>

@@ -30,6 +30,7 @@
 
 /* ---------- linhas de preferência ---------- */
 .gb-a11y__row{display:flex;flex-direction:column;gap:var(--space-3)}
+.gb-a11y__row--contrast{margin-block:var(--space-2)}
 .gb-a11y__head{display:flex;align-items:center;gap:0;min-height:32px}
 .gb-a11y__label{font-family:var(--font-sans);font-size:var(--type-body-sm-size);font-weight:var(--fw-regular);color:var(--text-primary)}
 .gb-a11y__val{margin-left:auto;font-family:var(--font-sans);font-size:var(--type-label-size);letter-spacing:var(--type-label-tracking);color:var(--text-muted)}
@@ -61,8 +62,13 @@
 .gb-a11y__foot{display:flex;flex-direction:column;gap:var(--space-3)}
 .gb-a11y__reset{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);width:100%;min-height:38px;padding:0 var(--space-4);box-sizing:border-box;border:1px solid transparent;border-radius:var(--radius-pill);background:transparent;color:var(--text-secondary);font-family:var(--font-sans);font-size:var(--type-body-sm-size);cursor:pointer;transition:background var(--dur-base) var(--ease-standard),border-color var(--dur-base) var(--ease-standard),color var(--dur-base) var(--ease-standard)}
 .gb-a11y__reset svg{width:14px;height:14px}
-.gb-a11y__reset:hover{background:var(--green-signal-tint);border-color:color-mix(in oklch,var(--green-signal-text) 45%,transparent);color:var(--green-signal-text)}
 .gb-a11y__reset:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+/* :hover só pra ponteiro que sustenta hover de verdade — em touch, tocar em "Restaurar
+   preferências" deixava o botão preso no estado verde até o usuário tocar em outro
+   lugar, em vez de voltar ao padrão logo depois do toque. */
+@media (hover:hover) and (pointer:fine){
+  .gb-a11y__reset:hover{background:var(--green-signal-wash);border-color:color-mix(in oklch,var(--green-signal-text) 55%,transparent);color:var(--green-signal-text)}
+}
 
 /* trava o scroll (e o scrollbar que rouba largura do overlay fixo) enquanto qualquer
    painel (idioma ou acessibilidade) está aberto — sem isso, a barra de rolagem que

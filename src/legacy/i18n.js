@@ -29,14 +29,14 @@
         availability: "Disponível para oportunidades",
         propLines: ["Há mais de 7 anos, conecto pessoas, negócios e tecnologia por", "meio de experiências digitais."]
       },
-      about: { specialties: "Especialidades", industries: "Segmentos" },
+      about: { specialties: "Especialidades" },
       sections: {
         projectsEyebrow: "Projetos", projectsTitle: "Projetos em que trabalhei",
         experienceEyebrow: "Experiência", experienceTitle: "Minha jornada até aqui",
         processEyebrow: "Processos", processTitle: "Como transformo problemas em soluções",
         toolsSubhead: "FERRAMENTAS", toolsAria: "Ferramentas do dia a dia",
         aboutEyebrow: "Sobre", aboutTitle: "Guilherme aqui, mas pode chamar de Gui.",
-        aboutPortraitAlt: "Retrato de Guilherme Bernardo em linhas de wireframe monocromáticas"
+        aboutPortraitAlt: "Retrato de Guilherme Bernardo"
       },
       process: { steps: ["DESCOBRIR E DEFINIR", "DESENVOLVER E VALIDAR", "ENTREGAR E EVOLUIR"] },
       contact: {
@@ -93,14 +93,14 @@
         availability: "Open to opportunities",
         propLines: ["For over 7 years, I've connected people, businesses and technology", "through digital experiences."]
       },
-      about: { specialties: "Specialties", industries: "Industries" },
+      about: { specialties: "Specialties" },
       sections: {
         projectsEyebrow: "Projects", projectsTitle: "Projects I've worked on",
         experienceEyebrow: "Experience", experienceTitle: "My journey so far",
         processEyebrow: "Process", processTitle: "How I turn problems into solutions",
         toolsSubhead: "TOOLS", toolsAria: "Everyday tools",
         aboutEyebrow: "About", aboutTitle: "Guilherme here, but call me Gui.",
-        aboutPortraitAlt: "Portrait of Guilherme Bernardo in monochrome wireframe lines"
+        aboutPortraitAlt: "Portrait of Guilherme Bernardo"
       },
       process: { steps: ["DISCOVER & DEFINE", "DEVELOP & VALIDATE", "DELIVER & EVOLVE"] },
       contact: {

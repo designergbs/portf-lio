@@ -4,7 +4,7 @@
    (sem "trava" no maior ponto já alcançado). */
 (function(){
   var el=null,raf=0,beam=null;
-  function upd(){raf=0;if(!el)return;var r=el.getBoundingClientRect(),span=Math.max(1,el.clientHeight),top=r.top+el.clientTop;var p=(window.innerHeight*0.55-top)/span;p=p<0?0:(p>1?1:p);el.style.setProperty("--lead-prog",p.toFixed(4));el.style.setProperty("--lead-px",(p>=0.999?span+40:span*p).toFixed(1)+"px");if(p>=0.999){document.documentElement.setAttribute("data-lead-prog-done","");}else{document.documentElement.removeAttribute("data-lead-prog-done");}if(beam){beam.style.transform="none";beam.style.opacity=p<=0?0:(p>=1?0:(p>0.92?(1-p)/0.08:1));}}
+  function upd(){raf=0;if(!el)return;var r=el.getBoundingClientRect(),span=Math.max(1,el.clientHeight),top=r.top+el.clientTop;var vh=window.innerHeight,start=vh*0.7,dist=Math.max(1,(vh*0.35+span)/2);var p=(start-top)/dist;p=p<0?0:(p>1?1:p);el.style.setProperty("--lead-prog",p.toFixed(4));el.style.setProperty("--lead-px",(p>=0.999?span+40:span*p).toFixed(1)+"px");if(p>=0.999){document.documentElement.setAttribute("data-lead-prog-done","");}else{document.documentElement.removeAttribute("data-lead-prog-done");}if(beam){beam.style.transform="none";beam.style.opacity=p<=0?0:(p>=1?0:(p>0.92?(1-p)/0.08:1));}}
   function tick(){if(!raf)raf=requestAnimationFrame(upd);}
   var bound=false;
   function attach(){var found=document.querySelector(".kit-about__body .kit-lead-group")||document.querySelector(".kit-lead-group");if(found!==el){el=found;beam=null;}    if(!el)return;
@@ -13,6 +13,74 @@
     if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches){el.style.setProperty("--lead-prog",1);return;}
     if(!bound){bound=true;window.addEventListener("scroll",tick,{passive:true});window.addEventListener("resize",tick);}
     upd();}
+  setInterval(attach,400);attach();
+})();
+/* retrato "Sobre": o scroll só dispara — a varredura em si roda com atraso e
+   duração fixos via Web Animations API, sem nenhum vínculo com a posição/
+   velocidade do scroll depois de disparada.
+   Gatilho = mudança de direção do scroll enquanto a seção está visível: assim
+   que o sentido muda (descendo -> subindo ou vice-versa), toca a animação no
+   sentido correspondente — não precisa sair e reentrar na viewport. "normal"
+   é natural -> halo (linha desce); "reverse" é halo -> natural (linha sobe),
+   mesmo par de keyframes nos dois sentidos. "playing" ignora novos gatilhos
+   até a transição atual terminar, mas ao terminar reconsidera a direção mais
+   recente (útil se o usuário mudou de ideia no meio da transição). */
+(function(){
+  var lastY=window.scrollY||0,scrollDir="down",lastPlayedDir=null,isIntersecting=false;
+  window.addEventListener("scroll",function(){
+    var y=window.scrollY||0;
+    if(Math.abs(y-lastY)>1){
+      var d=y>lastY?"down":"up";
+      if(d!==scrollDir){scrollDir=d;maybePlay();}
+    }
+    lastY=y;
+  },{passive:true});
+
+  var DUR=1500,DELAY=1000,EASE="cubic-bezier(0.45,0,0.2,1)";
+  var HALO_KF=[{clipPath:"inset(0px 0px 100%)"},{clipPath:"inset(0px 0px 0%)"}];
+  var LINE_KF=[{top:"0%",opacity:0,offset:0},{top:"4%",opacity:1,offset:0.04},{top:"96%",opacity:1,offset:0.96},{top:"100%",opacity:0,offset:1}];
+
+  var el=null,halo=null,scanline=null,io=null,playing=false,haloAnim=null,lineAnim=null,firstPlay=true;
+
+  function maybePlay(){
+    if(!isIntersecting||playing||scrollDir===lastPlayedDir)return;
+    play(scrollDir);
+  }
+
+  function play(dir){
+    if(playing||!halo||!scanline)return;
+    playing=true;
+    lastPlayedDir=dir;
+    var opts={duration:DUR,delay:firstPlay?DELAY:0,easing:EASE,fill:"forwards",direction:dir==="down"?"normal":"reverse"};
+    firstPlay=false;
+    if(haloAnim){try{haloAnim.commitStyles();haloAnim.cancel();}catch(e){}}
+    if(lineAnim){try{lineAnim.commitStyles();lineAnim.cancel();}catch(e){}}
+    haloAnim=halo.animate(HALO_KF,opts);
+    lineAnim=scanline.animate(LINE_KF,opts);
+    function done(){playing=false;maybePlay();}
+    Promise.all([haloAnim.finished,lineAnim.finished]).then(done,done);
+  }
+
+  function attach(){
+    var found=document.querySelector(".kit-portrait-reveal");
+    if(found!==el){el=found;halo=null;scanline=null;lastPlayedDir=null;firstPlay=true;if(io){io.disconnect();io=null;}}
+    if(!el)return;
+    if(!halo)halo=el.querySelector(".kit-portrait-reveal__img--halo");
+    if(!scanline)scanline=el.querySelector(".kit-portrait-reveal__scanline");
+    var reduceMotion=!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches);
+    if(reduceMotion){
+      if(io){io.disconnect();io=null;}
+      if(halo)halo.style.clipPath="inset(0px)";
+      if(scanline)scanline.style.opacity="0";
+      return;
+    }
+    if(!io){
+      io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){isIntersecting=e.isIntersecting;if(isIntersecting)maybePlay();});
+      },{threshold:0,rootMargin:"0px"});
+      io.observe(el);
+    }
+  }
   setInterval(attach,400);attach();
 })();
 (function(){function wrap(){document.querySelectorAll("#experiencia .gb-exp__tags").forEach(function(t){if(t.querySelector(":scope > .gb-exp__tags-inner"))return;var inner=document.createElement("div");inner.className="gb-exp__tags-inner";while(t.firstChild)inner.appendChild(t.firstChild);t.appendChild(inner);});}

@@ -493,7 +493,7 @@ export function AccessibilityPrefs({ className = "" }) {
         {segment("text", p.text, SIZES.map((v) => ({ value: v, label: v + "%" })), (v) => setPrefs({ text: v }), uid + "-text")}
       </div>
 
-      <div className="gb-a11y__row">
+      <div className="gb-a11y__row gb-a11y__row--contrast">
         <div className="gb-a11y__head">
           <span className="gb-a11y__label" id={uid + "-contrast"}>{s.contrast}</span>
           {tipFor("contrast", s.contrastAbout, s.contrastTip)}
