@@ -214,14 +214,17 @@ setInterval(boot2,400);boot2();})();
    com easing custom em vez do behavior:'smooth' nativo (rápido demais) —
    não mexe no hash da URL para não interferir no gate de intro.js. */
 (function(){
-  function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function easeOutQuart(t){ return 1-Math.pow(1-t,4); }
   function smoothScrollTo(y, duration){
+    var root = document.documentElement, prev = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
     var startY = window.scrollY, dist = y - startY, startTime = null;
     function step(ts){
       if(startTime===null) startTime = ts;
       var p = Math.min((ts-startTime)/duration, 1);
-      window.scrollTo(0, startY + dist*easeInOutCubic(p));
+      window.scrollTo(0, startY + dist*easeOutQuart(p));
       if(p<1) requestAnimationFrame(step);
+      else root.style.scrollBehavior = prev;
     }
     requestAnimationFrame(step);
   }
@@ -236,6 +239,6 @@ setInterval(boot2,400);boot2();})();
     var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
     var nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 96;
     var y = Math.max(target.getBoundingClientRect().top + window.scrollY - nav, 0);
-    if(reduce){ window.scrollTo(0, y); } else { smoothScrollTo(y, 900); }
+    if(reduce){ window.scrollTo(0, y); } else { smoothScrollTo(y, 1100); }
   });
 })();
