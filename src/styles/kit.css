@@ -233,8 +233,8 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 #sobre .kit-caseshead{width:clamp(240px,26vw,400px);align-items:center;align-self:end;margin-bottom:0}
 #sobre .kit-caseshead .gb-circlabel{align-self:center;margin:0}
 @media (max-width:1024px){#sobre .kit-caseshead{width:min(100%,420px)}}
-.kit-about__titlewrap{padding-inline:0;container-type:inline-size}
-.kit-about__title{margin:0;padding-left:0;text-align:center;font-size:min(4.4cqw,3.75rem);font-weight:var(--fw-bold);line-height:1.08;letter-spacing:-0.03em}
+.kit-about__titlewrap{padding-inline:48px;container-type:inline-size}
+.kit-about__title{margin:0;padding-left:0;text-align:left;font-size:min(5.1cqw,5rem);font-weight:var(--fw-bold);line-height:1.08;letter-spacing:-0.03em}
 @media (min-width:1025px){.kit-about__title{white-space:nowrap}}
 .kit-charreveal .rc{color:var(--text-muted)}
 @media (prefers-reduced-motion:reduce){.kit-charreveal .rc{color:var(--text-primary) !important}}
