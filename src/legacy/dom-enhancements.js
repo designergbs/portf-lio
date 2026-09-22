@@ -209,3 +209,33 @@ setInterval(boot2,400);boot2();})();
   };
   setInterval(init,400);init();
 })();
+
+/* scroll suave para links âncora internos (ex.: "Conhecer projetos" na hero),
+   com easing custom em vez do behavior:'smooth' nativo (rápido demais) —
+   não mexe no hash da URL para não interferir no gate de intro.js. */
+(function(){
+  function easeInOutCubic(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+  function smoothScrollTo(y, duration){
+    var startY = window.scrollY, dist = y - startY, startTime = null;
+    function step(ts){
+      if(startTime===null) startTime = ts;
+      var p = Math.min((ts-startTime)/duration, 1);
+      window.scrollTo(0, startY + dist*easeInOutCubic(p));
+      if(p<1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href^="#"]');
+    if(!a) return;
+    var id = a.getAttribute('href').slice(1);
+    if(!id) return;
+    var target = document.getElementById(id);
+    if(!target) return;
+    e.preventDefault();
+    var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 96;
+    var y = Math.max(target.getBoundingClientRect().top + window.scrollY - nav, 0);
+    if(reduce){ window.scrollTo(0, y); } else { smoothScrollTo(y, 900); }
+  });
+})();
