@@ -395,10 +395,10 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       const targetAmount = insideImage ? 1 : 0;
       amount += (targetAmount - amount) * (1 - Math.exp(-dt * 10));
 
-      /* ponto central da lupa: mesma projeção pelos cantos, mas a partir da posição
-         suavizada (inércia), então continua acompanhando a posição real do mouse na
-         imagem inclinada — só que com o mesmo atraso curto do círculo do cursor. */
-      const centerLoc = localPoint(smoothCx, smoothCy);
+      /* ponto central da lupa: posição real do mouse (não suavizada) — velocidade de
+         cursor padrão, sem atraso perceptível; smoothCx/smoothCy seguem existindo só
+         para estimar a direção do movimento (ângulo do shader) sem tremer a cada frame. */
+      const centerLoc = rawLoc;
 
       /* reflexos naturais: luz ambiente que segue a inclinação em repouso, encolhendo
          suavemente para a posição real do cursor quando a lupa está ativa — poucos
@@ -429,7 +429,7 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       const minR = maxR * 0.55;
       const r = minR + (maxR - minR) * amount;
       if (ring) ring.setAttribute("r", Math.max(0, r).toFixed(2));
-      lens.style.transform = "translate3d(" + (smoothCx - 55).toFixed(1) + "px," + (smoothCy - 55).toFixed(1) + "px,0)";
+      lens.style.transform = "translate3d(" + (cx - 55).toFixed(1) + "px," + (cy - 55).toFixed(1) + "px,0)";
 
       if (glReady && boxW > 0 && boxH > 0) {
         const dpr = Math.min(window.devicePixelRatio || 1, 3);
