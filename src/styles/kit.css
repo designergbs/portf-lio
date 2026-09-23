@@ -348,7 +348,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
    por leitor de tela (.gb-sr-only); a faixa animada é aria-hidden. */
 .gb-footer__bottom{overflow:hidden;width:var(--bleed-width);max-width:none;margin-left:calc(50% - var(--bleed-width) / 2);flex-wrap:nowrap}
 .gb-footer__bottom-bullet{color:var(--green-signal-text)}
-.gb-footer__bottom-track{display:flex;flex-wrap:nowrap;width:max-content;animation:gb-footer-marquee 100s linear infinite reverse}
+.gb-footer__bottom-track{display:flex;flex-wrap:nowrap;width:max-content;animation:gb-footer-marquee 320s linear infinite reverse}
 .gb-footer__bottom-item{white-space:nowrap;flex:none}
 @media (prefers-reduced-motion:reduce){.gb-footer__bottom-track{animation:none}}
 /* mais respiro interno em cada bloco de experiência */
