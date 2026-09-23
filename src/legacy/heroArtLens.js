@@ -339,8 +339,11 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       phase += dt * 1.5;
 
       h += (proximityTarget - h) * (1 - Math.exp(-dt * 6));
-      pxS += (px - pxS) * (1 - Math.exp(-dt * 11));
-      pyS += (py - pyS) * (1 - Math.exp(-dt * 11));
+      /* posição real do mouse/dedo, sem suavização — mesma velocidade "normal" já usada
+         pelo círculo do cursor e pelo ponto central da lupa, para não ter dois ritmos
+         diferentes na mesma interação. */
+      pxS = px;
+      pyS = py;
 
       /* mesma inclinação em qualquer dispositivo: deriva circular orgânica em repouso
          (um único ângulo alimenta X e Y) + "placa pressionada" no mouse/dedo (canto
