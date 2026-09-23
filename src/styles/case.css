@@ -60,8 +60,27 @@
    negativo, sem alterar a altura do stage) não cobre nada. */
 @media (min-width:1025px){
   .kit-case--trade-in .kit-chero__reveal{padding-top:80px;margin-bottom:-128px;translate:0 56px}
-  .kit-case--trade-in .kit-chero__stage::after{content:"";display:block;height:420px}
-  .kit-case--trade-in .kit-chero__stage + .kit-container{margin-top:-236px}
+  /* o degrade de .kit-chero__reveal só cobre até a borda inferior do próprio elemento —
+     como os textos dos big numbers aqui são mais longos que os do app-agi, essa borda
+     termina antes do fim real do texto, deixando um resto visível por cima da ficha
+     técnica ao soltar o pin (bug: texto residual sobre Área/Público/Período/Time). Esse
+     resto cresce quanto menor a altura da tela (o pin e o degrade usam svh, o texto
+     não). A primeira tentativa de correção esticava o degrade para baixo
+     (padding-bottom) — só que isso cria espaço morto visível entre a imagem e a ficha
+     (bug novo: buraco em branco enorme em telas baixas), porque essa "cobertura extra"
+     nunca deixa de ser espaço vazio, mesmo do mesmo tom da página.
+     A correção certa é soltar o pino mais cedo (menos altura no ::after abaixo):
+     enquanto o pino ainda está preso, o texto fica parado na tela (mesma posição) mas a
+     imagem sobe normalmente com o scroll — soltar mais cedo "congela" o texto numa
+     posição de documento mais próxima do fim real da imagem, cobrindo-o sem precisar
+     esticar nada. Isso só tem um efeito colateral: solta o pino com menos margem, o que
+     também aproxima a ficha da imagem — --th-fix devolve essa mesma distância como
+     margem extra na ficha, então a distância visual até a imagem fica idêntica à
+     original (20px) em qualquer altura. Sem sobra (telas altas), a correção zera via
+     max(). Medido no site real de 600 a 1200px de altura. */
+  .kit-case--trade-in{--th-fix:max(0px,calc(760px - 83svh))}
+  .kit-case--trade-in .kit-chero__stage::after{content:"";display:block;height:calc(420px - var(--th-fix))}
+  .kit-case--trade-in .kit-chero__stage + .kit-container{margin-top:calc(-236px + var(--th-fix))}
 }
 /* app-agi: mesmo offset da abertura */
 @media (min-width:1025px){.kit-case--app-agi .kit-chero__reveal{padding-top:100px;margin-bottom:-128px;translate:0 -80px}.kit-case--app-agi .kit-chero__shot{translate:40px 0}}
