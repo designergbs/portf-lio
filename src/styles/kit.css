@@ -99,14 +99,25 @@ main > #ferramentas{overflow:visible;padding-top:96px}
 /* bloco visual da hero (3:2) */
 .kit-hero__art{position:absolute;right:0;top:50%;margin-top:24px;transform:translate(min(calc(26% + 24px),var(--page-slack)),calc(-50% - 16px));width:auto;height:clamp(480px,76svh,730px);max-height:calc(100svh - 240px);max-width:min(90vw,1240px,calc(100% - 320px));min-width:0;aspect-ratio:3/2;pointer-events:none;perspective:1400px}.hero-artwork-image{display:block;width:100%;height:100%;object-fit:contain;object-position:100% 50%;pointer-events:none;user-select:none;-webkit-user-select:none;-webkit-user-drag:none}
 /* camada que recebe o tilt (movimento igual ao de antes) + a lupa do cursor: nada de
-   vidro/reflexo/borda, só a imagem e o canvas da lupa por cima dela. */
-.hero-art-scene{position:relative;width:100%;height:100%;transform-style:preserve-3d;--rx:0deg;--ry:0deg;--dx:0px;--dy:0px;transform:translate3d(var(--dx),var(--dy),0) rotateX(var(--rx)) rotateY(var(--ry))}
+   vidro/borda, só a imagem, o canvas da lupa e alguns reflexos naturais por cima dela. */
+.hero-art-scene{position:relative;width:100%;height:100%;transform-style:preserve-3d;--rx:0deg;--ry:0deg;--dx:0px;--dy:0px;--reflect:0;--rmx:50%;--rmy:50%;--sheen-rx:220px;--sheen-ry:170px;--refl-top:calc(3% - 16px);--refl-right:calc(14% - 16px);--refl-bottom:calc(3% - 16px);--refl-left:calc(14% - 16px);transform:translate3d(var(--dx),var(--dy),0) rotateX(var(--rx)) rotateY(var(--ry))}
 .hero-art-scene .hero-artwork-image{position:relative;z-index:1}
 .hero-art-canvas{position:absolute;inset:0;z-index:2;width:100%;height:100%;pointer-events:none;visibility:hidden}
-@media (prefers-reduced-motion:reduce){.hero-art-scene{transform:none!important}.hero-art-canvas{display:none}}
+/* reflexos naturais: restritos ao vidro/moldura central da frente já desenhado na arte
+   (não à imagem inteira) — --refl-top/right/bottom/left (px) vêm do JS, calculados a
+   partir do retângulo da imagem efetivamente renderizada sob object-fit:contain (a caixa
+   .kit-hero__art nem sempre é 3:2 como a imagem); os valores em % aqui são só o fallback
+   estático antes do primeiro layout/JS. Poucos, difusos e translúcidos, presos à
+   inclinação da imagem — a máscara linear deixa mais evidente nas laterais e discreto
+   sobre o rosto. O anel principal tem o centro vazio para não cobrir a ampliação da lupa;
+   dois brilhos menores e deslocados (não concêntricos) quebram a uniformidade, como
+   glints reais de vidro. */
+.hero-art-reflection{position:absolute;inset:var(--refl-top) var(--refl-right) var(--refl-bottom) var(--refl-left);z-index:3;pointer-events:none;opacity:var(--reflect,0);mix-blend-mode:screen;mask-image:linear-gradient(to right,#000 0%,#000 18%,#000c 34%,#0002 44%,#0002 56%,#000c 66%,#000 82%,#000 100%);-webkit-mask-image:linear-gradient(to right,#000 0%,#000 18%,#000c 34%,#0002 44%,#0002 56%,#000c 66%,#000 82%,#000 100%)}
+.hero-art-reflection__sheen{position:absolute;inset:0;filter:blur(6px);background-image:radial-gradient(ellipse calc(var(--sheen-rx) * .5) calc(var(--sheen-ry) * .42) at calc(var(--rmx) - 9%) calc(var(--rmy) - 7%),rgba(214,236,224,.16),transparent 72%),radial-gradient(ellipse calc(var(--sheen-rx) * .38) calc(var(--sheen-ry) * .32) at calc(var(--rmx) + 10%) calc(var(--rmy) + 8%),rgba(180,222,198,.11),transparent 74%),radial-gradient(ellipse var(--sheen-rx) var(--sheen-ry) at var(--rmx) var(--rmy),transparent 0%,transparent 24%,rgba(188,224,205,.13) 46%,rgba(40,165,115,.07) 70%,transparent 100%)}
+@media (prefers-reduced-motion:reduce){.hero-art-scene{transform:none!important}.hero-art-canvas{display:none}.hero-art-reflection{display:none}}
 /* lente-cursor: o mesmo verde do cursor global (.gb-cursor), só que circular (~60px) e
    restrita à imagem da hero; enquanto ativa, o cursor padrão do site fica oculto. */
-.hero-lens-cursor{position:fixed;left:0;top:0;width:60px;height:60px;pointer-events:none;z-index:9997;opacity:0;will-change:transform}
+.hero-lens-cursor{position:fixed;left:0;top:0;width:110px;height:110px;pointer-events:none;z-index:9997;opacity:0;will-change:transform}
 .hero-lens-cursor__ring{fill:none;stroke:var(--green-signal-text);stroke-width:1.2;opacity:.85}
 .hero-lens-cursor__dot{fill:var(--green-signal-text)}
 html.gb-hero-lens-active .gb-cursor,html.gb-hero-lens-active .gb-cursor-ring{opacity:0}
@@ -328,7 +339,18 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 #experiencia .gb-timeline__node{transition:color 260ms var(--ease-standard)}
 #experiencia .gb-exp__list li::before{content:"";width:6px;height:6px;background:var(--green-signal-text);border-radius:999px;left:2px}
 #experiencia .gb-exp__disc[open] .gb-exp__disc-sum{color:var(--text-signal)}
+/* nota do rodapé: marquee com a mesma lógica do nome (.gb-footer__marquee/-track acima),
+   só que na direção contrária — reaproveita a keyframe gb-footer-marquee (0 → -50%) com
+   animation-direction:reverse (-50% → 0), então rola para a direita enquanto o nome rola
+   para a esquerda. Mesma largura do divider (--bleed-width, não var(--container-max) como
+   o resto do rodapé). A frase se repete o bastante pra nunca faltar conteúdo na tela
+   durante o scroll, e todo excesso fica cortado por overflow:hidden. Só uma cópia é lida
+   por leitor de tela (.gb-sr-only); a faixa animada é aria-hidden. */
+.gb-footer__bottom{overflow:hidden;width:var(--bleed-width);max-width:none;margin-left:calc(50% - var(--bleed-width) / 2);flex-wrap:nowrap}
 .gb-footer__bottom-bullet{color:var(--green-signal-text)}
+.gb-footer__bottom-track{display:flex;flex-wrap:nowrap;width:max-content;animation:gb-footer-marquee 100s linear infinite reverse}
+.gb-footer__bottom-item{white-space:nowrap;flex:none}
+@media (prefers-reduced-motion:reduce){.gb-footer__bottom-track{animation:none}}
 /* mais respiro interno em cada bloco de experiência */
 #experiencia .gb-timeline__item{padding-block:clamp(40px,4.4vw,64px);position:relative;border-top-color:transparent;border-bottom-color:transparent}
 #experiencia .gb-timeline__item:last-child::after{content:"";position:absolute;bottom:0;left:calc(var(--tl-x) + 12px);right:0;height:1px;background:var(--border-subtle)}
@@ -501,10 +523,6 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
   .kit-about__metaitem .gb-mono{font-size:13px}
   #contato-secao .gb-contact__title{line-height:1.14}
   #contato-secao .gb-contact{margin-top:32px !important}
-  /* nota do rodapé: bullet em verde e quebra em duas linhas */
-  .gb-footer__bottom-bullet{color:var(--green-signal-text)}
-  .gb-footer__bottom-tail{display:block;margin-top:4px}
-  .gb-footer__bottom > span::before{content:"• ";color:var(--green-signal-text)}
   /* alvos de toque */
   .gb-nav__brand{display:flex;align-items:center;min-height:44px}
   .gb-nav .gb-btn{min-height:44px}

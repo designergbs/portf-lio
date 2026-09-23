@@ -6,6 +6,37 @@ import { useEffect } from "react";
 const FINE_POINTER = "(hover: hover) and (pointer: fine)";
 const REDUCE_MOTION = "(prefers-reduced-motion: reduce)";
 
+/* Moldura de vidro da frente já desenhada em hero-artwork-3x2.png, em fração das
+   dimensões da PRÓPRIA IMAGEM (não da caixa .kit-hero__art — largura/altura da caixa têm
+   clamps independentes por breakpoint, então nem sempre é exatamente 3:2 como a imagem;
+   sob object-fit:contain isso sobra como letterbox e desloca onde a moldura realmente
+   aparece). Os reflexos ficam restritos a essa mesma área. */
+const GLASS_INSET_X = 0.14;
+const GLASS_INSET_Y = 0.03;
+/* quanto os reflexos crescem para fora da moldura, igual nos 4 lados. */
+const REFL_EXPAND_PX = 16;
+
+/* object-fit:contain (ver .hero-artwork-image) com object-position:100% 50%: a imagem
+   ocupa fitX/fitY da caixa e é empurrada para a direita (folga toda à esquerda) e
+   centralizada verticalmente (folga dividida em cima/embaixo) — replica o que o
+   navegador faz, então left/top/right/bottom (em px, relativos à caixa) caem exatamente
+   sobre a moldura desenhada na imagem, já com REFL_EXPAND_PX subtraído (cresce para fora). */
+function computeFrameRect(boxW, boxH, imgNaturalW, imgNaturalH) {
+  const imgAr = imgNaturalW && imgNaturalH ? imgNaturalW / imgNaturalH : 1.5;
+  const boxAr = boxW / boxH;
+  const fitX = boxAr > imgAr ? imgAr / boxAr : 1;
+  const fitY = boxAr > imgAr ? 1 : boxAr / imgAr;
+  const imageW = boxW * fitX, imageH = boxH * fitY;
+  const offsetX = boxW - imageW;
+  const offsetY = (boxH - imageH) / 2;
+  return {
+    leftPx: offsetX + imageW * GLASS_INSET_X - REFL_EXPAND_PX,
+    rightPx: imageW * GLASS_INSET_X - REFL_EXPAND_PX,
+    topPx: offsetY + imageH * GLASS_INSET_Y - REFL_EXPAND_PX,
+    bottomPx: offsetY + imageH * GLASS_INSET_Y - REFL_EXPAND_PX,
+  };
+}
+
 const VERTEX_SRC = "attribute vec2 a; varying vec2 uv; void main(){uv=vec2((a.x+1.0)*.5,(1.0-a.y)*.5);gl_Position=vec4(a,0,1);}";
 
 /* Zoom central 1.45x, dobra invertida perto da borda (distorção "invertida") e
@@ -94,11 +125,23 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
     const ns = "http://www.w3.org/2000/svg";
     const lens = document.createElementNS(ns, "svg");
     lens.classList.add("hero-lens-cursor");
-    lens.setAttribute("viewBox", "-30 -30 60 60");
+    lens.setAttribute("viewBox", "-55 -55 110 110");
     lens.setAttribute("aria-hidden", "true");
     lens.innerHTML = '<circle class="hero-lens-cursor__ring"/><circle class="hero-lens-cursor__dot" r="1.6"/>';
     document.body.appendChild(lens);
     const ring = lens.querySelector(".hero-lens-cursor__ring");
+
+    /* reflexos naturais: poucos brilhos difusos e translúcidos espalhados pela imagem,
+       presos à inclinação (não a um "vidro" separado) — criados aqui para não mexer no
+       JSX do Hero por causa de um detalhe puramente visual. */
+    const reflection = document.createElement("div");
+    reflection.className = "hero-art-reflection";
+    reflection.setAttribute("aria-hidden", "true");
+    const reflSheen = document.createElement("div");
+    reflSheen.className = "hero-art-reflection__sheen";
+    reflSheen.setAttribute("aria-hidden", "true");
+    reflection.appendChild(reflSheen);
+    scene.appendChild(reflection);
 
     /* Marcadores nos 4 cantos da cena (herdam a mesma transform 3D do tilt): permitem
        mapear a posição real do mouse na tela para a coordenada local da imagem mesmo
@@ -251,6 +294,13 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       const boxRect = art.getBoundingClientRect();
       const boxW = boxRect.width, boxH = boxRect.height;
       const hasBox = boxW > 0 && boxH > 0;
+      if (hasBox) {
+        const frame = computeFrameRect(boxW, boxH, img.naturalWidth, img.naturalHeight);
+        scene.style.setProperty("--refl-top", frame.topPx.toFixed(1) + "px");
+        scene.style.setProperty("--refl-right", frame.rightPx.toFixed(1) + "px");
+        scene.style.setProperty("--refl-bottom", frame.bottomPx.toFixed(1) + "px");
+        scene.style.setProperty("--refl-left", frame.leftPx.toFixed(1) + "px");
+      }
 
       const easeCursor = 1 - Math.exp(-dt * 9);
       const smoothCx = smCx + (cx - smCx) * easeCursor;
@@ -277,13 +327,36 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
          imagem inclinada — só que com o mesmo atraso curto do círculo do cursor. */
       const centerLoc = localPoint(smoothCx, smoothCy);
 
+      /* reflexos naturais: luz ambiente que segue a inclinação em repouso, encolhendo
+         suavemente para a posição real do cursor quando a lupa está ativa — poucos
+         brilhos difusos e translúcidos (baixa opacidade, quase neutros, leve tom verde),
+         nunca uma mancha uniforme nem uma camada opaca por cima da imagem. */
+      const lightX = (0.5 + ry / 10 * 0.4) * (1 - h) + pxS * h;
+      const lightY = (0.5 - rx / 9 * 0.3) * (1 - h) + pyS * h;
+      const finalX = lightX * (1 - amount) + centerLoc.x * amount;
+      const finalY = lightY * (1 - amount) + centerLoc.y * amount;
+      scene.style.setProperty("--rmx", (Math.max(0, Math.min(1, finalX)) * 100).toFixed(2) + "%");
+      scene.style.setProperty("--rmy", (Math.max(0, Math.min(1, finalY)) * 100).toFixed(2) + "%");
+
+      const reflect = Math.min(0.55, 0.12 + Math.hypot(rx, ry) * 0.032 + h * 0.16);
+      scene.style.setProperty("--reflect", reflect.toFixed(3));
+
+      const ambientRX = hasBox ? boxW * 0.4 : 220, ambientRY = hasBox ? boxH * 0.4 : 170;
+      const focusRX = hasBox ? boxW * 0.26 : 150, focusRY = hasBox ? boxH * 0.26 : 120;
+      scene.style.setProperty("--sheen-rx", (ambientRX + (focusRX - ambientRX) * amount).toFixed(1) + "px");
+      scene.style.setProperty("--sheen-ry", (ambientRY + (focusRY - ambientRY) * amount).toFixed(1) + "px");
+
       const showLens = amount > 0.01;
       lens.style.opacity = showLens ? String(Math.min(1, amount * 1.4)) : "0";
       document.documentElement.classList.toggle("gb-hero-lens-active", showLens);
-      const maxR = boxW > 0 ? Math.min(30, boxW * 0.07) : 30;
-      const r = 16 + (maxR - 16) * amount;
+      /* raio = o quadrado-alvo (bracket) ao redor dos olhos/nariz já desenhado na arte —
+         menor que a tentativa anterior (essa ficou grande demais); ~7.5% da largura da
+         imagem de raio, o mesmo tamanho do quadrado de referência indicado. */
+      const maxR = boxW > 0 ? Math.min(46, boxW * 0.075) : 46;
+      const minR = maxR * 0.55;
+      const r = minR + (maxR - minR) * amount;
       if (ring) ring.setAttribute("r", Math.max(0, r).toFixed(2));
-      lens.style.transform = "translate3d(" + (smoothCx - 30).toFixed(1) + "px," + (smoothCy - 30).toFixed(1) + "px,0)";
+      lens.style.transform = "translate3d(" + (smoothCx - 55).toFixed(1) + "px," + (smoothCy - 55).toFixed(1) + "px,0)";
 
       if (glReady && boxW > 0 && boxH > 0) {
         const dpr = Math.min(window.devicePixelRatio || 1, 3);
@@ -325,9 +398,15 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       io.disconnect();
       document.documentElement.classList.remove("gb-hero-lens-active");
       lens.remove();
+      reflection.remove();
       corners.forEach((el) => el.remove());
       scene.style.removeProperty("--rx"); scene.style.removeProperty("--ry");
       scene.style.removeProperty("--dx"); scene.style.removeProperty("--dy");
+      scene.style.removeProperty("--rmx"); scene.style.removeProperty("--rmy");
+      scene.style.removeProperty("--refl-top"); scene.style.removeProperty("--refl-right");
+      scene.style.removeProperty("--refl-bottom"); scene.style.removeProperty("--refl-left");
+      scene.style.removeProperty("--reflect");
+      scene.style.removeProperty("--sheen-rx"); scene.style.removeProperty("--sheen-ry");
       canvas.style.visibility = "";
       img.style.visibility = "";
       if (gl) {

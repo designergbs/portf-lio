@@ -44,7 +44,7 @@
         description: "Tem uma oportunidade em mente ou quer conhecer meu trabalho? Escolha um horário na agenda e vamos conversar.",
         cta: "Agendar bate-papo"
       },
-      footer: { note: "@2026 TODOS DIREITOS RESERVADOS \u2022 ESSE SITE É UM EXPERIMENTO DE ESTUDO", copied: "Copiado!", backToTop: "Voltar ao topo" },
+      footer: { note: "SITE CRIADO POR MIM COMO UM EXPERIMENTO DE ESTUDO \u2022 © 2026 TODOS DIREITOS RESERVADOS", copied: "Copiado!", backToTop: "Voltar ao topo" },
       railAria: "Atalhos de seção",
       marqueeAria: { group1: "Competências, grupo 1", group2: "Competências, grupo 2" },
       circularGoTo: "Ir para ",

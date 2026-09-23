@@ -13,7 +13,7 @@ export function SiteFooter({
 }) {
   const ctx = typeof window !== "undefined" && window.useLang ? window.useLang() : null;
   const lang = ctx ? ctx.lang : "pt";
-  const finalNote = note || (lang === "en" ? "@2026 ALL RIGHTS RESERVED • THIS SITE IS A STUDY EXPERIMENT" : "@2026 TODOS DIREITOS RESERVADOS • ESSE SITE É UM EXPERIMENTO DE ESTUDO");
+  const finalNote = note || (lang === "en" ? "@2026 ALL RIGHTS RESERVED • THIS SITE IS A STUDY EXPERIMENT" : "SITE CRIADO POR MIM COMO UM EXPERIMENTO DE ESTUDO • © 2026 TODOS DIREITOS RESERVADOS");
   const noteParts = String(finalNote).split(" • ");
   const copiedLabel = lang === "en" ? "Copied!" : "Copiado!";
   const [copied, setCopied] = React.useState(null);
@@ -73,7 +73,17 @@ export function SiteFooter({
         </div>
       ) : null}
       <div className="gb-footer__bottom">
-        <span>{noteParts[0]}{noteParts.length > 1 ? <React.Fragment> <span className="gb-footer__bottom-bullet" aria-hidden="true">•</span> <span className="gb-footer__bottom-tail">{noteParts[1]}</span></React.Fragment> : null}</span>
+        <span className="gb-sr-only">{finalNote}</span>
+        <div className="gb-footer__bottom-track" aria-hidden="true">
+          {Array.from({ length: 40 }).map((_, i) => (
+            <span className="gb-footer__bottom-item" key={i}>
+              {noteParts[0]}
+              <span className="gb-footer__bottom-bullet">{" • "}</span>
+              {noteParts.length > 1 ? noteParts[1] : null}
+              <span className="gb-footer__bottom-bullet">{" • "}</span>
+            </span>
+          ))}
+        </div>
       </div>
     </footer>
   );

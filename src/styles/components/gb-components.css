@@ -508,7 +508,7 @@ a.gb-circlabel{cursor:pointer}
    extensão real das letras (maiúsculas em display bold) — sem essa folga, overflow:hidden
    corta o topo do texto. */
 .gb-footer__marquee{display:block;width:100%;overflow:hidden;padding-top:2vw}
-.gb-footer__marquee-track{display:flex;width:max-content;animation:gb-footer-marquee 16s linear infinite}
+.gb-footer__marquee-track{display:flex;width:max-content;animation:gb-footer-marquee 32s linear infinite}
 .gb-footer__marquee-item{display:inline-block;flex:none;padding-right:32px;font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;line-height:0.95;font-size:clamp(1.4rem,calc(var(--page-avail) * 0.068),9rem);color:#000000;-webkit-text-fill-color:#000000;-webkit-text-stroke:0.75px var(--gray-5);white-space:nowrap}
 @media (max-width:640px){
   .has-reveal-js [data-reveal-card]{transform:translate3d(0,2.5rem,0)}
