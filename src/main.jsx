@@ -20,6 +20,7 @@ import "./legacy/CaseStudy.jsx";
 import "./legacy/CaseTradeIn.jsx";
 
 import App from "./App.jsx";
+import { Analytics } from "@vercel/analytics/react";
 
 /* Vanilla-DOM scroll behaviors (about-lead progress line, experience timeline
    scrub, tags-offset sync, reveal-on-scroll) that live outside React on purpose —
@@ -29,5 +30,6 @@ import "./legacy/dom-enhancements.js";
 window.ReactDOM.createRoot(document.getElementById("root")).render(
   <window.GB_LangProvider>
     <App />
+    <Analytics />
   </window.GB_LangProvider>
 );
