@@ -1,9 +1,18 @@
 import { useEffect } from "react";
 
-/* Hero: inclinação (igual à de heroArtTilt) + lupa de cursor em cima da imagem — sem
-   vidro/reflexo/borda. Só roda com mouse fino e sem "reduzir movimento"; fora disso a
-   imagem fica estática (a própria .hero-art-scene cai para transform:none via CSS). */
+/* Hero: inclinação + lupa em cima da imagem — sem vidro/reflexo/borda. Dois modos de
+   entrada, nunca os dois ao mesmo tempo:
+   - mouse fino (desktop): exatamente como antes — pointermove em window, deriva
+     automática em repouso, "placa pressionada" no hover. Nada neste modo foi alterado.
+   - ponteiro grosso (touch): sem deriva automática nenhuma (idle fica zerado); o mesmo
+     efeito (inclinação + lupa + reflexos) só aparece enquanto o dedo está sobre a
+     imagem, entra/sai suavemente pela mesma suavização de "h"/"amount" já existente, e
+     solta a interação assim que a página rola (nunca preventDefault, então scroll/pinch
+     continuam livres).
+   Sem "reduzir movimento" nem um ponteiro fino OU grosso, a imagem fica estática (a
+   própria .hero-art-scene cai para transform:none via CSS). */
 const FINE_POINTER = "(hover: hover) and (pointer: fine)";
+const COARSE_POINTER = "(pointer: coarse)";
 const REDUCE_MOTION = "(prefers-reduced-motion: reduce)";
 
 /* Moldura de vidro da frente já desenhada em hero-artwork-3x2.png, em fração das
@@ -114,13 +123,18 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
     if (!art || !scene || !img || !canvas) return undefined;
 
     const fineMq = window.matchMedia(FINE_POINTER);
+    const coarseMq = window.matchMedia(COARSE_POINTER);
     const reduceMq = window.matchMedia(REDUCE_MOTION);
-    if (!fineMq.matches || reduceMq.matches) return undefined;
+    if (reduceMq.matches || (!fineMq.matches && !coarseMq.matches)) return undefined;
+    /* decidido uma vez, no mount — o mouse fino sempre vence se por acaso os dois
+       baterem (ex.: notebook com tela sensível ao toque). */
+    const isFine = fineMq.matches;
 
     let destroyed = false;
     let raf = 0, last = 0, phase = Math.random() * 6, tabVisible = true, inViewport = true;
     let proximityTarget = 0, h = 0, px = 0.5, py = 0.5, pxS = 0.5, pyS = 0.5;
     let amount = 0, cx = 0, cy = 0, smCx = 0, smCy = 0, seenPointer = false, angle = 0;
+    let touchActive = false, touchId = null, touchStartScrollX = 0, touchStartScrollY = 0;
 
     const ns = "http://www.w3.org/2000/svg";
     const lens = document.createElementNS(ns, "svg");
@@ -242,10 +256,67 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       cx = e.clientX; cy = e.clientY; seenPointer = true;
       ensureRAF();
     }
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
-    function onLeaveDoc() { proximityTarget = 0; seenPointer = false; }
-    document.documentElement.addEventListener("pointerleave", onLeaveDoc);
-    window.addEventListener("blur", onLeaveDoc);
+    function onLeaveDoc() { proximityTarget = 0; seenPointer = false; touchActive = false; touchId = null; }
+
+    /* toque: só "engata" se o dedo começa dentro da imagem (posição, não e.target — a
+       .kit-hero__art tem pointer-events:none de propósito, igual ao pointermove acima
+       que também não depende de target). Nunca preventDefault, então rolagem/pinch-zoom
+       do navegador nunca são bloqueados; se a página rolar entre um touchmove e outro, a
+       interação solta sozinha e o dedo passa a só rolar. */
+    function inArtBounds(x, y) {
+      const rect = art.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return false;
+      return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    }
+    function updateTouchXY(x, y) {
+      const rect = art.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+      px = Math.max(0, Math.min(1, (x - rect.left) / rect.width));
+      py = Math.max(0, Math.min(1, (y - rect.top) / rect.height));
+      cx = x; cy = y; seenPointer = true;
+    }
+    function endTouch() {
+      if (!touchActive) return;
+      touchActive = false; touchId = null;
+      proximityTarget = 0; seenPointer = false;
+      ensureRAF();
+    }
+    function onTouchStart(e) {
+      if (touchActive || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      if (!inArtBounds(t.clientX, t.clientY)) return;
+      touchId = t.identifier;
+      touchStartScrollX = window.scrollX; touchStartScrollY = window.scrollY;
+      smCx = t.clientX; smCy = t.clientY; // sem inércia no primeiro toque (não tinha posição anterior)
+      touchActive = true;
+      proximityTarget = 1;
+      updateTouchXY(t.clientX, t.clientY);
+      ensureRAF();
+    }
+    function onTouchMove(e) {
+      if (!touchActive) return;
+      if (e.touches.length !== 1) { endTouch(); return; } // segundo dedo entrou (pinch) — solta e deixa o navegador cuidar
+      let t = null;
+      for (let i = 0; i < e.touches.length; i++) { if (e.touches[i].identifier === touchId) { t = e.touches[i]; break; } }
+      if (!t) { endTouch(); return; }
+      if (window.scrollX !== touchStartScrollX || window.scrollY !== touchStartScrollY) { endTouch(); return; } // a página rolou: solta e não interfere mais
+      updateTouchXY(t.clientX, t.clientY);
+      ensureRAF();
+    }
+    function onTouchEnd() { endTouch(); }
+    function onTouchCancel() { endTouch(); }
+
+    if (isFine) {
+      window.addEventListener("pointermove", onPointerMove, { passive: true });
+      document.documentElement.addEventListener("pointerleave", onLeaveDoc);
+      window.addEventListener("blur", onLeaveDoc);
+    } else {
+      window.addEventListener("touchstart", onTouchStart, { passive: true });
+      window.addEventListener("touchmove", onTouchMove, { passive: true });
+      window.addEventListener("touchend", onTouchEnd, { passive: true });
+      window.addEventListener("touchcancel", onTouchCancel, { passive: true });
+      window.addEventListener("blur", onLeaveDoc);
+    }
 
     const io = new IntersectionObserver((entries) => {
       inViewport = entries[0].isIntersecting;
@@ -271,9 +342,11 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       pxS += (px - pxS) * (1 - Math.exp(-dt * 11));
       pyS += (py - pyS) * (1 - Math.exp(-dt * 11));
 
-      /* mesma inclinação de heroArtTilt: deriva circular orgânica em repouso (um único
-         ângulo alimenta X e Y) + "placa pressionada" no mouse (canto perto recua, oposto
-         avança), centro sempre fixo durante a interação. */
+      /* mesma inclinação em qualquer dispositivo: deriva circular orgânica em repouso
+         (um único ângulo alimenta X e Y) + "placa pressionada" no mouse/dedo (canto
+         perto recua, oposto avança), centro sempre fixo durante a interação. isFine só
+         decide QUEM alimenta px/py/proximityTarget (mouse vs. toque) — a deriva
+         automática roda igual nos dois. */
       const wanderAngle = phase * 0.31 + Math.sin(phase * 0.071) * 1.6 + Math.cos(phase * 0.053) * 0.9;
       const wanderAmp = 1 + Math.sin(phase * 0.093) * 0.12 + Math.sin(phase * 0.037) * 0.08;
       const idleRX = Math.sin(wanderAngle) * 7 * wanderAmp;
@@ -378,20 +451,32 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
     ensureRAF();
 
     function onCapabilityChange() {
-      if (!fineMq.matches || reduceMq.matches) cleanup();
+      /* só limpa se "reduzir movimento" ligou, ou se nem ponteiro fino nem grosso
+         sobrou — não quando só o outro dos dois muda (ex.: mouse conectado num
+         touchscreen continua tablet: coarseMq segue true, então nada muda aqui). */
+      if (reduceMq.matches || (!fineMq.matches && !coarseMq.matches)) cleanup();
     }
     fineMq.addEventListener("change", onCapabilityChange);
+    coarseMq.addEventListener("change", onCapabilityChange);
     reduceMq.addEventListener("change", onCapabilityChange);
 
     function cleanup() {
       if (destroyed) return;
       destroyed = true;
       if (raf) window.cancelAnimationFrame(raf);
-      window.removeEventListener("pointermove", onPointerMove);
-      document.documentElement.removeEventListener("pointerleave", onLeaveDoc);
+      if (isFine) {
+        window.removeEventListener("pointermove", onPointerMove);
+        document.documentElement.removeEventListener("pointerleave", onLeaveDoc);
+      } else {
+        window.removeEventListener("touchstart", onTouchStart);
+        window.removeEventListener("touchmove", onTouchMove);
+        window.removeEventListener("touchend", onTouchEnd);
+        window.removeEventListener("touchcancel", onTouchCancel);
+      }
       window.removeEventListener("blur", onLeaveDoc);
       document.removeEventListener("visibilitychange", onVisibilityChange);
       fineMq.removeEventListener("change", onCapabilityChange);
+      coarseMq.removeEventListener("change", onCapabilityChange);
       reduceMq.removeEventListener("change", onCapabilityChange);
       canvas.removeEventListener("webglcontextlost", onContextLost);
       img.removeEventListener("load", setupGL);
