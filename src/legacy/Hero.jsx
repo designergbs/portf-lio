@@ -1,4 +1,5 @@
 export {};
+import { useHeroArtLens } from "./heroArtLens.js";
 const { Button, AvailabilityBadge, SkillsMarquee } = window.GuilhermeBernardoPortfolioDS_97bb82;
 
 /* Revelação do H1: cada letra entra por opacidade (uma vez); "UX/UI" tem ciclo próprio. */
@@ -131,6 +132,11 @@ function useHeroBodyWidth() {
 
 function Hero() {
   const bodyRef = useHeroBodyWidth();
+  const artRef = React.useRef(null);
+  const sceneRef = React.useRef(null);
+  const heroImgRef = React.useRef(null);
+  const heroCanvasRef = React.useRef(null);
+  useHeroArtLens({ artRef, sceneRef, imgRef: heroImgRef, canvasRef: heroCanvasRef });
   const reduceH1 = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const armed = useIntroGate();
   const typed = useTyped(H1_TOTAL, 120, reduceH1, armed);
@@ -175,8 +181,11 @@ function Hero() {
               <Button variant="secondary" size="lg" href="#cases" icon="eye">{window.gbT("buttons.viewProjects")}</Button>
             </div>
           </div>
-          <div className="kit-hero__art">
-            <img src="/assets/hero-artwork-3x2.png" alt="" className="hero-artwork-image" aria-hidden="true" draggable="false" loading="eager" decoding="async" />
+          <div className="kit-hero__art" ref={artRef}>
+            <div className="hero-art-scene" ref={sceneRef}>
+              <img src="/assets/hero-artwork-3x2.png" alt="" className="hero-artwork-image" aria-hidden="true" draggable="false" loading="eager" decoding="async" ref={heroImgRef} />
+              <canvas className="hero-art-canvas" aria-hidden="true" ref={heroCanvasRef} />
+            </div>
           </div>
         </div>
 
