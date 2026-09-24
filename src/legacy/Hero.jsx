@@ -98,13 +98,13 @@ function TextReveal({ lines, className = "", onDone, start = true, onClick }) {
   return (
     <p className={["kit-reveal", className].filter(Boolean).join(" ")} ref={ref} onClick={onClick}>
       <span className="kit-reveal__hold" aria-hidden="true">{lines.map((l, i) => (
-        <React.Fragment key={i}>{i ? <br /> : null}{l}</React.Fragment>
+        <React.Fragment key={i}>{i ? " " : null}{i ? <br /> : null}{l}</React.Fragment>
       ))}</span>
       <span className="kit-reveal__live" aria-hidden="true">{glyphs.map((g, i) => {
         const take = Math.max(0, Math.min(g.length, left));
         left -= g.length;
         const lastLine = take > 0 && left < 0 ? true : false;
-        return <React.Fragment key={i}>{i ? <br /> : null}{g.slice(0, take).join("")}{lastLine && shown < total ? <i className="kit-reveal__caret" /> : null}</React.Fragment>;
+        return <React.Fragment key={i}>{i ? " " : null}{i ? <br /> : null}{g.slice(0, take).join("")}{lastLine && shown < total ? <i className="kit-reveal__caret" /> : null}</React.Fragment>;
       })}</span>
       <span className="kit-sr">{full}</span>
     </p>

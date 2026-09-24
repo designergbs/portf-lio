@@ -86,7 +86,11 @@ main > #ferramentas{overflow:visible;padding-top:96px}
 @keyframes kit-h1-ux{0%{opacity:0;transform:translateX(-20px);filter:blur(9px)}10%{opacity:1;transform:translateX(0);filter:blur(0)}58%{opacity:1;transform:translateX(0);filter:blur(0)}68%{opacity:0;transform:translateX(20px);filter:blur(9px)}100%{opacity:0;transform:translateX(-20px);filter:blur(9px)}}
 @media (prefers-reduced-motion:reduce){.kit-h1c,.kit-h1ux{animation:none;opacity:1;transform:none;filter:none}}
 .kit-hero__slash{-webkit-text-stroke:0;-webkit-text-fill-color:color-mix(in oklch,var(--green-signal-text) 38%,#000);color:color-mix(in oklch,var(--green-signal-text) 38%,#000);margin-inline:0.06em;letter-spacing:normal}
-.kit-hero__prop{color:var(--text-lead);font-size:clamp(0.875rem,0.7rem + 0.33vw,1.03125rem);font-weight:var(--fw-light,300);line-height:1.65;max-width:none;width:fit-content}
+/* margin-top:-4px normaliza pra 16px só o espaço título→parágrafo: o gap:20px do
+   container pai (.kit-hero__body/.kit-hero__cols) é compartilhado com o selo e os
+   botões acima/abaixo, então não dá pra baixar ele sem also encolher esses outros
+   respiros — só esse par precisa ficar em 16px */
+.kit-hero__prop{color:var(--text-lead);font-size:clamp(0.875rem,0.7rem + 0.33vw,1.03125rem);font-weight:var(--fw-light,300);line-height:1.65;max-width:none;width:fit-content;margin-top:-4px}
 .kit-hero__ctas .gb-btn--lg{padding:0 var(--space-5);min-height:54px;font-weight:var(--fw-regular);font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase}
 .kit-hero__ctas .gb-btn{position:relative;overflow:hidden;border:0;background:#000;isolation:isolate;color:#B4B4B4}
 .kit-hero__ctas .gb-btn::before{content:"";position:absolute;left:50%;top:50%;width:400px;aspect-ratio:1;transform:translate(-50%,-50%);background:conic-gradient(from 0deg,rgba(10,207,131,0.85) 0%,transparent 50%,transparent 100%);filter:blur(4px);animation:gb-panel-spin 6s linear infinite;z-index:0;pointer-events:none}
@@ -290,7 +294,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 #contato-secao .gb-contact::after{content:"";position:absolute;inset:-2px;border-radius:inherit;background:linear-gradient(to bottom,transparent 0%,color-mix(in srgb,var(--kit-section-bg) 70%,transparent) 45%,var(--kit-section-bg) 75%,var(--kit-section-bg) 100%);pointer-events:none;z-index:0}
 #contato-secao .gb-contact > *{position:relative;z-index:1}
 #contato-secao .gb-contact__title{max-width:none;white-space:nowrap;font-size:3.375rem;line-height:1.12;letter-spacing:var(--type-h2-tracking);font-weight:var(--fw-bold)}
-#contato-secao .gb-contact p{max-width:none;white-space:pre-line;margin-top:calc(var(--space-4) * -1);margin-bottom:var(--space-4)}
+#contato-secao .gb-contact p{max-width:none;white-space:pre-line;margin-top:calc(var(--space-2) * -1);margin-bottom:var(--space-4)}
 #contato-secao .gb-contact__cta{margin-top:calc(var(--space-6) * -1);margin-bottom:calc(var(--space-8) * -1)}
 /* atalhos de contato: mesma pílula de vidro e mesmo hover verde dos CTAs da navbar */
 #contato-secao .gb-contact .gb-btn--secondary{background:transparent;color:var(--text-primary);border:1px solid rgba(214,235,253,0.19);font-weight:var(--fw-regular);transition:color var(--dur-base) var(--ease-standard),border-color var(--dur-base) var(--ease-standard),background var(--dur-base) var(--ease-standard)}
@@ -473,6 +477,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 .kit-caseend__actions{display:flex;align-items:center;justify-content:center;gap:var(--space-6);flex-wrap:wrap}
 .kit-casehero{padding-top:calc(var(--nav-height) + var(--space-8));display:flex;flex-direction:column;gap:var(--space-10)}
 .kit-casehero__inner{display:flex;flex-direction:column;gap:var(--space-5);align-items:flex-start;max-width:var(--container-max)}
+.kit-casehero__title + .kit-lead{margin-top:-4px}
 .kit-casehero__title{font-size:var(--type-h1-size);line-height:var(--type-h1-lh);letter-spacing:var(--type-h1-tracking);font-weight:600;max-width:24ch}
 .kit-casehero__cover{overflow:hidden;border-radius:var(--radius-lg);border:1px solid var(--border-subtle);aspect-ratio:21/9}
 .kit-casehero__cover img{width:100%;height:100%;object-fit:cover;filter:grayscale(100%)}
@@ -480,7 +485,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 .kit-case-meta{display:flex;flex-direction:column;gap:var(--space-5);position:sticky;top:calc(var(--nav-height) + var(--space-6));align-self:start}
 .kit-case-meta__v{display:block;color:var(--text-secondary);margin-top:var(--space-2)}
 .kit-case-body{display:flex;flex-direction:column;gap:var(--space-10)}
-.kit-case-block{display:flex;flex-direction:column;gap:var(--space-3)}
+.kit-case-block{display:flex;flex-direction:column;gap:var(--space-4)}
 .kit-case-block__h{font-size:var(--type-h3-size);letter-spacing:var(--type-h3-tracking);font-weight:600}
 .kit-case-block p{color:var(--text-secondary);max-width:68ch;line-height:var(--type-body-lh)}
 .kit-case-figure{display:grid;place-items:center;min-height:280px;border:1px dashed var(--border-strong);border-radius:var(--radius-lg);background:var(--surface-1)}
@@ -546,6 +551,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
   .kit-hero__name{font-size:clamp(1.75rem,calc(10.6vw - 4px),2.75rem);width:100%}
   .kit-hero__prop{font-size:clamp(0.875rem,3.8vw,1.0625rem);line-height:1.6;width:100%;max-width:100%}
   .kit-hero__prop br{display:none}
+  .kit-hero__gap{width:.34em}
   /* marquee do hero na mesma escala da tag de disponibilidade (10px) */
   .kit-hero__foot .gb-tag{font-size:0.625rem}
   .kit-about__titlewrap{padding-inline:0}

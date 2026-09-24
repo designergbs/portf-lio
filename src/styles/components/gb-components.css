@@ -404,7 +404,7 @@ body{overflow-x:clip}
 .gb-caserow__rule{width:40px;height:1px;background:var(--green-signal-text)}
 .gb-caserow__title{margin:0;font-size:var(--type-h3-size);line-height:1.2;letter-spacing:var(--type-h3-tracking);font-weight:var(--fw-medium);color:var(--text-primary);transition:transform var(--dur-slow) var(--ease-out-quart)}
 .gb-caserow__link:hover .gb-caserow__title,.gb-caserow__link:focus-visible .gb-caserow__title{color:var(--green-signal-text)}
-.gb-caserow__summary{margin:0;color:var(--text-secondary);font-size:var(--type-body-size);line-height:var(--type-body-lh);max-width:46ch}
+.gb-caserow__summary{margin:4px 0 0;color:var(--text-secondary);font-size:var(--type-body-size);line-height:var(--type-body-lh);max-width:46ch}
 .gb-caserow__cta{display:inline-flex;align-items:center;gap:var(--space-2);margin-top:var(--space-2);min-height:44px;font-size:var(--type-body-sm-size);font-weight:var(--fw-medium);color:var(--text-primary);transition:color var(--dur-base) var(--ease-standard)}
 .gb-caserow__link:hover .gb-caserow__cta,.gb-caserow__link:focus-visible .gb-caserow__cta{color:var(--text-primary)}
 .gb-caserow__link:hover .gb-arrow svg:nth-child(1),.gb-caserow__link:focus-visible .gb-arrow svg:nth-child(1){transform:translate3d(100%,-100%,0)}
