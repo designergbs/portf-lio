@@ -281,11 +281,12 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 .kit-caseshead{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:var(--space-8);margin-bottom:var(--space-6)}
 .kit-caseshead .gb-circlabel{margin:0 0 0 -4px;align-self:flex-start}
 .kit-caseshead .gb-sechead__title{margin:0}
-#experiencia .gb-exp__context,#experiencia .gb-exp__company{font-size:var(--type-body-size);line-height:var(--type-body-lh)}
+#experiencia .gb-exp__context{font-size:var(--type-body-sm-size);line-height:var(--type-body-sm-lh)}
+#experiencia .gb-exp__company{font-size:var(--type-body-size);line-height:var(--type-body-lh)}
 #experiencia .gb-exp__role{font-size:var(--type-body-size);line-height:var(--type-body-lh);letter-spacing:normal;margin-bottom:calc(var(--space-1) * -1)}
 #experiencia .kit-caseshead{margin-bottom:var(--space-16)}
 .gb-footer .gb-beam-h::after{animation:kit-beam-loop 5s linear infinite;background:linear-gradient(to right,transparent 20%,rgba(245,245,245,0.9) 50%,transparent 80%)}
-#experiencia .gb-exp__disc-sum{font-family:var(--font-sans);font-size:var(--type-body-sm-size);font-weight:var(--fw-medium)}
+#experiencia .gb-exp__disc-sum{font-family:var(--font-sans);font-size:var(--type-body-sm-size);font-weight:var(--fw-regular)}
 #contato-secao{padding-top:0}
 #contato-secao .kit-container{display:block}
 #contato-secao .kit-caseshead{margin-bottom:0;flex-direction:column;align-items:flex-start;gap:var(--space-5)}
@@ -327,7 +328,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 .kit-toolsrail .gb-tool__glyph{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.07)}
 .kit-toolsrail .gb-tool:hover{border-color:var(--border-strong)}
 #experiencia .gb-exp__prod-head{display:grid;grid-template-columns:1fr max-content;align-items:baseline;gap:var(--space-3)}
-#experiencia .gb-exp__prod-head .gb-exp__context{min-width:0;font-size:var(--type-body-size);line-height:var(--type-body-lh)}
+#experiencia .gb-exp__prod-head .gb-exp__context{min-width:0;font-size:var(--type-body-sm-size);line-height:var(--type-body-sm-lh)}
 #experiencia .gb-exp__prod-period{white-space:nowrap}
 #experiencia .gb-exp__prod-head .gb-exp__context{margin:0}
 #experiencia .gb-exp__prod-period{font-family:var(--font-mono);font-size:var(--type-mono-size);color:var(--text-muted)}
@@ -417,7 +418,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 .kit-proc__h:has(.lucide-layout) .kit-proc__step{color:#F4B421}
 .kit-proc__h:has(.lucide-line-chart) .kit-proc__step{color:#1ABCFE}
 #ferramentas .kit-process{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:0}
-#ferramentas .kit-subhead{margin-top:var(--space-4);font-size:0.8125rem;font-weight:var(--fw-regular);font-family:var(--font-mono);letter-spacing:0.08em;color:color-mix(in oklch,var(--green-signal-text) 72%,black)}
+#ferramentas .kit-subhead{margin-top:var(--space-4);font-size:0.875rem;font-weight:var(--fw-regular);font-family:var(--font-mono);letter-spacing:0.08em;color:color-mix(in oklch,var(--green-signal-text) 72%,black)}
 #ferramentas .kit-subhead__dot{display:inline-block;font-size:1.35em;line-height:1;letter-spacing:0;margin-inline:-4px;color:inherit;vertical-align:-0.02em}
 .kit-tools .gb-tool__stage{letter-spacing:0.08em}
 #ferramentas .kit-proc{border-bottom:1px solid rgba(214,235,253,0.19)}
@@ -558,9 +559,9 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
   .kit-about__title{line-height:1.12}
   /* painel técnico "Sobre": margem interna e corpo de texto compactos */
   .kit-about > .kit-lead-group{padding:24px 16px}
-  .kit-about .kit-lead-group .kit-lead{font-size:13px}
+  .kit-about .kit-lead-group .kit-lead{font-size:14px}
   .kit-about__metaitem .gb-label{font-size:10px}
-  .kit-about__metaitem .gb-mono{font-size:13px}
+  .kit-about__metaitem .gb-mono{font-size:14px}
   #contato-secao .gb-contact__title{line-height:1.14}
   #contato-secao .gb-contact{margin-top:32px !important}
   /* alvos de toque */

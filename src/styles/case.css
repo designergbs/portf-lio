@@ -241,7 +241,7 @@
 @media (max-width:560px){.kit-cproc--num{grid-template-columns:1fr}}
 .kit-cproc.kit-cproc--num .kit-proc{padding-block:var(--space-5)}
 .kit-cproc.kit-cproc--num .kit-proc__h{flex-direction:row;align-items:center;gap:var(--space-2)}
-.kit-cproc.kit-cproc--num .kit-proc__n{display:grid;place-items:center;flex:none;width:19px;height:19px;padding:8px;box-sizing:content-box;border-radius:var(--radius-sm);background:var(--green-signal-wash);font-family:var(--font-mono,var(--font-sans));font-size:0.8125rem;letter-spacing:0.02em;font-weight:var(--fw-medium);color:var(--green-signal-text)}
+.kit-cproc.kit-cproc--num .kit-proc__n{display:grid;place-items:center;flex:none;width:19px;height:19px;padding:8px;box-sizing:content-box;border-radius:var(--radius-sm);background:var(--green-signal-wash);font-family:var(--font-mono,var(--font-sans));font-size:0.875rem;letter-spacing:0.02em;font-weight:var(--fw-medium);color:var(--green-signal-text)}
 /* mesma regra de espaçamento dos cards antes/depois: padding igual em todos os lados e divider com o mesmo respiro */
 .kit-cproc .kit-proc{gap:var(--space-3);padding:var(--space-5)}
 .kit-cproc .kit-proc__h{padding-bottom:var(--space-3);gap:var(--space-3);border-bottom:1px solid var(--border-subtle)}
@@ -292,8 +292,9 @@
 
 /* próximo case */
 .kit-cnext{display:flex;align-items:center;justify-content:space-between;gap:var(--space-6);flex-wrap:wrap;width:100%;box-sizing:border-box;text-align:left;font:inherit;cursor:pointer;background:transparent;border:1px solid var(--border-card);border-radius:var(--radius-xl);padding:clamp(24px,3.4vw,44px);transition:background var(--dur-base,200ms) var(--ease-out),border-color var(--dur-base,200ms) var(--ease-out)}
+.kit-cnext > span:first-child{flex:1;min-width:0}
 .kit-cnext:hover,.kit-cnext:focus-visible{background:var(--surface-1);border-color:var(--border-strong)}
-.kit-cnext__title{display:block;margin:var(--space-3) 0 0;font-size:clamp(1.25rem,2.1vw,1.75rem);line-height:1.15;letter-spacing:-.03em;font-weight:var(--fw-semibold);color:var(--text-primary);max-width:34ch;text-wrap:pretty}
+.kit-cnext__title{display:block;margin:var(--space-3) 0 0;font-size:clamp(1.25rem,2.1vw,1.75rem);line-height:1.15;letter-spacing:-.03em;font-weight:var(--fw-semibold);color:var(--text-primary);max-width:none;text-wrap:pretty}
 .kit-cnext__go{display:inline-flex;align-items:center;gap:var(--space-4);color:var(--text-secondary);white-space:nowrap;transition:color var(--dur-base,200ms) var(--ease-out)}
 .kit-cnext:hover .kit-cnext__go{color:var(--text-primary)}
 .kit-cnext__circle{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:var(--radius-pill);border:1px solid var(--border-strong);color:var(--text-primary);transition:background var(--dur-base,200ms) var(--ease-out),color var(--dur-base,200ms) var(--ease-out),border-color var(--dur-base,200ms) var(--ease-out)}
@@ -345,7 +346,8 @@
   .kit-cficha__item + .kit-cficha__item{padding-left:0;border-left:0;border-top:1px solid var(--border-subtle);margin-top:var(--space-5);padding-top:var(--space-5)}
   .kit-cfig{padding:8px;border-radius:var(--radius-lg)}
   .kit-cfig--narrow,.kit-cfig--mid{max-width:100%}
-  .kit-cnext{flex-direction:column;align-items:flex-start}
+  .kit-cnext{flex-direction:column;align-items:stretch;padding:16px}
+  .kit-cnext__go{justify-content:flex-end}
   .kit-cend__back .gb-btn,.kit-cend .gb-btn{width:100%}
 }
 @media (prefers-reduced-motion:reduce){
@@ -594,7 +596,7 @@
   /* com o índice na lateral, a coluna de marcadores por seção sai de cena */
   .kit-case--index .kit-csec__grid{grid-template-columns:minmax(0,1fr);gap:0}
   .kit-case--index .kit-csec__rail{display:none}
-  .kit-cindex__lnk{font-size:0.8125rem;line-height:20px}
+  .kit-cindex__lnk{font-size:0.875rem;line-height:20px}
 }
 @media (min-width:1025px) and (max-width:1439px){
   .kit-cindex__inner{margin-inline:0}
@@ -703,6 +705,7 @@
 .kit-case .kit-imp__scroller{scroll-snap-type:x proximity;scroll-behavior:auto}
 .kit-case .kit-imp__slide{transition:opacity 520ms var(--ease-out),transform 520ms var(--ease-out)}
 
+.kit-cproto__cta .gb-btn{color:var(--text-primary)}
 .kit-cproto__cta .gb-btn:hover{background:color-mix(in oklch,var(--green-signal-text) 12%,transparent);border-color:color-mix(in oklch,var(--green-signal-text) 55%,transparent);color:var(--green-signal-text)}
 
 .kit-case .kit-cpanel .kit-cpanel__h{font-size:clamp(.9375rem,1.05vw,1.0625rem);align-items:center;text-align:center;justify-content:center;padding-bottom:clamp(14px,1.6vw,22px)}
