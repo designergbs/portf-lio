@@ -48,7 +48,9 @@
   --z-nav:50; /* @kind other */
   --z-divider:60; /* @kind other */
 }
-/* trilho vira dock inferior: nenhuma reserva lateral, reserva vertical no lugar */
+/* trilho vira dock inferior: nenhuma reserva lateral, reserva vertical no lugar —
+   mesmo breakpoint do .gb-rail (max-width:1024px), que é exceção à regra geral de
+   "1024 = desktop" */
 @media (max-width:1024px){
   :root{--rail-safe:0px;--dock-reserve:calc(var(--rail-dock-height) + var(--space-6))}
 }

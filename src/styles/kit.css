@@ -49,7 +49,9 @@ main > #ferramentas{overflow:visible;padding-top:96px}
 .kit-hero__pills{display:flex;flex-direction:column;align-items:flex-start;gap:var(--space-3)}
 .kit-hero__line{-webkit-mask-image:none;mask-image:none}
 .kit-hero__name{display:flex;flex-direction:column;font-size:clamp(1.5rem,1rem + 2.25vw,3.25rem);line-height:.94;letter-spacing:-.035em;font-weight:700;text-transform:uppercase;color:#F5F5F5;margin:var(--space-2) 0 0 -0.05em}
-@media (min-width:1024px) and (max-width:1600px){.kit-hero__name{font-size:clamp(1.5rem,1.3rem + 2.4vw,3.25rem)}}
+/* mesma escala do H1 em tablet e desktop — sem essa extensão o tablet usava a fórmula
+   base (menor) e o texto encolhia de repente ao cruzar 1024px pra baixo */
+@media (min-width:641px) and (max-width:1600px){.kit-hero__name{font-size:clamp(1.5rem,1.3rem + 2.4vw,3.25rem)}}
 .kit-hero__word{position:relative;display:inline-block;background:linear-gradient(180deg,#FFFFFF 0%,#FFFFFF 46%,rgba(232,236,240,.9) 62%,rgba(196,202,209,.72) 82%,rgba(160,166,174,.6) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 .kit-hero__line{display:block;white-space:normal;max-width:100%}
 .kit-hero__dim{font-style:normal;font-weight:inherit;background:none;-webkit-background-clip:border-box;background-clip:border-box;-webkit-text-fill-color:var(--green-signal-text);color:var(--green-signal-text);-webkit-text-stroke:0;font-weight:900;letter-spacing:-0.06em;text-transform:uppercase}
@@ -165,7 +167,7 @@ html.gb-hero-lens-active .gb-cursor,html.gb-hero-lens-active .gb-cursor-ring{opa
 
 /* marquee na base */
 .kit-hero__foot{position:relative;z-index:5;border:0;padding:0 0 var(--space-8);margin-top:var(--space-4)}
-@media (min-width:1025px){.kit-hero__foot{margin-top:var(--space-8)}}
+@media (min-width:641px){.kit-hero__foot{margin-top:var(--space-8)}}
 .kit-hero__foot .gb-marquee{--marquee-dur-a:64s;--marquee-dur-b:78s}
 .kit-hero__foot .gb-marquee .gb-marquee__track,.kit-hero__foot .gb-marquee:hover .gb-marquee__track,.kit-hero__foot .gb-marquee:focus-within .gb-marquee__track,.kit-hero__foot .gb-marquee-group:hover .gb-marquee__track{animation-play-state:running !important}
 .kit-hero__foot{pointer-events:none}
@@ -191,9 +193,19 @@ html.gb-hero-lens-active .gb-cursor,html.gb-hero-lens-active .gb-cursor-ring{opa
 
 @media (max-width:1024px){
   .kit-hero__inner{padding:calc(var(--nav-height) + var(--space-8)) var(--page-gutter) var(--space-6);gap:var(--space-8)}
-  .kit-hero__cols{grid-template-columns:1fr;align-items:start}
-  .kit-hero__portrait{justify-self:center;max-width:560px;order:2;transform:none}
-  .kit-hero__body{order:1;max-width:none}
+  /* tablet segue a mesma lógica de layout do mobile: coluna única centralizada
+     (tag → imagem → H1 → parágrafo → CTA), não só a metade "grid vira 1fr" que
+     ficava por conta desse breakpoint antes — texto e selos ficavam alinhados à
+     esquerda até 640px, só a partir daí centralizavam. .kit-hero__body vira
+     "contents" pra `order` dos filhos (pills/name/prop/ctas) valer junto com
+     .kit-hero__art no mesmo container. */
+  .kit-hero__cols{display:flex;flex-direction:column;align-items:center;gap:var(--space-5)}
+  .kit-hero__body{display:contents}
+  .kit-hero__pills{order:1;align-items:center}
+  .kit-hero__art{order:2;margin-top:0;max-width:100%;align-self:stretch}
+  .kit-hero__name{order:3;margin:0;align-items:center;text-align:center}
+  .kit-hero__prop{order:4;text-align:center;text-wrap:balance}
+  .kit-hero__ctas{order:5;align-self:stretch;justify-content:center;margin-bottom:var(--space-8)}
   .kit-hero__grid{display:none}
   .kit-hero__dots{display:none}
   .kit-blob{opacity:.32}
@@ -227,7 +239,7 @@ html.gb-hero-lens-active .gb-cursor,html.gb-hero-lens-active .gb-cursor-ring{opa
 .kit-about__portrait:hover .kit-about__frame img{transform:scale(1.07) translateY(-2.2%);filter:grayscale(86%) contrast(1.08)}
 @media (prefers-reduced-motion:reduce){html:not([data-a11y-motion="full"]) .kit-about__portrait:hover .kit-about__frame img{transform:none}}
 html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img{transform:none}
-@media (min-width:1025px){.kit-about{align-items:stretch}.kit-about__portrait{aspect-ratio:auto;height:100%;min-height:100%;align-self:stretch}}
+@media (min-width:1024px){.kit-about{align-items:stretch}.kit-about__portrait{aspect-ratio:auto;height:100%;min-height:100%;align-self:stretch}}
 .kit-about__grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-8)}
 .kit-about__meta{width:100%;display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:space-between;gap:var(--space-10);margin-top:var(--space-3);padding:var(--space-8) 0 0;border-top:1px solid rgba(10,207,131,0.16)}
 .kit-about__metaitem{display:flex;flex-direction:column;min-width:max-content}
@@ -259,7 +271,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 @media (max-width:1024px){#sobre .kit-caseshead{width:min(100%,420px)}}
 .kit-about__titlewrap{padding-inline:48px;container-type:inline-size}
 .kit-about__title{margin:0;padding-left:0;text-align:left;font-size:min(5.1cqw,5rem);font-weight:var(--fw-bold);line-height:1.08;letter-spacing:-0.03em}
-@media (min-width:1025px){.kit-about__title{white-space:nowrap}}
+@media (min-width:1024px){.kit-about__title{white-space:nowrap}}
 .kit-charreveal .rc{color:var(--text-muted)}
 @media (prefers-reduced-motion:reduce){.kit-charreveal .rc{color:var(--text-primary) !important}}
 .kit-caseshead{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:var(--space-8);margin-bottom:var(--space-6)}
@@ -301,7 +313,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
   #contato-secao .gb-contact .gb-btn--secondary:hover{color:var(--green-signal-text);border-color:color-mix(in oklch,var(--green-signal-text) 45%,transparent);background:var(--green-signal-tint);transform:none}
   #contato-secao .gb-contact .gb-btn--secondary:hover .gb-btn__icon,#contato-secao .gb-contact .gb-btn--secondary:hover .gb-btn__icon svg{color:var(--green-signal-text)}
 }
-@media (max-width:1024px){#contato-secao .kit-container{grid-template-columns:1fr;gap:var(--space-8)}}
+@media (max-width:1023px){#contato-secao .kit-container{grid-template-columns:1fr;gap:var(--space-8)}}
 .kit-cases,.kit-process{margin-top:0}
 #cases .kit-caseshead{margin-bottom:var(--space-16)}
 .kit-bleed{margin-top:var(--space-12);width:var(--bleed-width);margin-left:calc(50% - var(--bleed-width) / 2)}
@@ -346,7 +358,10 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
    o resto do rodapé). A frase se repete o bastante pra nunca faltar conteúdo na tela
    durante o scroll, e todo excesso fica cortado por overflow:hidden. Só uma cópia é lida
    por leitor de tela (.gb-sr-only); a faixa animada é aria-hidden. */
-.gb-footer__bottom{overflow:hidden;width:var(--bleed-width);max-width:none;margin-left:calc(50% - var(--bleed-width) / 2);flex-wrap:nowrap}
+/* full-bleed de verdade (100vw), não var(--bleed-width) — esse depende de --page-gutter
+   e --rail-reserve, que mudam por breakpoint; a nota do rodapé deve sempre encostar na
+   borda da tela, sem respeitar margem/padding da página. */
+.gb-footer__bottom{overflow:hidden;width:100vw;max-width:none;margin-left:calc(50% - 50vw);flex-wrap:nowrap}
 .gb-footer__bottom-bullet{color:var(--green-signal-text)}
 .gb-footer__bottom-track{display:flex;flex-wrap:nowrap;width:max-content;animation:gb-footer-marquee 320s linear infinite reverse}
 .gb-footer__bottom-item{white-space:nowrap;flex:none}
@@ -466,7 +481,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 .kit-case-block__h{font-size:var(--type-h3-size);letter-spacing:var(--type-h3-tracking);font-weight:600}
 .kit-case-block p{color:var(--text-secondary);max-width:68ch;line-height:var(--type-body-lh)}
 .kit-case-figure{display:grid;place-items:center;min-height:280px;border:1px dashed var(--border-strong);border-radius:var(--radius-lg);background:var(--surface-1)}
-@media (max-width:1024px){.kit-case-grid{grid-template-columns:1fr;gap:var(--space-10)}.kit-case-meta{position:static}}
+@media (max-width:1023px){.kit-case-grid{grid-template-columns:1fr;gap:var(--space-10)}.kit-case-meta{position:static}}
 
 /* ---------- responsividade: zona segura do menu + adaptação de grids ---------- */
 @media (max-width:1180px){
@@ -478,17 +493,35 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
   .kit-about__taggroups,.kit-about__taggroups .kit-tagrow,.kit-factrow{flex-wrap:wrap}
   .kit-about__taggroups{gap:var(--space-6)}
 }
+/* seção Sobre: mesmo layout de tablet até 1024 (exceção à regra geral de "1024 =
+   desktop", igual à hero e ao trilho lateral) — por isso fica num bloco à parte do
+   restante (cases/experiência/contato), que só vira "tablet" a partir de 1023. */
 @media (max-width:1024px){
   .kit-about{grid-template-columns:minmax(0,1fr);column-gap:0;row-gap:var(--space-8)}
-  #sobre .kit-caseshead{grid-column:1;grid-row:1;align-self:auto}
-  .kit-about__titlewrap{grid-column:1;grid-row:2}
-  .kit-about__portrait{grid-column:1;grid-row:3;order:0;justify-self:start;width:100%;max-width:420px;aspect-ratio:4/5;height:auto;align-self:auto}
+  #sobre .kit-caseshead{grid-column:1;grid-row:1;align-self:auto;justify-self:center}
+  .kit-about__titlewrap{grid-column:1;grid-row:3}
+  .kit-about__portrait{grid-column:1;grid-row:2;order:0;justify-self:center;width:100%;max-width:420px;aspect-ratio:4/5;height:auto;align-self:auto}
   .kit-about > .kit-lead-group{grid-column:1;grid-row:4;align-self:start}
   .kit-about__meta{margin-top:var(--space-8)}
   .kit-about__grid,.kit-facts{grid-column:1}
+  /* selos e títulos de TODAS as seções centralizados (não só Sobre) — precisa vir
+     depois de .kit-caseshead{align-items:flex-start} (mesma especificidade, quem vem
+     depois no arquivo vence) */
+  .kit-caseshead{align-items:center;text-align:center}
+  .kit-caseshead .gb-sechead__title{text-align:center}
+  .kit-caseshead .gb-circlabel{align-self:center !important;margin:0 auto !important}
+  .kit-about__title{text-align:center}
+}
+@media (max-width:1023px){
   #contato-secao .gb-contact__title{white-space:normal}
   .kit-process{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
   #cases .kit-caseshead,#experiencia .kit-caseshead{margin-bottom:var(--space-10)}
+  /* títulos de seção centralizados, mesma lógica do mobile — precisa vir depois de
+     .kit-caseshead{align-items:flex-start} (mesma especificidade, então quem vem
+     depois no arquivo vence) */
+  .kit-caseshead{align-items:center;text-align:center}
+  .kit-caseshead .gb-sechead__title{text-align:center}
+  .kit-caseshead .gb-circlabel{align-self:center !important;margin:0 auto !important}
 }
 @media (max-width:640px){
   .kit-about .kit-lead-group .kit-lead{text-align:left}
@@ -498,8 +531,6 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
   .kit-factrow{flex-direction:column;gap:var(--space-2)}
   .kit-hero__ctas{width:100%}
   .kit-hero__ctas .gb-btn{width:100%}
-  /* selo circular: centralizado na página, independente do alinhamento do título ao lado */
-  .kit-caseshead .gb-circlabel{align-self:center !important;margin:0 auto !important}
 }
 
 /* ---------- mobile (<=640px) ---------- */
@@ -515,7 +546,7 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
   /* marquee do hero na mesma escala da tag de disponibilidade (10px) */
   .kit-hero__foot .gb-tag{font-size:0.625rem}
   .kit-about__titlewrap{padding-inline:0}
-  .kit-about__title{line-height:1.12;text-align:center}
+  .kit-about__title{line-height:1.12}
   /* painel técnico "Sobre": margem interna e corpo de texto compactos */
   .kit-about > .kit-lead-group{padding:24px 16px}
   .kit-about .kit-lead-group .kit-lead{font-size:13px}
@@ -529,22 +560,15 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
   .gb-rail .gb-icon-btn,.gb-rail a{min-width:44px;min-height:44px}
   /* densidade e leitura */
   #cases .kit-caseshead,#experiencia .kit-caseshead{margin-bottom:32px}
-  /* títulos de seção centralizados na tela no mobile */
-  .kit-caseshead{align-items:center;text-align:center}
-  .kit-caseshead .gb-sechead__title{text-align:center}
   #cases .gb-caserow__media{aspect-ratio:16/10}
   .plab-card{padding-bottom:24px}
   .plab-step{font-size:0.625rem}
-  /* timeline empilhada: conteúdo recuado para não cruzar o trilho de progresso */
+}
+/* timeline: conteúdo recuado para não cruzar o trilho de progresso — precisa valer em
+   todo o tablet (não só <=640px), senão o trilho verde atravessa por cima dos chips/
+   texto nessa faixa intermediária */
+@media (max-width:1023px){
   #experiencia .gb-timeline__item > div:last-child{padding-left:20px}
-  /* hero mobile: tag → imagem → H1 → parágrafo → CTA */
-  .kit-hero__cols{display:flex;flex-direction:column;align-items:center;gap:var(--space-5);transform:none}
-  .kit-hero__body{display:contents}
-  .kit-hero__pills{order:1;align-items:center}
-  .kit-hero__art{order:2;margin-top:0;max-width:100%;align-self:stretch}
-  .kit-hero__name{order:3;margin:0;align-items:center;text-align:center}
-  .kit-hero__prop{order:4;text-align:center;text-wrap:balance}
-  .kit-hero__ctas{order:5;align-self:stretch}
 }
 
 /* ---------- abertura da home (cortina + monograma) ---------- */
@@ -555,8 +579,15 @@ html.gb-intro-reduce .gb-intro-layer{opacity:0;transition:opacity 200ms linear}
 .gb-intro-layer.is-lit .gb-intro__grid{opacity:.45}
 .gb-intro__stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:24px}
 html.gb-intro-rise .gb-intro__stage{opacity:0;transform:translate3d(0,-24px,0);transition:opacity 400ms var(--ease-standard),transform 760ms cubic-bezier(.76,0,.24,1)}
-.gb-intro__mono{font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;font-size:44px;line-height:.88;letter-spacing:-.05em;text-transform:uppercase;background:linear-gradient(180deg,#FFFFFF 0%,#FFFFFF 46%,rgba(232,236,240,.9) 62%,rgba(196,202,209,.72) 82%,rgba(160,166,174,.6) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;opacity:0;clip-path:inset(0 0 100% 0);transform:translate3d(0,12px,0) scale(1.04)}
-.gb-intro-layer.is-lit .gb-intro__mono{opacity:1;clip-path:inset(0 0 -12% 0);transform:none;transition:clip-path 760ms cubic-bezier(.22,.61,.36,1),transform 760ms cubic-bezier(.22,.61,.36,1),opacity 480ms var(--ease-standard)}
+.gb-intro__mono{font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;font-size:44px;line-height:.88;letter-spacing:-.05em;text-transform:uppercase;background:linear-gradient(180deg,#FFFFFF 0%,#FFFFFF 46%,rgba(232,236,240,.9) 62%,rgba(196,202,209,.72) 82%,rgba(160,166,174,.6) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;opacity:0;clip-path:inset(-40% 0 100% 0);transform:translate3d(0,12px,0) scale(1.04)}
+/* line-height:.88 é mais apertado que a caixa natural da fonte (pra "GB" ficar compacto
+   dentro do anel) — em algumas plataformas/fallbacks o topo do "G"/"B" ultrapassa essa
+   caixa e era cortado pelo clip-path (bug: topo do GB cortado, mais visível em mobile
+   por causa da fonte/rasterização do navegador). O inset de cima só existe pra animar a
+   revelação de cima pra baixo junto com o de baixo — não precisa ser 0: -40% dá folga
+   de sobra pra qualquer ultrapassagem sem mudar a animação (o "-12%" no estado revelado
+   também é só folga embaixo, já existia). */
+.gb-intro-layer.is-lit .gb-intro__mono{opacity:1;clip-path:inset(-40% 0 -12% 0);transform:none;transition:clip-path 760ms cubic-bezier(.22,.61,.36,1),transform 760ms cubic-bezier(.22,.61,.36,1),opacity 480ms var(--ease-standard)}
 .gb-intro__monowrap{--gb-intro-circle:176px;position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:calc(var(--gb-intro-circle) + 16px)}
 /* "GB" maiúsculo sem descendentes, com line-height apertado (.88): o box de linha
    fica centralizado pelo flex do wrap, mas a tinta do texto sobra pra cima dele —

@@ -34,7 +34,7 @@
 .kit-case .gb-nav__brand svg{width:16px;height:16px}
 .kit-case .gb-nav{padding-left:var(--content-left)}
 .kit-case .gb-nav__right{margin-left:auto}
-@media (max-width:1024px){.kit-case .gb-nav__brand{flex:none}}
+@media (max-width:1023px){.kit-case .gb-nav__brand{flex:none}}
 
 /* ---------- hero: sobreposição vinculada ao scroll ---------- */
 .kit-chero{display:flex;flex-direction:column;gap:clamp(12px,1.4vw,20px);padding:0}
@@ -58,7 +58,7 @@
    coberta, embora presente no DOM). O spacer é transparente, então mesmo
    entrando na mesma área que a ficha (puxada de volta por margin-top
    negativo, sem alterar a altura do stage) não cobre nada. */
-@media (min-width:1025px){
+@media (min-width:1024px){
   .kit-case--trade-in .kit-chero__reveal{padding-top:80px;margin-bottom:-128px;translate:0 56px}
   /* o degrade de .kit-chero__reveal só cobre até a borda inferior do próprio elemento —
      como os textos dos big numbers aqui são mais longos que os do app-agi, essa borda
@@ -83,7 +83,7 @@
   .kit-case--trade-in .kit-chero__stage + .kit-container{margin-top:calc(-236px + var(--th-fix))}
 }
 /* app-agi: mesmo offset da abertura */
-@media (min-width:1025px){.kit-case--app-agi .kit-chero__reveal{padding-top:100px;margin-bottom:-128px;translate:0 -80px}.kit-case--app-agi .kit-chero__shot{translate:40px 0}}
+@media (min-width:1024px){.kit-case--app-agi .kit-chero__reveal{padding-top:100px;margin-bottom:-128px;translate:0 -80px}.kit-case--app-agi .kit-chero__shot{translate:40px 0}}
 .kit-chero--nostats .kit-chero__sticky{align-content:center;padding-top:0;padding-bottom:clamp(152px,32svh,352px)}
 /* a dobra sobe conforme a altura disponível: telas baixas não cobrem os big numbers */
 @media (min-height:760px){.kit-chero__reveal{margin-top:-24svh}}
@@ -98,7 +98,7 @@
 .kit-chero__text{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;min-width:0;margin-inline:auto}
 .kit-chero__title{margin:0;font-size:clamp(2rem,3.4vw,3.25rem);line-height:1.02;letter-spacing:-.035em;font-weight:var(--fw-bold);color:var(--text-primary);max-width:none}
 .kit-chero__lead{margin:0;color:var(--text-lead);font-size:var(--type-body-lg-size);line-height:1.55;max-width:none}
-@media (max-width:1024px){.kit-chero__lead br,.kit-chero__title br{display:none}.kit-chero__lead{max-width:60ch;text-wrap:pretty}.kit-chero__title{max-width:22ch;text-wrap:balance}}
+@media (max-width:1023px){.kit-chero__lead br,.kit-chero__title br{display:none}.kit-chero__lead{max-width:60ch;text-wrap:pretty}.kit-chero__title{max-width:22ch;text-wrap:balance}}
 .kit-chero__media{min-width:0}
 
 /* big numbers do hero */
@@ -121,7 +121,7 @@
   .kit-hstats{grid-template-columns:1fr}
   .kit-hstat + .kit-hstat{padding-left:0;border-left:0;border-top:1px solid var(--border-subtle)}
 }
-@media (max-height:800px) and (min-width:1025px){
+@media (max-height:800px) and (min-width:1024px){
   .kit-chero__sticky{padding-top:clamp(16px,4svh,56px)}
 }
 
@@ -315,7 +315,7 @@
 @media (max-width:1180px){
   .kit-chero__grid{grid-template-columns:minmax(0,1fr) minmax(0,.86fr);gap:clamp(20px,3vw,40px)}
 }
-@media (max-width:1024px){
+@media (max-width:1023px){
   .kit-chero{gap:var(--space-8);padding-top:calc(var(--nav-height) + clamp(32px,6vw,64px))}
   .kit-chero__sticky{position:static;height:auto}
   .kit-chero--nostats .kit-chero__sticky{padding-bottom:0}
@@ -496,7 +496,7 @@
 .kit-imp__col{grid-column:1;grid-row:1;align-self:start;display:flex;flex-direction:column}
 .kit-csec--wide .kit-imp__title{text-align:left;max-width:24ch;margin:32px 0 clamp(24px,2.6vw,40px);font-size:clamp(1.125rem,1.6vw,1.375rem)}
 .kit-imp{--imp-h:clamp(440px,70vh,760px);--imp-sw:calc(var(--imp-h) * 0.5842);display:grid;grid-template-columns:minmax(0,38fr) minmax(0,62fr);gap:clamp(24px,3vw,56px);align-items:start;margin-top:clamp(4px,1.4vw,18px)}
-@media (min-width:1025px) and (max-width:1439px){.kit-imp{--imp-h:clamp(500px,74vh,640px)}}
+@media (min-width:1024px) and (max-width:1439px){.kit-imp{--imp-h:clamp(500px,74vh,640px)}}
 .kit-imp__list{grid-column:1;grid-row:1;list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 .kit-imp__item{position:relative;border-top:1px solid var(--border-subtle)}
 .kit-imp__item:last-child{border-bottom:1px solid var(--border-subtle)}
@@ -582,7 +582,7 @@
 /* item ativo: verde, semibold e um degrau maior — o line-height fixo evita salto vertical */
 .kit-cindex__lnk[aria-current="location"]{color:var(--green-signal-text);font-weight:var(--fw-semibold);font-size:0.9375rem;letter-spacing:-0.005em}
 .kit-cindex__lnk:focus-visible{outline:2px solid var(--green-signal-text);outline-offset:3px;border-radius:var(--radius-sm)}
-@media (min-width:1025px){
+@media (min-width:1024px){
   /* a coluna do índice acompanha a margem natural da página, com um piso que garante
      espaço para os rótulos — nunca sobrepõe o conteúdo, nunca abre vão além do necessário */
   .kit-case--index{--cindex-top:clamp(12px,1.6vw,24px);--cindex-reserve:max(100px,calc(var(--page-slack) + var(--page-gutter)));--cindex-slack:max(0px,calc((100vw - 2 * var(--cindex-reserve) - var(--container-max))/2))}
@@ -613,7 +613,7 @@
 .kit-cbax__slide .kit-cba__item img{flex:1;min-height:0;height:auto;object-fit:cover;object-position:50% 0}
 
 /* notebooks (viewport baixa): menos moldura vertical para as telas ganharem tamanho */
-@media (min-width:1025px) and (max-height:900px){
+@media (min-width:1024px) and (max-height:900px){
   .kit-cbax__stage{padding-top:0;padding-bottom:6px}
   .kit-csec:has(.kit-cbax) .kit-cbax:not(.kit-cbax--solo) .kit-cbax__stage{height:calc(100vh - var(--nav-height) - 12px);min-height:0}
   .kit-cbax__slide{padding-bottom:18px}
@@ -623,7 +623,7 @@
 }
 
 /* o palco pode ocupar até a borda direita da página: telas maiores sem mexer na coluna do índice */
-@media (min-width:1025px){.kit-case--index .kit-cbax{margin-right:calc(-1 * (var(--page-slack) + var(--page-gutter)))}}
+@media (min-width:1024px){.kit-case--index .kit-cbax{margin-right:calc(-1 * (var(--page-slack) + var(--page-gutter)))}}
 
 /* a seção que abre com o carrossel começa mais alta */
 .kit-csec:has(.kit-cbax){padding-top:clamp(40px,4.4vw,72px);padding-bottom:clamp(56px,6.4vw,104px)}

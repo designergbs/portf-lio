@@ -27,7 +27,7 @@
       },
       hero: {
         availability: "Disponível para oportunidades",
-        propLines: ["Há mais de 7 anos, conecto pessoas, negócios e tecnologia por", "meio de experiências digitais."]
+        propLines: ["Há mais de 7 anos, conecto pessoas, negócios e tecnologia", "por meio de experiências digitais."]
       },
       about: { specialties: "Especialidades" },
       sections: {

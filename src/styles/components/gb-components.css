@@ -64,7 +64,9 @@
 .gb-tag--interactive{cursor:default}
 .gb-tag--interactive:hover{background:var(--surface-hover);border-color:var(--border-strong);color:var(--text-primary);transform:translateY(-1px)}
 .gb-tag--interactive:hover svg{color:var(--text-primary)}
-@media (max-width:768px){.gb-tag--lg{height:42px;padding:0 var(--space-4);font-size:var(--type-body-sm-size)}}
+/* só no mobile "pequeno" de verdade (<=640, mesmo corte usado no resto do site) —
+   entre 641 e 768 essa tag ficava maior que no tablet/desktop por engano */
+@media (max-width:640px){.gb-tag--lg{height:42px;padding:0 var(--space-4);font-size:var(--type-body-sm-size)}}
 
 /* ---------- availability indicator ---------- */
 .gb-avail{display:inline-flex;align-self:flex-start;width:fit-content;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--radius-pill);background:rgba(0,12,5,0.58);border:var(--border-width) solid rgba(10,207,131,0.32);color:var(--text-signal);font-family:var(--font-mono);font-size:11px;letter-spacing:var(--type-mono-tracking);text-transform:none}
@@ -179,6 +181,11 @@ body{overflow-x:clip}
 @media (max-width:1440px){:root{--rail-offset:8px;--rail-clearance:12px;--page-gutter:clamp(16px,1.6vw,24px) /* @kind spacing */}}
 @media (max-width:1280px){:root{--rail-offset:8px;--rail-clearance:10px}}
 @media (max-width:1024px){:root{--rail-offset:8px;--rail-clearance:0px}.gb-page{padding-right:0}}
+/* tablet: margem lateral fixa (não o clamp fluido usado no resto das telas) —
+   40px de 641 a 1023, 56px exatamente em 1024 (largura de exceção: mesmo trilho/hero/
+   Sobre do tablet, mas com respiro um pouco maior) */
+@media (min-width:641px) and (max-width:1023px){:root{--page-gutter:40px}}
+@media (min-width:1024px) and (max-width:1024px){:root{--page-gutter:56px}}
 /* container padrão de conteúdo — centralizado dentro da largura útil */
 .gb-container{width:100%;box-sizing:border-box;max-width:var(--container-max);margin-inline:auto;padding-inline:var(--page-gutter)}
 .gb-container--narrow{max-width:var(--container-narrow)}
@@ -252,14 +259,16 @@ body{overflow-x:clip}
    (ver @media max-width:400px abaixo) — no resto continua só texto, como hoje. */
 .gb-nav__right .gb-btn--primary .gb-btn__icon{display:none}
 @media (max-width:1100px){.gb-nav__brand > span:not(.gb-wm-mask):not(.gb-nav__brand-compact){display:none}.gb-nav__brand--morph > span:not(.gb-wm-mask):not(.gb-nav__brand-compact){display:inline-block}}
-@media (max-width:1024px){.gb-nav{gap:var(--space-3)}.gb-nav__links{display:none}.gb-nav__brand{flex:1 1 auto;min-width:0}.gb-nav__right{min-width:0;flex:none}}
+@media (max-width:1023px){.gb-nav{gap:var(--space-3)}.gb-nav__links{display:none}.gb-nav__brand{flex:1 1 auto;min-width:0}.gb-nav__right{min-width:0;flex:none}}
 @media (max-width:520px){.gb-nav__brand{min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:0.6875rem}.gb-nav__right .gb-btn--secondary{display:none}.gb-nav__right .gb-btn{padding:0 var(--space-3)}}
 
 /* ---------- side rail ---------- */
 /* horizontalmente centrado na calha entre a borda da viewport e o conteúdo:
    left = --content-left / 2, com translateX(-50%) e piso de segurança na borda */
 .gb-rail{position:fixed;left:max(calc(var(--rail-offset) + var(--rail-width) / 2),var(--rail-center));top:50%;transform:translate(-50%,-50%);z-index:80;display:flex;flex-direction:column;gap:var(--space-1);padding:var(--space-2);background:rgba(245,245,245,0.03);border:1px solid rgba(214,235,253,0.19);border-radius:var(--radius-pill);backdrop-filter:blur(3px) saturate(1.1) brightness(1.15);box-shadow:none}
-/* <=1024px: o trilho deixa a lateral e vira dock inferior (mesmas funções, sem sobrepor conteúdo) */
+/* <=1024px: o trilho deixa a lateral e vira dock inferior (mesmas funções, sem sobrepor
+   conteúdo) — exceção à regra geral de "1024 = desktop": nessa largura ainda não sobra
+   espaço lateral suficiente para o trilho vertical sem apertar o conteúdo. */
 @media (max-width:1024px){
   .gb-rail{flex-direction:row;left:50%;right:auto;top:auto;bottom:max(var(--space-3),env(safe-area-inset-bottom));transform:translateX(-50%);max-width:calc(100vw - 2 * var(--page-gutter));overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
   .gb-rail::-webkit-scrollbar{display:none}
@@ -291,7 +300,7 @@ body{overflow-x:clip}
 .gb-field__input::placeholder,.gb-field__textarea::placeholder{color:var(--text-muted)}
 .gb-field__input:hover,.gb-field__textarea:hover{border-color:var(--border-strong)}
 .gb-field__input:focus,.gb-field__textarea:focus{outline:none;border-color:var(--text-primary);background:var(--surface-2)}
-@media (max-width:1024px){.gb-contact{grid-template-columns:1fr;gap:var(--space-10);padding:var(--space-8)}}
+@media (max-width:1023px){.gb-contact{grid-template-columns:1fr;gap:var(--space-10);padding:var(--space-8)}}
 
 /* ---------- footer ---------- */
 .gb-footer{border-top:0;padding:0 var(--page-gutter) var(--space-10);background:var(--bg-page);display:flex;flex-direction:column;gap:var(--space-10)}
@@ -343,7 +352,7 @@ body{overflow-x:clip}
 .gb-totop:focus-visible{outline:2px solid var(--text-primary);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.gb-totop,.gb-totop__label,.gb-totop > span{transition:none}}
 /* <=1024px: o gb-rail vira dock inferior (ver ---------- side rail ----------); sobe o botão pra não sobrepor */
-@media (max-width:1024px){
+@media (max-width:1023px){
   .gb-totop{bottom:calc(max(var(--space-3),env(safe-area-inset-bottom)) + 60px + var(--space-3))}
   /* home em mobile já tem o dock inferior pra navegar rápido; some só aqui — cases mantêm */
   .gb-totop--home{display:none}
@@ -404,7 +413,7 @@ body{overflow-x:clip}
 .gb-caserow__media img{width:100%;height:100%;object-fit:cover;opacity:.8;filter:grayscale(100%) contrast(1.02);transform:scale(1);transition:transform var(--dur-image) var(--ease-out-quart),filter var(--dur-image) var(--ease-out-quart),opacity var(--dur-image) var(--ease-out-quart)}
 .gb-caserow__link:hover .gb-caserow__media img,.gb-caserow__link:focus-visible .gb-caserow__media img{transform:scale(1.05);filter:grayscale(0%) contrast(1.08);opacity:1}
 .gb-caserow__link:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
-@media (max-width:1024px){.gb-caserow__link{grid-template-columns:minmax(0,45fr) minmax(0,55fr);gap:var(--space-6);min-height:260px}}
+@media (max-width:1023px){.gb-caserow__link{grid-template-columns:minmax(0,45fr) minmax(0,55fr);gap:var(--space-6);min-height:260px}}
 @media (max-width:768px){.gb-caserow__link{grid-template-columns:1fr;padding:var(--space-6) 0}.gb-caserow__media{order:-1}.gb-caserow__link:hover .gb-caserow__title,.gb-caserow__link:focus-visible .gb-caserow__title{transform:translateX(4px)}}
 @media (prefers-reduced-motion:reduce){.gb-caserow__title,.gb-caserow__media img{transition:none;transform:none !important}}
 
@@ -430,8 +439,9 @@ a.gb-circlabel{cursor:pointer}
 .gb-circlabel:hover .gb-circlabel__ring{animation-play-state:paused}
 .gb-circlabel:hover .gb-circlabel__icon{color:var(--text-primary);transform:translate3d(4px,4px,0)}
 .gb-circlabel:focus-visible{outline:2px solid var(--focus-ring);outline-offset:6px;border-radius:var(--radius-pill)}
-@media (max-width:1024px){.gb-circlabel{width:118px !important;height:118px !important}}
-@media (max-width:768px){.gb-circlabel{width:100px !important;height:100px !important}}
+/* selo circular decorativo: mesmo tamanho/formato do original em qualquer tela
+   (antes encolhia em telas menores: 118px <=1023px, 100px <=768px) */
+@media (max-width:1023px){.gb-circlabel{width:132px !important;height:132px !important}}
 @media (prefers-reduced-motion:reduce){.gb-circlabel__ring{animation:none}.gb-circlabel:hover .gb-circlabel__icon{transform:none}}
 
 /* selo circular: lettering girando devagar */
@@ -502,12 +512,14 @@ a.gb-circlabel{cursor:pointer}
 .has-reveal-js [data-reveal-group].is-visible [data-reveal-card]:nth-child(2){transition-delay:60ms}
 .has-reveal-js [data-reveal-group].is-visible [data-reveal-card]:nth-child(3){transition-delay:120ms}
 .has-reveal-js [data-reveal-card].reveal-done{will-change:auto}
-@media (max-width:1024px){.has-reveal-js [data-reveal-card]{transform:translate3d(0,4rem,0)}}
+@media (max-width:1023px){.has-reveal-js [data-reveal-card]{transform:translate3d(0,4rem,0)}}
 /* nome do footer: rolagem horizontal contínua em loop, sem animação de entrada, igual
    em mobile e desktop. line-height:0.95 no item deixa a caixa de linha mais baixa que a
    extensão real das letras (maiúsculas em display bold) — sem essa folga, overflow:hidden
    corta o topo do texto. */
-.gb-footer__marquee{display:block;width:100%;overflow:hidden;padding-top:2vw}
+/* full-bleed de verdade: 100vw, ignorando o padding lateral do .gb-footer (que tem
+   padding:0 var(--page-gutter) ...) e qualquer variação de --page-gutter por breakpoint */
+.gb-footer__marquee{display:block;width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;padding-top:2vw}
 .gb-footer__marquee-track{display:flex;width:max-content;animation:gb-footer-marquee 32s linear infinite}
 .gb-footer__marquee-item{display:inline-block;flex:none;padding-right:32px;font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;line-height:0.95;font-size:clamp(1.4rem,calc(var(--page-avail) * 0.068),9rem);color:#000000;-webkit-text-fill-color:#000000;-webkit-text-stroke:0.75px var(--gray-5);white-space:nowrap}
 @media (max-width:640px){
