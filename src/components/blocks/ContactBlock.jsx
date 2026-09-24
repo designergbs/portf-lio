@@ -41,7 +41,17 @@ export function ContactBlock({
       <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-6)", alignItems: "center", textAlign: "center" }}>
         <AvailabilityBadge available={available} label={availabilityLabel} />
         <h2 className="gb-contact__title">{title}</h2>
-        {description ? <p style={{ color: "var(--text-secondary)", fontSize: "var(--type-body-lg-size)", lineHeight: "var(--type-body-lg-lh)", maxWidth: "52ch" }}>{description}</p> : null}
+        {description ? (
+          <p style={{ color: "var(--text-secondary)", fontSize: "var(--type-body-lg-size)", lineHeight: "var(--type-body-lg-lh)", maxWidth: "52ch" }}>
+            {String(description).split("\n").map((line, i) => (
+              <React.Fragment key={i}>
+                {i ? " " : null}
+                {i ? <br className="gb-contact__break" /> : null}
+                {line}
+              </React.Fragment>
+            ))}
+          </p>
+        ) : null}
         <div className="gb-contact__actions" style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", justifyContent: "center" }}>
           {cta ? <Button className="gb-contact__cta" variant="primary" size="lg" href={cta.href} icon={cta.icon || "calendar"} iconPosition="left">{cta.label}</Button> : null}
         </div>

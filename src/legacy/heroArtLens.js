@@ -339,11 +339,11 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       phase += dt * 1.5;
 
       h += (proximityTarget - h) * (1 - Math.exp(-dt * 6));
-      /* posição real do mouse/dedo, sem suavização — mesma velocidade "normal" já usada
-         pelo círculo do cursor e pelo ponto central da lupa, para não ter dois ritmos
-         diferentes na mesma interação. */
-      pxS = px;
-      pyS = py;
+      /* leve atraso ao seguir o mouse/dedo (mesmo ritmo do círculo do cursor e do ponto
+         central da lupa, pra não ter dois ritmos diferentes na mesma interação) — mais
+         lento que 1:1 instantâneo, mas sem ficar "flutuando" como antes. */
+      pxS += (px - pxS) * (1 - Math.exp(-dt * 7));
+      pyS += (py - pyS) * (1 - Math.exp(-dt * 7));
 
       /* mesma inclinação em qualquer dispositivo: deriva circular orgânica em repouso
          (um único ângulo alimenta X e Y) + "placa pressionada" no mouse/dedo (canto
@@ -398,10 +398,9 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       const targetAmount = insideImage ? 1 : 0;
       amount += (targetAmount - amount) * (1 - Math.exp(-dt * 10));
 
-      /* ponto central da lupa: posição real do mouse (não suavizada) — velocidade de
-         cursor padrão, sem atraso perceptível; smoothCx/smoothCy seguem existindo só
-         para estimar a direção do movimento (ângulo do shader) sem tremer a cada frame. */
-      const centerLoc = rawLoc;
+      /* ponto central da lupa: posição suavizada do mouse/dedo — mesmo leve atraso do
+         círculo do cursor (smoothCx/smoothCy), pra tudo se mover junto no mesmo ritmo. */
+      const centerLoc = localPoint(smoothCx, smoothCy);
 
       /* reflexos naturais: luz ambiente que segue a inclinação em repouso, encolhendo
          suavemente para a posição real do cursor quando a lupa está ativa — poucos
@@ -432,7 +431,7 @@ export function useHeroArtLens({ artRef, sceneRef, imgRef, canvasRef }) {
       const minR = maxR * 0.55;
       const r = minR + (maxR - minR) * amount;
       if (ring) ring.setAttribute("r", Math.max(0, r).toFixed(2));
-      lens.style.transform = "translate3d(" + (cx - 55).toFixed(1) + "px," + (cy - 55).toFixed(1) + "px,0)";
+      lens.style.transform = "translate3d(" + (smoothCx - 55).toFixed(1) + "px," + (smoothCy - 55).toFixed(1) + "px,0)";
 
       if (glReady && boxW > 0 && boxH > 0) {
         const dpr = Math.min(window.devicePixelRatio || 1, 3);

@@ -4,7 +4,12 @@
    (sem "trava" no maior ponto já alcançado). */
 (function(){
   var el=null,raf=0,beam=null;
-  function upd(){raf=0;if(!el)return;var r=el.getBoundingClientRect(),span=Math.max(1,el.clientHeight),top=r.top+el.clientTop;var vh=window.innerHeight,start=vh*0.7,dist=Math.max(1,(vh*0.35+span)/2);var p=(start-top)/dist;p=p<0?0:(p>1?1:p);el.style.setProperty("--lead-prog",p.toFixed(4));el.style.setProperty("--lead-px",(p>=0.999?span+40:span*p).toFixed(1)+"px");if(p>=0.999){document.documentElement.setAttribute("data-lead-prog-done","");}else{document.documentElement.removeAttribute("data-lead-prog-done");}if(beam){beam.style.transform="none";beam.style.opacity=p<=0?0:(p>=1?0:(p>0.92?(1-p)/0.08:1));}}
+  /* mesma linha de gatilho e normalização pelo próprio tamanho do bloco que a timeline
+     de experiência usa (scrollY + 55% da viewport, dividido pela altura real do
+     elemento) — a fórmula antiga (70% da viewport + distância combinando viewport e
+     conteúdo) acendia antes da hora, mais perceptível no mobile onde o bloco ocupa
+     proporcionalmente mais altura da tela. */
+  function upd(){raf=0;if(!el)return;var r=el.getBoundingClientRect(),span=Math.max(1,el.clientHeight),docTop=r.top+window.scrollY;var vh=window.innerHeight,line=window.scrollY+vh*0.55;var p=(line-docTop)/span;p=p<0?0:(p>1?1:p);el.style.setProperty("--lead-prog",p.toFixed(4));el.style.setProperty("--lead-px",(p>=0.999?span+40:span*p).toFixed(1)+"px");if(p>=0.999){document.documentElement.setAttribute("data-lead-prog-done","");}else{document.documentElement.removeAttribute("data-lead-prog-done");}if(beam){beam.style.transform="none";beam.style.opacity=p<=0?0:(p>=1?0:(p>0.92?(1-p)/0.08:1));}}
   function tick(){if(!raf)raf=requestAnimationFrame(upd);}
   var bound=false;
   function attach(){var found=document.querySelector(".kit-about__body .kit-lead-group")||document.querySelector(".kit-lead-group");if(found!==el){el=found;beam=null;}    if(!el)return;
@@ -153,7 +158,10 @@ setInterval(boot2,400);boot2();})();
     var tipIdx = 0;
     nodes.forEach(function(n, i){
       var t = (n.__c - firstC) / span;
-      var on = p >= t - 0.001;
+      /* o primeiro nó tem t=0, então "p >= t - 0.001" já batia (quase) sempre —
+         acendia por padrão antes de qualquer scroll. Só ele exige p>0 de verdade
+         (o trilho já começou a preencher); os demais mantêm a mesma tolerância. */
+      var on = i === 0 ? p > 0.001 : p >= t - 0.001;
       var item = n.closest('.gb-timeline__item');
       if(item) item.classList.toggle('is-lit', on);
       if(on){

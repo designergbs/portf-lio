@@ -69,6 +69,9 @@
 @media (hover:hover) and (pointer:fine){
   .gb-a11y__reset:hover{background:var(--green-signal-wash);border-color:color-mix(in oklch,var(--green-signal-text) 55%,transparent);color:var(--green-signal-text)}
 }
+/* :active cobre o toque sem o problema do :hover preso — dispara só enquanto o dedo
+   está apoiado e some sozinho ao soltar, dando o feedback que faltava no mobile. */
+.gb-a11y__reset:active{background:var(--green-signal-wash);border-color:color-mix(in oklch,var(--green-signal-text) 55%,transparent);color:var(--green-signal-text)}
 
 /* trava o scroll (e o scrollbar que rouba largura do overlay fixo) enquanto qualquer
    painel (idioma ou acessibilidade) está aberto — sem isso, a barra de rolagem que

@@ -105,7 +105,7 @@
       process: { steps: ["DISCOVER & DEFINE", "DEVELOP & VALIDATE", "DELIVER & EVOLVE"] },
       contact: {
         availability: "Open to new challenges", title: "Want to grab a chat?",
-        description: "Want to talk about an opportunity or learn more about\nmy work? Just pick the best time on the calendar ;)",
+        description: "Want to talk about an opportunity or learn more about my work?\nJust pick the best time on the calendar ;)",
         cta: "Schedule a chat"
       },
       footer: { note: "@2026 ALL RIGHTS RESERVED \u2022 THIS SITE IS A STUDY EXPERIMENT", copied: "Copied!", backToTop: "Back to top" },

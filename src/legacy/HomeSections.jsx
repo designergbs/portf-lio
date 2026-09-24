@@ -257,10 +257,10 @@ function Tools() {
               <div className="gb-marquee" data-reveal-card>
                 <div className="gb-marquee__track gb-marquee__track--left" role="list" aria-label={window.gbT("sections.toolsAria")}>
                   <div className="gb-marquee__set kit-tools">
-                    {window.GB.tools.map((t) => <ToolCard key={t.name} name={t.name} icon={t.icon} stage={t.stage} />)}
+                    {[0, 1, 2].map((r) => window.GB.tools.map((t) => <ToolCard key={r + "-" + t.name} name={t.name} icon={t.icon} stage={t.stage} />))}
                   </div>
                   <div className="gb-marquee__set gb-marquee__set--clone kit-tools" aria-hidden="true">
-                    {window.GB.tools.map((t) => <ToolCard key={"c-" + t.name} name={t.name} icon={t.icon} stage={t.stage} />)}
+                    {[0, 1, 2].map((r) => window.GB.tools.map((t) => <ToolCard key={"c" + r + "-" + t.name} name={t.name} icon={t.icon} stage={t.stage} />))}
                   </div>
                 </div>
               </div>
