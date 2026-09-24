@@ -50,6 +50,7 @@
       circularGoTo: "Ir para ",
       caseRowOpenSuffix: " \u2014 abrir case",
       caseCommon: {
+        skipToContent: "Pular para o conteúdo",
         crumbsAria: "Você está aqui", home: "Início", projects: "Projetos",
         metaLabels: ["Empresa", "Período", "Papel", "Time", "Plataformas"],
         teamPlaceholder: "[placeholder: composição do time]", platformsPlaceholder: "[placeholder: plataformas]",
@@ -114,6 +115,7 @@
       circularGoTo: "Go to ",
       caseRowOpenSuffix: " \u2014 open case",
       caseCommon: {
+        skipToContent: "Skip to content",
         crumbsAria: "You are here", home: "Home", projects: "Projects",
         metaLabels: ["Company", "Period", "Role", "Team", "Platforms"],
         teamPlaceholder: "[placeholder: team composition]", platformsPlaceholder: "[placeholder: platforms]",

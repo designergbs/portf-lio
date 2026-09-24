@@ -16,6 +16,7 @@ function CaseStudy({ slug, onBack, onOpenCase }) {
         onBrandClick={(e) => { e.preventDefault(); onBack(); }}
         onLinkClick={(e, href) => { e.preventDefault(); onBack(href.replace("#", "")); }}
       />
+      <main id="main-content" tabIndex={-1}>
       <article>
         <header className="kit-casehero">
           <div className="kit-container kit-casehero__inner">
@@ -73,6 +74,7 @@ function CaseStudy({ slug, onBack, onOpenCase }) {
           </div>
         </section>
       </article>
+      </main>
       <SiteFooter brand={window.GB.brand} description="" />
     </div>
   );

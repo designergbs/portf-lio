@@ -248,5 +248,11 @@ setInterval(boot2,400);boot2();})();
     var nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 96;
     var y = Math.max(target.getBoundingClientRect().top + window.scrollY - nav, 0);
     if(reduce){ window.scrollTo(0, y); } else { smoothScrollTo(y, 1100); }
+    /* preventDefault() acima também cancela o passo nativo de foco do navegador
+       ao seguir um link "#id" — sem isto, o skip-link ("Pular para o conteúdo")
+       só rolava a tela sem levar o foco do teclado junto. .focus() não faz nada
+       em elementos sem tabindex (a maioria dos alvos "#id" do site), então é
+       seguro chamar aqui pra qualquer link, não só o skip-link. */
+    target.focus({ preventScroll: true });
   });
 })();

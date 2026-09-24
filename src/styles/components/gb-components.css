@@ -452,6 +452,15 @@ a.gb-circlabel{cursor:pointer}
 /* heading acessível apenas para leitores de tela */
 .gb-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
+/* "Pular para o conteúdo": fora da tela até receber foco pelo teclado (Tab) */
+.gb-skip-link{position:fixed;top:0;left:0;z-index:1000;padding:12px 20px;background:#000;color:var(--text-primary);font-size:var(--type-body-sm-size);font-weight:var(--fw-medium);border-bottom-right-radius:var(--radius-md);transform:translateY(-100%);transition:transform var(--dur-base) var(--ease-standard)}
+.gb-skip-link:focus{transform:translateY(0);outline:2px solid var(--focus-ring);outline-offset:-2px}
+@media (prefers-reduced-motion:reduce){.gb-skip-link{transition:none}}
+/* alvo do skip-link: só recebe foco por programação (tabindex="-1"), nunca pelo
+   Tab normal — o salto de scroll já é o indicador, sem precisar de anel visível
+   em torno do bloco inteiro de conteúdo. */
+main#main-content:focus{outline:none}
+
 /* rail: estado ativo e transições */
 .gb-rail .gb-iconbtn{transition:background var(--dur-base) var(--ease-standard),color var(--dur-base) var(--ease-standard),transform var(--dur-base) var(--ease-out-quart)}
 .gb-rail .gb-iconbtn.is-active{background:var(--surface-hover);color:var(--text-primary);border-color:var(--border-subtle);transform:none}

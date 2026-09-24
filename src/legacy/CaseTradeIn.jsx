@@ -853,6 +853,7 @@ function CaseTradeIn({ onBack, onOpenCase, nextCase, data }) {
         onBrandClick={(e) => { e.preventDefault(); onBack("cases"); }}
       />
       <CaseProgress />
+      <main id="main-content" tabIndex={-1}>
       <article onClick={onImgClick}>
         <header className={c.hideHeroStats ? "kit-chero kit-chero--nostats" : "kit-chero"}>
           <div className="kit-chero__stage">
@@ -920,6 +921,7 @@ function CaseTradeIn({ onBack, onOpenCase, nextCase, data }) {
           </div>
         </section>
       </article>
+      </main>
       {zoom ? (
         <div className="kit-lightbox" role="dialog" aria-modal="true" aria-label={window.gbT("caseCommon.enlargeImage")} onClick={() => setZoom(null)}>
           <button type="button" className="kit-lightbox__close" aria-label={window.gbT("caseCommon.closeImage")} onClick={() => setZoom(null)}><Icon name="x" size={22} /></button>

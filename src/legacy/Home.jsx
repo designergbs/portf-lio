@@ -31,7 +31,7 @@ function Home({ onOpenCase, activeId }) {
       <TopNav links={window.GB.nav} ctaPrimary={{ label: window.gbT("buttons.talk"), href: "#contato", icon: "message-circle" }} brand={window.GB.brand} brandMorph heroSelector=".kit-hero" />
       <SideRail items={window.GB.rail} activeId={activeId || current} onSelect={setCurrent} />
       <window.Hero />
-      <main>
+      <main id="main-content" tabIndex={-1}>
         <S.Tools />
         <S.Cases onOpenCase={onOpenCase} />
         <S.Experience />
