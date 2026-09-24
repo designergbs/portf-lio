@@ -169,7 +169,7 @@ function Cases({ onOpenCase }) {
               image={c.image}
               imageAlt={c.imageAlt}
               priority={i === 0}
-              href={"#case-" + c.slug}
+              href={"#case=" + c.slug}
               onClick={(e) => { e.preventDefault(); onOpenCase(c.slug); }}
             />
         ))}

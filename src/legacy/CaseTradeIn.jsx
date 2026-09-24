@@ -808,7 +808,14 @@ function CaseIndex({ items }) {
     setActive(id);
     lock.current = Date.now() + (reduce ? 0 : 900);
     window.scrollTo({ top: Math.max(t.getBoundingClientRect().top + window.scrollY - navOffset() - 24, 0), behavior: reduce ? "auto" : "smooth" });
-    if (window.history && window.history.replaceState) window.history.replaceState(null, "", "#" + id);
+    if (window.history && window.history.replaceState) {
+      /* preserva o "case=slug" já presente na URL — sem isso, o clique num
+         item do índice sobrescrevia o hash inteiro com só a âncora da seção,
+         perdendo o case ao dar refresh (ver App.jsx, que deriva a view do hash). */
+      const m = /case=([\w-]+)/.exec(location.hash);
+      const prefix = m ? "case=" + m[1] + "&" : "";
+      window.history.replaceState(null, "", "#" + prefix + id);
+    }
   }, []);
   if (items.length < 2) return null;
   return (
@@ -889,7 +896,7 @@ function CaseTradeIn({ onBack, onOpenCase, nextCase, data }) {
         </div>
         <section className="kit-csec">
           <div className="kit-container kit-cend">
-            <button type="button" className="kit-cnext" onClick={() => onOpenCase(nextCase.slug)}>
+            <a className="kit-cnext" href={"#case=" + nextCase.slug} onClick={(e) => { e.preventDefault(); onOpenCase(nextCase.slug); }}>
               <span>
                 <span className="gb-label">{window.gbT("caseCommon.nextCaseWord")}</span>
                 <span className="kit-cnext__title">{nextCase.title}</span>
@@ -898,7 +905,7 @@ function CaseTradeIn({ onBack, onOpenCase, nextCase, data }) {
                 {window.gbT("caseCommon.openCaseWord")}
                 <span className="kit-cnext__circle" aria-hidden="true"><Icon name="arrow-up-right" /></span>
               </span>
-            </button>
+            </a>
           </div>
         </section>
         <section className="kit-csec" id="contato-secao">
