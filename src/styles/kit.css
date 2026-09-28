@@ -582,40 +582,54 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 }
 
 /* ---------- abertura da home (cortina + monograma) ---------- */
-.gb-intro-layer{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#000;overflow:hidden;transform:translate3d(0,0,0);will-change:transform;touch-action:none}
+.gb-intro-layer{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:#030605;overflow:hidden;transform:translate3d(0,0,0);will-change:transform;touch-action:none}
 html.gb-intro-rise .gb-intro-layer{transform:translate3d(0,-100%,0);transition:transform 920ms cubic-bezier(.76,0,.24,1)}
 html.gb-intro-reduce .gb-intro-layer{opacity:0;transition:opacity 200ms linear}
-.gb-intro__grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(#1c1c1c 1px,transparent 1px),linear-gradient(90deg,#1c1c1c 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(54% 48% at 50% 50%,#000 0,rgba(0,0,0,.3) 58%,transparent 84%);mask-image:radial-gradient(54% 48% at 50% 50%,#000 0,rgba(0,0,0,.3) 58%,transparent 84%);opacity:0;transition:opacity 900ms var(--ease-standard) 120ms}
-.gb-intro-layer.is-lit .gb-intro__grid{opacity:.45}
+/* fundo quadriculado estático: linhas de 1px, mais evidentes nas extremidades e
+   apagadas perto do centro (vinheta radial), deixando a região atrás do logo limpa
+   e preta — sem disco/borda desenhados por trás, só a máscara cuidando disso */
+.gb-intro__grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(color-mix(in srgb,var(--green-signal-text) 42%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--green-signal-text) 42%,transparent) 1px,transparent 1px);background-size:54px 54px;-webkit-mask-image:radial-gradient(circle closest-side at 50% 50%,transparent 0,transparent 25%,rgba(0,0,0,.55) 51%,#000 100%);mask-image:radial-gradient(circle closest-side at 50% 50%,transparent 0,transparent 25%,rgba(0,0,0,.55) 51%,#000 100%);opacity:.1}
 .gb-intro__stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:24px}
 html.gb-intro-rise .gb-intro__stage{opacity:0;transform:translate3d(0,-24px,0);transition:opacity 400ms var(--ease-standard),transform 760ms cubic-bezier(.76,0,.24,1)}
-.gb-intro__mono{font-family:"Armstrong","Geist","Inter",ui-sans-serif,system-ui,sans-serif;font-weight:800;font-size:44px;line-height:.88;letter-spacing:-.05em;text-transform:uppercase;background:linear-gradient(180deg,#FFFFFF 0%,#FFFFFF 46%,rgba(232,236,240,.9) 62%,rgba(196,202,209,.72) 82%,rgba(160,166,174,.6) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;opacity:0;clip-path:inset(-40% 0 100% 0);transform:translate3d(0,12px,0) scale(1.04)}
-/* line-height:.88 é mais apertado que a caixa natural da fonte (pra "GB" ficar compacto
-   dentro do anel) — em algumas plataformas/fallbacks o topo do "G"/"B" ultrapassa essa
-   caixa e era cortado pelo clip-path (bug: topo do GB cortado, mais visível em mobile
-   por causa da fonte/rasterização do navegador). O inset de cima só existe pra animar a
-   revelação de cima pra baixo junto com o de baixo — não precisa ser 0: -40% dá folga
-   de sobra pra qualquer ultrapassagem sem mudar a animação (o "-12%" no estado revelado
-   também é só folga embaixo, já existia). */
-.gb-intro-layer.is-lit .gb-intro__mono{opacity:1;clip-path:inset(-40% 0 -12% 0);transform:none;transition:clip-path 760ms cubic-bezier(.22,.61,.36,1),transform 760ms cubic-bezier(.22,.61,.36,1),opacity 480ms var(--ease-standard)}
-.gb-intro__monowrap{--gb-intro-circle:176px;position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:calc(var(--gb-intro-circle) + 16px)}
-/* "GB" maiúsculo sem descendentes, com line-height apertado (.88): o box de linha
-   fica centralizado pelo flex do wrap, mas a tinta do texto sobra pra cima dele —
-   empurra um pouco pra baixo pra centralizar opticamente dentro do anel/disco. */
-.gb-intro__monowrap .gb-intro__mono{position:relative;z-index:3;margin-top:0.1em}
-/* disco preto sólido atrás do monograma, com traço verde fino; o pulso aparece por trás dele */
-.gb-intro__disc{position:absolute;left:50%;top:50%;z-index:1;width:calc(var(--gb-intro-circle) * .62);aspect-ratio:1;border-radius:50%;background:#000;border:1px solid color-mix(in oklch,var(--green-signal-text) 55%,transparent);pointer-events:none;transform:translate(-50%,-50%);opacity:0;transition:opacity 500ms var(--ease-standard) 200ms}
-.gb-intro-layer.is-lit .gb-intro__disc{opacity:1}
-/* anel fino em volta do disco, no espírito do cursor de mouse do site (ponto + anel) */
-.gb-intro__ring{position:absolute;left:50%;top:50%;z-index:1;width:calc(var(--gb-intro-circle) * .86);aspect-ratio:1;border-radius:50%;border:1px solid color-mix(in oklch,var(--green-signal-text) 55%,transparent);pointer-events:none;transform:translate(-50%,-50%) scale(.85);opacity:0;transition:opacity 500ms var(--ease-standard) 260ms,transform 500ms var(--ease-out-quart) 260ms}
-.gb-intro-layer.is-lit .gb-intro__ring{opacity:1;transform:translate(-50%,-50%) scale(1)}
-/* pulso verde de sinal, no mesmo ritmo do indicador da hero */
-.gb-intro__halo{position:absolute;left:50%;top:50%;width:var(--gb-intro-circle);aspect-ratio:1;border-radius:50%;pointer-events:none;opacity:0;will-change:transform,opacity;background:radial-gradient(circle at 50% 50%,color-mix(in oklch,var(--green-signal-text) 48%,transparent) 0%,color-mix(in oklch,var(--green-signal-text) 22%,transparent) 52%,transparent 76%);transform:translate(-50%,-50%);transition:opacity 700ms var(--ease-standard) 240ms}
-.gb-intro__halo::after{content:"";position:absolute;inset:26%;border-radius:50%;background:color-mix(in oklch,var(--green-signal-text) 26%,transparent);animation:gb-signal-wave 2.2s var(--ease-out) infinite}
-.gb-intro-layer.is-lit .gb-intro__halo{opacity:1;animation:gb-intro-halo 2.2s var(--ease-standard) infinite}
-@keyframes gb-intro-halo{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1)}55%{opacity:.85;transform:translate(-50%,-50%) scale(1.09)}}
-.gb-intro__name{margin-right:-.22em;font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8A8A8A;opacity:0;transform:translate3d(0,6px,0)}
-.gb-intro__pct{margin-top:8px;width:min(240px,46vw);text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;color:var(--green-signal-text);font-variant-numeric:tabular-nums;opacity:0;transform:translate3d(0,6px,0)}
+.gb-intro__monowrap{position:relative;display:inline-flex;align-items:center;justify-content:center}
+.gb-intro__mono{position:relative;z-index:3;display:block;width:min(320px,86vw);aspect-ratio:1;opacity:1}
+.gb-intro__dot{position:absolute;width:.8%;height:.8%;border-radius:50%;background:color-mix(in srgb,#f5f5f5 24%,transparent);opacity:1;transform:translate(-50%,-50%);overflow:hidden;will-change:transform}
+.gb-intro__dot>i{position:absolute;inset:0;border-radius:inherit;background:var(--green-signal-text);opacity:0;transform:scale(1)}
+.gb-intro__link{position:absolute;height:1px;background:color-mix(in srgb,var(--green-signal-text) 35%,transparent);box-shadow:0 0 3px color-mix(in srgb,var(--green-signal-text) 15%,transparent);opacity:0;transform:rotate(var(--gb-link-angle)) scaleX(0);transform-origin:left center}
+.gb-intro__halo{position:absolute;inset:4%;border-radius:50%;background:radial-gradient(circle,transparent 45%,color-mix(in srgb,var(--green-signal-text) 19%,transparent) 60%,transparent 72%);opacity:0;pointer-events:none}
+.gb-intro__scanline{display:none}
+/* Variante preservada: formação sequencial G -> B. Ative com ?loader=sequential. */
+.gb-intro--sequential.is-forming .gb-intro__dot:not(.is-on){animation:gb-intro-dot-wave .88s ease var(--gb-wave) forwards}
+.gb-intro--sequential.is-forming .gb-intro__dot.is-on{animation:gb-intro-dot-grow .22s cubic-bezier(.22,.61,.36,1) var(--gb-delay) forwards,gb-intro-dot-impact .88s ease var(--gb-finale) forwards;overflow:visible}
+.gb-intro--sequential.is-forming .gb-intro__dot.is-on>i{animation:gb-intro-dot-bright .22s ease var(--gb-delay) both,gb-intro-color-reveal .75s ease var(--gb-finale) forwards}
+.gb-intro--sequential.is-forming .gb-intro__link{animation:gb-intro-connect .03s linear var(--gb-link-start) both,gb-intro-trail .085s linear var(--gb-link-fade) forwards}
+.gb-intro--sequential.is-forming .gb-intro__halo{animation:gb-intro-halo 1.08s ease-out var(--gb-finale) both}
+/* Variante scanner: os círculos surgem em ordem aleatória no G e B antes da varredura. */
+.gb-intro--scanner .gb-intro__scanline{display:block;position:absolute;left:2%;right:2%;top:2%;z-index:5;height:2px;border-radius:2px;opacity:0;pointer-events:none;background:linear-gradient(90deg,transparent 0%,color-mix(in srgb,var(--green-signal-text) 82%,transparent) 12%,#eafff5 50%,color-mix(in srgb,var(--green-signal-text) 82%,transparent) 88%,transparent 100%);box-shadow:0 0 6px 1px color-mix(in srgb,var(--green-signal-text) 52%,transparent),0 0 18px 3px color-mix(in srgb,var(--green-signal-text) 24%,transparent);will-change:top,opacity,transform}
+.gb-intro--scanner .gb-intro__scanline::before{content:"";position:absolute;left:0;right:0;top:-18px;bottom:-18px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--green-signal-text) 18%,transparent),transparent);filter:blur(7px)}
+.gb-intro--scanner .gb-intro__dot.is-on{background:color-mix(in srgb,#f5f5f5 52%,transparent)}
+.gb-intro--scanner.is-forming .gb-intro__scanline{animation:gb-intro-scanline var(--gb-scan-duration) linear var(--gb-scan-start) both}
+.gb-intro--scanner.is-forming .gb-intro__dot:not(.is-on){animation:gb-intro-scan-pass .48s ease-out var(--gb-scan-delay) both}
+.gb-intro--scanner.is-forming .gb-intro__dot.is-on{animation:gb-intro-dot-grow .32s cubic-bezier(.16,1,.3,1) var(--gb-pre-delay) forwards,gb-intro-dot-impact .88s ease var(--gb-scan-finale) forwards,gb-intro-signal-lock .28s ease var(--gb-signal-lock) forwards;overflow:visible}
+.gb-intro--scanner.is-forming .gb-intro__dot.is-on>i{animation:gb-intro-scan-reveal .4s cubic-bezier(.22,.61,.36,1) var(--gb-scan-delay) forwards,gb-intro-signal-fill .28s ease var(--gb-signal-lock) forwards}
+.gb-intro--scanner.is-forming .gb-intro__link{animation:gb-intro-connect .14s cubic-bezier(.22,.61,.36,1) var(--gb-link-scan) both,gb-intro-trail .22s linear calc(var(--gb-link-scan) + .24s) forwards}
+.gb-intro--scanner.is-forming .gb-intro__halo{animation:gb-intro-halo 1.08s ease-out var(--gb-scan-finale) both}
+@keyframes gb-intro-dot-grow{from{width:.8%;height:.8%}to{width:3.5%;height:3.5%}}
+@keyframes gb-intro-dot-bright{from{opacity:0}to{opacity:.14}}
+@keyframes gb-intro-color-reveal{0%{opacity:.14}35%,100%{opacity:1}}
+@keyframes gb-intro-connect{from{opacity:1;transform:rotate(var(--gb-link-angle)) scaleX(0)}to{opacity:1;transform:rotate(var(--gb-link-angle)) scaleX(1)}}
+@keyframes gb-intro-trail{to{opacity:0}}
+@keyframes gb-intro-scanline{0%{top:2%;opacity:0;transform:scaleX(.2)}5%{opacity:1;transform:scaleX(1)}94%{opacity:1;transform:scaleX(1)}100%{top:98%;opacity:0;transform:scaleX(.35)}}
+@keyframes gb-intro-scan-pass{0%{background:color-mix(in srgb,#f5f5f5 24%,transparent);transform:translate(-50%,-50%) scale(1);box-shadow:none}45%{background:color-mix(in srgb,var(--green-signal-text) 68%,transparent);transform:translate(-50%,-50%) scale(1.75);box-shadow:0 0 9px color-mix(in srgb,var(--green-signal-text) 48%,transparent)}100%{background:color-mix(in srgb,var(--green-signal-text) 32%,transparent);transform:translate(-50%,-50%) scale(1);box-shadow:none}}
+@keyframes gb-intro-scan-reveal{0%{opacity:0;transform:scale(.35)}55%{opacity:.82;transform:scale(1.24);box-shadow:0 0 12px color-mix(in srgb,var(--green-signal-text) 56%,transparent)}100%{opacity:.72;transform:scale(1);box-shadow:0 0 5px color-mix(in srgb,var(--green-signal-text) 24%,transparent)}}
+@keyframes gb-intro-signal-lock{to{background:var(--green-signal-text)}}
+@keyframes gb-intro-signal-fill{from{opacity:.72}to{opacity:1}}
+@keyframes gb-intro-dot-wave{0%{transform:translate(-50%,-50%) scale(1)}35%{background:color-mix(in srgb,var(--green-signal-text) 53%,transparent);transform:translate(-50%,-50%) translate(var(--gb-push-x),var(--gb-push-y)) scale(1.9);box-shadow:0 0 8px color-mix(in srgb,var(--green-signal-text) 40%,transparent)}100%{background:color-mix(in srgb,#f5f5f5 24%,transparent);transform:translate(-50%,-50%) scale(1);box-shadow:none}}
+@keyframes gb-intro-dot-impact{0%{transform:translate(-50%,-50%) scale(1)}25%{transform:translate(-50%,-50%) scale(1.28);filter:brightness(1.7);box-shadow:0 0 20px color-mix(in srgb,var(--green-signal-text) 60%,transparent)}65%{transform:translate(-50%,-50%) scale(.97)}100%{transform:translate(-50%,-50%) scale(1);filter:brightness(1);box-shadow:0 0 7px color-mix(in srgb,var(--green-signal-text) 20%,transparent)}}
+@keyframes gb-intro-halo{0%{opacity:0;transform:scale(.45)}20%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
+.gb-intro__feedback{display:flex;flex-direction:column;align-items:center;gap:10px}
+.gb-intro__name{margin-right:-.22em;font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:color-mix(in srgb,#f5f5f5 52%,transparent);opacity:0;transform:translate3d(0,6px,0)}
+.gb-intro__pct{width:min(240px,46vw);text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;color:var(--green-signal-text);font-variant-numeric:tabular-nums;opacity:0;transform:translate3d(0,6px,0)}
 .gb-intro-layer.is-lit .gb-intro__pct{opacity:1;transform:none;transition:opacity 520ms var(--ease-standard) 400ms,transform 520ms var(--ease-out-quart) 400ms}
 .gb-intro-layer.is-lit .gb-intro__name{opacity:1;transform:none;transition:opacity 520ms var(--ease-standard) 400ms,transform 520ms var(--ease-out-quart) 400ms}
 /* troca de frases do carregamento: sai e entra com fade, deslocamento curto e blur */
@@ -625,13 +639,16 @@ html.gb-intro-rise .gb-intro__stage{opacity:0;transform:translate3d(0,-24px,0);t
 @keyframes gb-intro-line-out{from{opacity:1;transform:none;filter:blur(0)}to{opacity:0;transform:translate3d(0,10px,0);filter:blur(5px)}}
 @keyframes gb-intro-line-in{from{opacity:0;transform:translate3d(0,-10px,0);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
 .gb-intro__rule{--gb-intro-w:min(240px,46vw);position:relative;width:var(--gb-intro-w);height:1px;margin-top:8px;background:rgba(245,245,245,.10)}
-.gb-intro__rule-fill{position:absolute;inset:0;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,transparent 0%,color-mix(in oklch,var(--green-signal-text) 55%,transparent) 34%,var(--green-signal-text) 100%);transition:transform 2900ms cubic-bezier(.4,.1,.5,.98)}
+.gb-intro__rule-fill{position:absolute;inset:0;transform-origin:left;transform:scaleX(0);background:linear-gradient(90deg,transparent 0%,color-mix(in oklch,var(--green-signal-text) 55%,transparent) 34%,var(--green-signal-text) 50%,color-mix(in oklch,var(--green-signal-text) 55%,transparent) 66%,transparent 100%);transition:transform 2900ms cubic-bezier(.4,.1,.5,.98)}
 .gb-intro-layer.is-armed .gb-intro__rule-fill{transform:scaleX(1)}
 .gb-intro__rule-tip{position:absolute;top:50%;left:0;width:1px;height:22px;margin-top:-11px;border-radius:1px;opacity:0;background:linear-gradient(180deg,transparent 0%,rgba(255,255,255,.85) 20%,#fff 50%,rgba(255,255,255,.85) 80%,transparent 100%);box-shadow:0 0 8px rgba(255,255,255,.7)}
 .gb-intro-layer.is-armed .gb-intro__rule-tip{animation:gb-intro-tip 2900ms cubic-bezier(.4,.1,.5,.98) forwards}
-@keyframes gb-intro-tip{0%{opacity:0;transform:translateX(0)}14%{opacity:1}86%{opacity:1}100%{opacity:0;transform:translateX(var(--gb-intro-w))}}
+@keyframes gb-intro-tip{0%{opacity:0;transform:translateX(0)}14%{opacity:1}86%{opacity:1}100%{opacity:0;transform:translateX(calc(var(--gb-intro-w) - 1px))}}
 .gb-intro-layer.is-instant *{transition:none !important;animation:none !important}
-.gb-intro-layer.is-instant .gb-intro__mono{opacity:1;clip-path:none;transform:none}
+.gb-intro-layer.is-instant .gb-intro__dot{opacity:1;transform:translate(-50%,-50%);background:color-mix(in srgb,var(--green-signal-text) 32%,transparent)}
+.gb-intro-layer.is-instant .gb-intro__dot.is-on{width:3.5%;height:3.5%;background:var(--green-signal-text);box-shadow:0 0 7px color-mix(in srgb,var(--green-signal-text) 20%,transparent)}
+.gb-intro-layer.is-instant .gb-intro__dot.is-on>i{opacity:1}
+.gb-intro-layer.is-instant .gb-intro__link,.gb-intro-layer.is-instant .gb-intro__halo,.gb-intro-layer.is-instant .gb-intro__scanline{display:none}
 .gb-intro-layer.is-instant .gb-intro__name{opacity:1;transform:none}
 /* segura os elementos da primeira seção enquanto a cortina está no lugar */
 html.gb-intro-hold .kit-enter{animation-play-state:paused}
