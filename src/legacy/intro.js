@@ -34,8 +34,8 @@
     : 4150;
 
   function meshMarkup() {
-    var G = ["011111", "100000", "100000", "100000", "101111", "100001", "100001", "100001", "011110"];
-    var B = ["111110", "100001", "100001", "100001", "111110", "100001", "100001", "100001", "111110"];
+    var G = ["01110", "10001", "10000", "10111", "10001", "10001", "01111"];
+    var B = ["11110", "10001", "10001", "11110", "10001", "10001", "11110"];
     var points = [], activation = {}, preActivation = {}, litLookup = {}, links = "", step = 5.15;
     var scanStart = SCAN_START_SECONDS, scanDuration = SCAN_DURATION_SECONDS;
 
@@ -43,10 +43,10 @@
       for (var col = -9; col <= 9; col++) {
         var x = col * step, y = row * step, distance = Math.hypot(x, y);
         if (Math.abs(x) > 43 || Math.abs(y) > 49 - 0.57735 * Math.abs(x)) continue;
-        var bitmapRow = row + 4, lit = false;
-        if (bitmapRow >= 0 && bitmapRow < 9) {
-          if (col >= -6 && col <= -1) lit = G[bitmapRow][col + 6] === "1";
-          if (col >= 1 && col <= 6) lit = B[bitmapRow][col - 1] === "1";
+        var bitmapRow = row + 3, lit = false;
+        if (bitmapRow >= 0 && bitmapRow < G.length) {
+          if (col >= -5 && col <= -1) lit = G[bitmapRow][col + 5] === "1";
+          if (col >= 1 && col <= 5) lit = B[bitmapRow][col - 1] === "1";
         }
         var point = { x: 50 + x, y: 50 + y, lit: lit, row: row, col: col, distance: distance };
         points.push(point);

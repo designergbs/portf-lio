@@ -614,7 +614,7 @@ html.gb-intro-rise .gb-intro__stage{opacity:0;transform:translate3d(0,-24px,0);t
 .gb-intro--scanner.is-forming .gb-intro__dot.is-on>i{animation:gb-intro-scan-reveal .4s cubic-bezier(.22,.61,.36,1) var(--gb-scan-delay) forwards,gb-intro-signal-fill .28s ease var(--gb-signal-lock) forwards}
 .gb-intro--scanner.is-forming .gb-intro__link{animation:gb-intro-connect .14s cubic-bezier(.22,.61,.36,1) var(--gb-link-scan) both,gb-intro-trail .22s linear calc(var(--gb-link-scan) + .24s) forwards}
 .gb-intro--scanner.is-forming .gb-intro__halo{animation:gb-intro-halo 1.08s ease-out var(--gb-scan-finale) both}
-@keyframes gb-intro-dot-grow{from{width:.8%;height:.8%}to{width:3.5%;height:3.5%}}
+@keyframes gb-intro-dot-grow{from{width:.8%;height:.8%}to{width:4.1%;height:4.1%}}
 @keyframes gb-intro-dot-bright{from{opacity:0}to{opacity:.14}}
 @keyframes gb-intro-color-reveal{0%{opacity:.14}35%,100%{opacity:1}}
 @keyframes gb-intro-connect{from{opacity:1;transform:rotate(var(--gb-link-angle)) scaleX(0)}to{opacity:1;transform:rotate(var(--gb-link-angle)) scaleX(1)}}
@@ -646,7 +646,7 @@ html.gb-intro-rise .gb-intro__stage{opacity:0;transform:translate3d(0,-24px,0);t
 @keyframes gb-intro-tip{0%{opacity:0;transform:translateX(0)}14%{opacity:1}86%{opacity:1}100%{opacity:0;transform:translateX(calc(var(--gb-intro-w) - 1px))}}
 .gb-intro-layer.is-instant *{transition:none !important;animation:none !important}
 .gb-intro-layer.is-instant .gb-intro__dot{opacity:1;transform:translate(-50%,-50%);background:color-mix(in srgb,var(--green-signal-text) 32%,transparent)}
-.gb-intro-layer.is-instant .gb-intro__dot.is-on{width:3.5%;height:3.5%;background:var(--green-signal-text);box-shadow:0 0 7px color-mix(in srgb,var(--green-signal-text) 20%,transparent)}
+.gb-intro-layer.is-instant .gb-intro__dot.is-on{width:4.1%;height:4.1%;background:var(--green-signal-text);box-shadow:0 0 7px color-mix(in srgb,var(--green-signal-text) 20%,transparent)}
 .gb-intro-layer.is-instant .gb-intro__dot.is-on>i{opacity:1}
 .gb-intro-layer.is-instant .gb-intro__link,.gb-intro-layer.is-instant .gb-intro__halo,.gb-intro-layer.is-instant .gb-intro__scanline{display:none}
 .gb-intro-layer.is-instant .gb-intro__name{opacity:1;transform:none}
