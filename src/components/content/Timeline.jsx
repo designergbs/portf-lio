@@ -10,7 +10,7 @@ export function Timeline({ items = [], className = "" }) {
         <div className="gb-timeline__item" key={item.period + i}>
           <div className="gb-timeline__period">
             <span className={"gb-timeline__node" + (item.current ? " is-current" : "")}>{item.period}</span>
-            {item.place ? <span>{item.place}</span> : null}
+            {item.place ? <span className="gb-timeline__place">{String(item.place).replace(/,\s*/g, ", ")}</span> : null}
             {item.current ? <span style={{ color: "var(--text-signal)" }}>{lang === "en" ? "current" : "atual"}</span> : null}
           </div>
           <div>{item.content}</div>

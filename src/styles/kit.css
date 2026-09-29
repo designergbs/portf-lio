@@ -282,7 +282,8 @@ html[data-a11y-motion="reduce"] .kit-about__portrait:hover .kit-about__frame img
 .kit-caseshead .gb-circlabel{margin:0 0 0 -4px;align-self:flex-start}
 .kit-caseshead .gb-sechead__title{margin:0}
 #experiencia .gb-exp__context{font-size:var(--type-body-sm-size);line-height:var(--type-body-sm-lh)}
-#experiencia .gb-exp__company{font-size:var(--type-body-size);line-height:var(--type-body-lh)}
+#experiencia .gb-exp__company{font-size:16px;line-height:var(--type-body-lh)}
+#experiencia .gb-timeline__place{font-family:var(--font-sans);font-size:14px}
 #experiencia .gb-exp__role{font-size:var(--type-body-size);line-height:var(--type-body-lh);letter-spacing:normal;margin-bottom:calc(var(--space-1) * -1)}
 #experiencia .kit-caseshead{margin-bottom:var(--space-16)}
 .gb-footer .gb-beam-h::after{animation:kit-beam-loop 5s linear infinite;background:linear-gradient(to right,transparent 20%,rgba(245,245,245,0.9) 50%,transparent 80%)}
