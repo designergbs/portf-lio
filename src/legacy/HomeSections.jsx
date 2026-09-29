@@ -115,7 +115,7 @@ function About() {
         <div className="kit-about__titlewrap"><h2 className="gb-sechead__title kit-about__title"><ScrollCharReveal text={window.gbT("sections.aboutTitle")} stickyTailChars={4} gateFlag /></h2></div>
         <PortraitReveal
           naturalSrc="/sobre1.png"
-          haloSrc="/sobre2.png"
+          haloSrc="/sobre2.jpg"
           naturalAlt={window.gbT("sections.aboutPortraitAlt")}
         />
         <Reveal delay={200} className="kit-lead-group">
