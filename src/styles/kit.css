@@ -611,7 +611,7 @@ html.gb-intro-rise .gb-intro__stage{opacity:0;transform:translate3d(0,-24px,0);t
 .gb-intro--scanner .gb-intro__dot.is-on{background:color-mix(in srgb,#f5f5f5 52%,transparent)}
 .gb-intro--scanner.is-forming .gb-intro__scanline{animation:gb-intro-scanline var(--gb-scan-duration) linear var(--gb-scan-start) both}
 .gb-intro--scanner.is-forming .gb-intro__dot:not(.is-on){animation:gb-intro-scan-pass .48s ease-out var(--gb-scan-delay) both}
-.gb-intro--scanner.is-forming .gb-intro__dot.is-on{animation:gb-intro-dot-grow .32s cubic-bezier(.16,1,.3,1) var(--gb-pre-delay) forwards,gb-intro-dot-impact .88s ease var(--gb-scan-finale) forwards,gb-intro-signal-lock .28s ease var(--gb-signal-lock) forwards;overflow:visible}
+.gb-intro--scanner.is-forming .gb-intro__dot.is-on{animation:gb-intro-dot-grow .42s cubic-bezier(.16,1,.3,1) var(--gb-pre-delay) forwards,gb-intro-dot-impact .88s ease var(--gb-scan-finale) forwards,gb-intro-signal-lock .28s ease var(--gb-signal-lock) forwards;overflow:visible}
 .gb-intro--scanner.is-forming .gb-intro__dot.is-on>i{animation:gb-intro-scan-reveal .4s cubic-bezier(.22,.61,.36,1) var(--gb-scan-delay) forwards,gb-intro-signal-fill .28s ease var(--gb-signal-lock) forwards}
 .gb-intro--scanner.is-forming .gb-intro__link{animation:gb-intro-connect .14s cubic-bezier(.22,.61,.36,1) var(--gb-link-scan) both,gb-intro-trail .22s linear calc(var(--gb-link-scan) + .24s) forwards}
 .gb-intro--scanner.is-forming .gb-intro__halo{animation:gb-intro-halo 1.08s ease-out var(--gb-scan-finale) both}

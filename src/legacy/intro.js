@@ -25,7 +25,7 @@
   function pin(e) { e.preventDefault(); }
   function keep() { if (window.scrollY !== 0) window.scrollTo(0, 0); }
 
-  var PHRASE_DURATION_MS = 2800;
+  var PHRASE_DURATION_MS = 2100;
   var FINAL_PHRASE_DURATION_MS = PHRASE_DURATION_MS / 2;
   var SCAN_START_SECONDS = PHRASE_DURATION_MS / 1000;
   var SCAN_DURATION_SECONDS = PHRASE_DURATION_MS / 1000;
