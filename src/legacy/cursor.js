@@ -21,7 +21,7 @@
     ring.appendChild(ringInner);
     var rx = -100, ry = -100;
 
-    var tx = -100, ty = -100, x = -100, y = -100, raf = 0, mounted = false;
+    var tx = -100, ty = -100, x = -100, y = -100, raf = 0, syncRaf = 0, mounted = false;
     var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var EASE = 0.2, mountedOnce = false;
 
@@ -53,32 +53,63 @@
     }
     function schedule() { if (!raf) raf = window.requestAnimationFrame(draw); }
 
+    /* O elemento sob o mouse pode mudar sem pointermove (scroll suave, navbar que se
+       recolhe e troca de view). Recalcular pelo ponto atual evita manter o estado
+       is-hidden do elemento anterior depois de clicar em um link do menu. */
+    function syncTarget(target) {
+      if (!mounted) return;
+      var native = target && target.closest && target.closest(NATIVE);
+      var active = !native && !!(target && target.closest && target.closest(INTERACTIVE));
+      dot.classList.toggle("is-hidden", !!native);
+      ring.classList.toggle("is-hidden", !!native);
+      dot.classList.toggle("is-active", active);
+      ring.classList.toggle("is-active", active);
+    }
+    function syncFromPoint() {
+      syncRaf = 0;
+      if (!mounted || tx < 0 || ty < 0 || document.hidden) return;
+      syncTarget(document.elementFromPoint(tx, ty));
+    }
+    function scheduleTargetSync() {
+      if (!syncRaf) syncRaf = window.requestAnimationFrame(syncFromPoint);
+    }
+
     document.addEventListener("pointermove", function (e) {
       if (e.pointerType && e.pointerType !== "mouse") { unmount(); return; }
       mount();
       tx = e.clientX; ty = e.clientY;
       if (!mountedOnce) { x = tx; y = ty; rx = tx; ry = ty; mountedOnce = true; }
       schedule();
-      var t = e.target;
-      var native = t && t.closest && t.closest(NATIVE);
-      var act = !native && !!(t && t.closest && t.closest(INTERACTIVE));
-      dot.classList.toggle("is-hidden", !!native);
-      ring.classList.toggle("is-hidden", !!native);
-      dot.classList.toggle("is-active", act);
-      ring.classList.toggle("is-active", act);
+      syncTarget(e.target);
     }, { passive: true });
 
     document.addEventListener("pointerdown", function (e) {
       if (e.pointerType && e.pointerType !== "mouse") { unmount(); return; }
       dot.classList.add("is-press"); ring.classList.add("is-press");
     }, { passive: true });
-    document.addEventListener("pointerup", function () { dot.classList.remove("is-press"); ring.classList.remove("is-press"); }, { passive: true });
+    function release() {
+      dot.classList.remove("is-press");
+      ring.classList.remove("is-press");
+      scheduleTargetSync();
+    }
+    document.addEventListener("pointerup", release, { passive: true });
+    document.addEventListener("pointercancel", release, { passive: true });
+    window.addEventListener("scroll", scheduleTargetSync, { passive: true });
+    document.addEventListener("click", scheduleTargetSync, { passive: true });
+    window.addEventListener("hashchange", scheduleTargetSync);
+    window.addEventListener("popstate", scheduleTargetSync);
 
     document.addEventListener("pointerleave", function () { dot.classList.add("is-hidden"); ring.classList.add("is-hidden"); }, { passive: true });
     document.addEventListener("pointerenter", function () { dot.classList.remove("is-hidden"); ring.classList.remove("is-hidden"); }, { passive: true });
-    window.addEventListener("blur", function () { dot.classList.add("is-hidden"); ring.classList.add("is-hidden"); });
+    window.addEventListener("blur", function () {
+      dot.classList.remove("is-press"); ring.classList.remove("is-press");
+      dot.classList.add("is-hidden"); ring.classList.add("is-hidden");
+    });
+    window.addEventListener("focus", scheduleTargetSync);
     document.addEventListener("visibilitychange", function () {
       if (document.hidden && raf) { window.cancelAnimationFrame(raf); raf = 0; }
+      if (document.hidden && syncRaf) { window.cancelAnimationFrame(syncRaf); syncRaf = 0; }
+      if (!document.hidden) scheduleTargetSync();
     });
   } catch (err) {
     document.documentElement.classList.remove("gb-cursor-on");
